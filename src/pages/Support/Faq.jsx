@@ -1,63 +1,54 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-
+ 
 const faqData = [
   {
-    question: "How can I change my Airtel postpaid plan?",
+    question: "How can I change my ASAAP postpaid plan?",
     answer:
-      "You can change your Airtel postpaid plan by logging into the Airtel Thanks app or website and selecting the 'Change Plan' option. Alternatively, you can visit the nearest Airtel store for assistance with plan changes.",
+      "You can change your ASAAP postpaid plan by logging into the ASAAP Thanks app or website and selecting the 'Change Plan' option. Alternatively, you can visit the nearest ASAAP store for assistance with plan changes.",
+  },
+  
+  {
+    question: "How do I activate ASAAP digital TV services?",
+    answer:
+      "To activate ASAAP digital TV services, you can visit the ASAAP website, use the ASAAP Thanks app, or contact ASAAP customer care. You may need to purchase a set-top box and choose a suitable subscription plan to start enjoying ASAAP digital TV services.",
+  },
+  
+  {
+    question: "How do I subscribe to ASAAP broadband services?",
+    answer:
+      "You can subscribe to ASAAP broadband services by visiting the ASAAP website, using the ASAAP Thanks app, or contacting ASAAP customer care. ASAAP offers various broadband plans with high-speed internet, unlimited data, and additional benefits such as free router installation and complimentary subscriptions to OTT platforms.",
   },
   {
-    question:
-      "What should I do if I face network issues with my Airtel connection?",
+    question: "How can I activate ASAAP Wi-Fi Calling on my device?",
     answer:
-      "If you experience network issues with your Airtel connection, you can try troubleshooting steps such as restarting your device, checking for network coverage in your area, and ensuring your SIM card is inserted correctly. If the issue persists, you can contact Airtel customer care for further assistance.",
+      "To activate ASAAP Wi-Fi Calling, ensure that your device supports the feature and is connected to a Wi-Fi network. Go to your device settings, enable Wi-Fi Calling, and select ASAAP as your preferred network provider. Once activated, you can make and receive calls over Wi-Fi using your ASAAP number.",
   },
   {
-    question: "How do I activate Airtel digital TV services?",
+    question: "What should I do if I forget my ASAAP Payments Bank PIN?",
     answer:
-      "To activate Airtel digital TV services, you can visit the Airtel website, use the Airtel Thanks app, or contact Airtel customer care. You may need to purchase a set-top box and choose a suitable subscription plan to start enjoying Airtel digital TV services.",
+      "If you forget your ASAAP Payments Bank PIN, you can reset it through the ASAAP Thanks app or website. Navigate to the 'Payments Bank' section, select the option to reset your PIN, and follow the instructions. You may need to provide additional verification details for security purposes.",
   },
   {
-    question: "Can I transfer my Airtel prepaid balance to another number?",
+    question: "What should I do if I lose my ASAAP SIM card?",
     answer:
-      "Yes, Airtel allows balance transfer between prepaid numbers using the 'Airtel Me2U' service. You can dial *141# from your Airtel number to transfer balance to another Airtel number. Note that a nominal service charge may apply for each balance transfer.",
+      "If you lose your ASAAP SIM card, you should immediately contact ASAAP customer care to block the SIM and request a replacement. You may need to visit the nearest ASAAP store with valid identification documents to get a new SIM card with the same mobile number.",
   },
   {
-    question: "How do I subscribe to Airtel broadband services?",
+    question: "How do I activate international roaming on my ASAAP number?",
     answer:
-      "You can subscribe to Airtel broadband services by visiting the Airtel website, using the Airtel Thanks app, or contacting Airtel customer care. Airtel offers various broadband plans with high-speed internet, unlimited data, and additional benefits such as free router installation and complimentary subscriptions to OTT platforms.",
+      "To activate international roaming on your ASAAP number, you can use the ASAAP Thanks app, visit the ASAAP website, or contact ASAAP customer care. You may need to submit some documents and pay a nominal fee to activate international roaming services.",
   },
   {
-    question: "How can I activate Airtel Wi-Fi Calling on my device?",
+    question: "How do I check my ASAAP prepaid balance and validity?",
     answer:
-      "To activate Airtel Wi-Fi Calling, ensure that your device supports the feature and is connected to a Wi-Fi network. Go to your device settings, enable Wi-Fi Calling, and select Airtel as your preferred network provider. Once activated, you can make and receive calls over Wi-Fi using your Airtel number.",
-  },
-  {
-    question: "What should I do if I forget my Airtel Payments Bank PIN?",
-    answer:
-      "If you forget your Airtel Payments Bank PIN, you can reset it through the Airtel Thanks app or website. Navigate to the 'Payments Bank' section, select the option to reset your PIN, and follow the instructions. You may need to provide additional verification details for security purposes.",
-  },
-  {
-    question: "What should I do if I lose my Airtel SIM card?",
-    answer:
-      "If you lose your Airtel SIM card, you should immediately contact Airtel customer care to block the SIM and request a replacement. You may need to visit the nearest Airtel store with valid identification documents to get a new SIM card with the same mobile number.",
-  },
-  {
-    question: "How do I activate international roaming on my Airtel number?",
-    answer:
-      "To activate international roaming on your Airtel number, you can use the Airtel Thanks app, visit the Airtel website, or contact Airtel customer care. You may need to submit some documents and pay a nominal fee to activate international roaming services.",
-  },
-  {
-    question: "How do I check my Airtel prepaid balance and validity?",
-    answer:
-      "To check your Airtel prepaid balance and validity, you can dial *121# from your Airtel mobile number. You will receive an SMS containing details of your account balance, validity, data balance, and any active plans.",
+      "To check your ASAAP prepaid balance and validity, you can dial *121# from your ASAAP mobile number. You will receive an SMS containing details of your account balance, validity, data balance, and any active plans.",
   },
 ];
-
+ 
 const FAQItem = ({ question, answer, isOpen, onClick }) => {
   const [isHovered, setIsHovered] = useState(false);
-
+ 
   return (
     <div
       className={`bg-white shadow-lg rounded-lg mb-4 transform transition-transform ${
@@ -92,14 +83,14 @@ const FAQItem = ({ question, answer, isOpen, onClick }) => {
     </div>
   );
 };
-
+ 
 const Faq = () => {
   const [openIndex, setOpenIndex] = useState(null);
-
+ 
   const handleClick = (index) => {
     setOpenIndex(openIndex === index ? null : index);
   };
-
+ 
   return (
     <div className="flex flex-col min-h-screen bg-gray-100">
       <div className="flex-grow max-w-4xl w-full mx-auto mt-10 p-6">
@@ -116,22 +107,22 @@ const Faq = () => {
           />
         ))}
       </div>
-
+ 
       <footer className="max-w-4xl w-full mx-auto mt-4 p-6 text-center">
         <p className="text-lg">
           You can generate a{" "}
-          <Link to="/new-ticket" className="text-red-500 font-semibold">
+          <Link to="/new-ticket" className="text-blue-600 font-semibold">
             Ticket
           </Link>{" "}
           for your query or view your{" "}
-          <Link to="/tickets" className="text-red-500 font-semibold">
+          <Link to="/tickets" className="text-blue-600 font-semibold">
             Previous Tickets
           </Link>{" "}
           here .
         </p>
         <p className="text-lg text-gray-700">
           If query not resolved,{" "}
-          <Link to="/new-ticket" className="text-red-500 font-semibold">
+          <Link to="/new-ticket" className="text-blue-600 font-semibold">
             Chat
           </Link>{" "}
           with us .
@@ -140,5 +131,5 @@ const Faq = () => {
     </div>
   );
 };
-
+ 
 export default Faq;
