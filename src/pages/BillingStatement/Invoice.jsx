@@ -117,13 +117,13 @@ const Invoices = () => {
   return (
     <div className="flex min-h-screen bg-white justify-center items-center">
       <div className="flex flex-col flex-grow p-4 max-w-4xl">
-        <main className="bg-white rounded-lg p-6 mt-6 w-full">
+        <main className="bg-white rounded-lg p-6 mt-1 w-full">
           <h1 className="text-2xl font-bold mb-4">Invoices</h1>
           <div className="space-y-4">
             {currentInvoices.map((invoice) => (
               <div
                 key={invoice.id}
-                className="bg-gray-100 p-4 rounded-md cursor-pointer transform transition-transform hover:scale-105 hover:shadow-lg hover:shadow-blue-500"
+                className="bg-gray-100 p-4 rounded-md cursor-pointer transform transition-transform hover:scale-105 hover:shadow-lg hover:shadow-blue-100"
                 onClick={() => navigate(`/invoice/${invoice.invoiceId}`)}
               >
                 <div className="flex justify-between items-center">
