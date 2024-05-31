@@ -12,7 +12,7 @@ const DataUsage = () => {
   const [activeTab, setActiveTab] = useState('data');
   const [remainingStats, setRemainingStats] = useState({
     dataRemaining: 0,
-    voiceRemaining: 0,
+    voiceUsed: 0,
     smsRemaining: 0,
   });
 
@@ -20,6 +20,7 @@ const DataUsage = () => {
     const fetchData = async () => {
       try {
         const response = await axios.get('http://localhost:8100/datausage/userId/1');
+        console.log('Data Usage Response:', response.data); // Log API response
         const userData = response.data.dataUsageList.filter((usage) => usage.user.userId === 1);
 
         const hourlyData = Array.from({ length: 24 }, (_, i) => {
@@ -37,19 +38,14 @@ const DataUsage = () => {
           return data ? data.smsCount : 0;
         });
 
-        const totalDataUsage = hourlyData.reduce((sum, value) => sum + value, 0);
         const totalVoiceUsage = voiceHourly.reduce((sum, value) => sum + value, 0);
-        const totalSmsUsage = smsHourly.reduce((sum, value) => sum + value, 0);
 
         setUsage({ hourlyData, voiceHourly, smsHourly });
 
-        const userPlanResponse = await axios.get('http://localhost:8100/userPlan/userId/1');
-        const userPlan = userPlanResponse.data;
-
         setRemainingStats({
-          dataRemaining: userPlan.totalData - totalDataUsage,
-          voiceRemaining: userPlan.totalVoiceMinutes - totalVoiceUsage,
-          smsRemaining: userPlan.totalSms - totalSmsUsage,
+          dataRemaining: response.data.dataRemaining,
+          voiceUsed: totalVoiceUsage,
+          smsRemaining: response.data.SmsRemaining,
         });
 
       } catch (error) {
@@ -123,14 +119,14 @@ const DataUsage = () => {
   });
 
   return (
-    <div className="min-h-screen bg-gray-100 py-8">
-      <div className="container mx-auto p-4 bg-white shadow-lg rounded-lg">
+    <div className="min-h-screen bg-gray-100 py-10">
+      <div className="container mx-auto my-auto py-10 bg-white shadow-lg rounded-lg">
         <h1 className="text-3xl font-bold mb-8 text-center text-blue-600">Data Usage</h1>
-        <div className="flex justify-center mb-6 space-x-4">
-          {['data', 'voice', 'SMS'].map((tab) => (
+        <div className="flex justify-center mb-8 space-x-5">
+          {['data', 'voice', 'sms'].map((tab) => (
             <button
               key={tab}
-              className={`px-4 py-2 rounded ${
+              className={`px-5 py-2 rounded ${
                 activeTab === tab
                   ? 'bg-blue-500 text-white'
                   : 'bg-gray-200 text-gray-800 hover:bg-gray-300 hover:text-gray-900'
@@ -141,76 +137,70 @@ const DataUsage = () => {
             </button>
           ))}
         </div>
-        <div className="flex flex-col items-center">
+        <div className="h-auto w-auto flex flex-col items-center">
           {activeTab === 'data' && (
-            <div className="w-full md:w-3/4 lg:w-2/3 flex justify-between">
-              <div className="w-full">
-                <h2 className="text-2xl mb-4 text-center">Data Usage (Hourly)</h2>
-                <div className="chart-container">
-                  <Bar
-                    data={barChartData(
-                      usage.hourlyData,
-                      'Data Usage (MB)',
-                      'rgba(75, 192, 192, 0.6)',
-                      'rgba(75, 192, 192, 1)'
-                    )}
-                    options={barChartOptions('Data Usage (MB)')}
-                  />
-                </div>
-              </div>
-              <div className="w-full md:w-1/3 bg-gray-50 p-4 rounded-lg shadow">
-                <h3 className="text-xl font-semibold mb-4">Remaining Stats</h3>
+            <div className="w-full md:w-3/4 lg:w-2/3 flex flex-col items-center">
+              <div className="md:w-1/3 bg-gray-50 p-4 rounded-lg shadow text-center">
+                <h3 className="text-xl font-semibold mb-2">Data Usage Stats</h3>
                 <p className="mb-2">
-                  <strong>Data Remaining:</strong> {remainingStats.dataRemaining} MB
+                  <strong>Remaining Data:</strong> {remainingStats.dataRemaining} MB
                 </p>
+              </div>
+              <h2 className="py-4 text-2xl mb-4 text-center">Data Usage (Hourly)</h2>
+              <div className="chart-container w-full">
+                <Bar
+                  data={barChartData(
+                    usage.hourlyData,
+                    'Data Usage (MB)',
+                    'rgba(75, 192, 192, 0.6)',
+                    'rgba(75, 192, 192, 1)'
+                  )}
+                  options={barChartOptions('Data Usage (MB)')}
+                />
               </div>
             </div>
           )}
           {activeTab === 'voice' && (
-            <div className="w-full md:w-3/4 lg:w-2/3 flex justify-between">
-              <div className="w-full">
-                <h2 className="text-2xl mb-4 text-center">Voice Usage (Hourly)</h2>
-                <div className="chart-container">
-                  <Bar
-                    data={barChartData(
-                      usage.voiceHourly,
-                      'Voice Minutes',
-                      'rgba(54, 162, 235, 0.6)',
-                      'rgba(54, 162, 235, 1)'
-                    )}
-                    options={barChartOptions('Voice Minutes')}
-                  />
-                </div>
-              </div>
-              <div className="w-full md:w-1/3 bg-gray-50 p-4 rounded-lg shadow">
-                <h3 className="text-xl font-semibold mb-4">Remaining Stats</h3>
+            <div className="w-full md:w-3/4 lg:w-2/3 flex flex-col items-center">
+              <div className="md:w-1/3 bg-gray-50 p-4 rounded-lg shadow text-center">
+                <h3 className="text-xl font-semibold mb-2">Call Usage Stats</h3>
                 <p className="mb-2">
-                  <strong>Voice Minutes Remaining:</strong> {remainingStats.voiceRemaining} minutes
+                  <strong>Voice Used:</strong> {remainingStats.voiceUsed} minutes
                 </p>
+              </div>
+              <h2 className="py-4 text-2xl mb-4 text-center">Voice Usage (Hourly)</h2>
+              <div className="chart-container w-full">
+                <Bar
+                  data={barChartData(
+                    usage.voiceHourly,
+                    'Voice Minutes',
+                    'rgba(54, 162, 235, 0.6)',
+                    'rgba(54, 162, 235, 1)'
+                  )}
+                  options={barChartOptions('Voice Minutes')}
+                />
               </div>
             </div>
           )}
           {activeTab === 'sms' && (
-            <div className="w-full md:w-3/4 lg:w-2/3 flex justify-between">
-              <div className="w-full">
-                <h2 className="text-2xl mb-4 text-center">SMS Usage (Hourly)</h2>
-                <div className="chart-container">
-                  <Bar
-                    data={barChartData(
-                      usage.smsHourly,
-                      'SMS Count',
-                      'rgba(255, 206, 86, 0.6)',
-                      'rgba(255, 206, 86, 1)'
-                    )}
-                    options={barChartOptions('SMS Count')}
-                  />
-                </div>
-              </div>
-              <div className=" md:w-1/3 bg-gray-50 p-4 rounded-lg shadow">
-                <h3 className="text-xl font-semibold mb-4">Remaining Stats</h3>
+            <div className="w-full md:w-3/4 lg:w-2/3 flex flex-col items-center">
+              <div className="md:w-1/3 bg-gray-50 p-4 rounded-lg shadow text-center">
+                <h3 className="text-xl font-semibold mb-2">SMS Usage Stats</h3>
                 <p className="mb-2">
-                  <strong>SMS Remaining:</strong> {remainingStats.smsRemaining}
+                  <strong>SMS Remaining:</strong> {remainingStats.smsRemaining}/100 SMS
                 </p>
+              </div>
+              <h2 className="py-4 text-2xl mb-4 text-center">SMS Usage (Hourly)</h2>
+              <div className="chart-container w-full">
+                <Bar
+                  data={barChartData(
+                    usage.smsHourly,
+                    'SMS Count',
+                    'rgba(255, 206, 86, 0.6)',
+                    'rgba(255, 206, 86, 1)'
+                  )}
+                  options={barChartOptions('SMS Count')}
+                />
               </div>
             </div>
           )}

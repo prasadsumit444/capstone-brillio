@@ -1,62 +1,46 @@
-// TicketDetails.js
 import React, { useEffect, useState } from "react";
-import { useLocation, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
+import { useNotification } from "./../NotificationContext"; // Ensure correct path
 import { tickets } from "./constant";
 
 const TicketDetails = () => {
-  const [ticket, setTicket] = useState({
-    ticketId: "",
-    userId: "",
-    issueType: "",
-    description: "",
-    timestamp: "",
-    ticketStatus: "",
-  });
-
-  // const { ticket } = location.state || {};
-
+  const [ticket, setTicket] = useState({ ticketId: "", userId: "", issueType: "", description: "", timestamp: "", ticketStatus: "" });
   const { ticketId } = useParams();
+  const { showNotification } = useNotification();
+
   useEffect(() => {
-    setTicket(tickets.find((t) => t.ticketId === ticketId));
-  }, []);
+    const foundTicket = tickets.find((t) => t.ticketId === ticketId);
+    if (foundTicket) setTicket(foundTicket);
+  }, [ticketId]);
+
+  const handleReopen = () => {
+    setTicket((prevTicket) => ({ ...prevTicket, ticketStatus: "Open" }));
+    showNotification("Status changed from closed to open", "success");
+  };
 
   return (
     <div className="min-h-screen bg-gray-100 p-6 flex flex-col items-center">
-      <div className="max-w-4xl w-full bg-white shadow-lg rounded-lg p-6">
-        <button
-          onClick={() => window.history.back()}
-          className="mb-4 bg-gray-500 text-white px-4 py-2 rounded-lg hover:bg-gray-600"
-        >
-          Go Back
-        </button>
-        <h1 className="text-3xl font-bold mb-4 text-red-600">Ticket Details</h1>
-        <h1 className="text-3xl font-bold mb-4 text-red-600">
-          {ticket && ticket.issueType}
-        </h1>
+      <div className="max-w-4xl w-full bg-white shadow-lg rounded-lg p-8 transition-transform hover:shadow-blue-200">
+        <h1 className="text-3xl font-bold mb-4 text-blue-500">Ticket Details</h1>
+        <h1 className="text-3xl font-bold mb-4 text-blue-500">{ticket.issueType}</h1>
         <div className="mb-4">
-          <label
-            className="block text-gray-700 font-semibold mb-2"
-            htmlFor="description"
-          >
-            {ticket && ticket.ticketId}
-          </label>
+          <label className="block text-gray-700 font-semibold mb-2">Ticket ID: {ticket.ticketId}</label>
           <textarea
             id="description"
             className="w-full p-3 border rounded-lg shadow-sm focus:outline-none focus:ring-2 border-gray-300"
             style={{ height: "50vh" }}
-            defaultValue={ticket && ticket.description}
+            value={ticket.description}
+            readOnly
           />
         </div>
-        <div className="mb-4">
-          <label className="block text-gray-700 font-semibold mb-2">
-            Issue not resolved?
-          </label>
-          {ticket && ticket.ticketStatus === "Closed" && (
-            <button className="bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600">
+        {ticket.ticketStatus === "Closed" && (
+          <div className="mb-4">
+            <label className="block text-gray-700 font-semibold mb-2">Issue not resolved?</label>
+            <button className="bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600" onClick={handleReopen}>
               Reopen Ticket
             </button>
-          )}
-        </div>
+          </div>
+        )}
       </div>
     </div>
   );
