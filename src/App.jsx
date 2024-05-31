@@ -16,11 +16,13 @@ import TransactionDetails from "./pages/BillingStatement/TransactionDetails";
 import SupportPage from "./pages/Support/SupportPage";
 import HomePage from "./pages/HomePage/Homepage";
 import InvoiceDetails from "./pages/BillingStatement/InvoiceDetails";
+import { NotificationProvider } from "./pages/NotificationContext";
 
 
 function App() {
   return (
     <div>
+      <NotificationProvider>
       <Navbar />
       <BrowserRouter>
         <Routes>
@@ -46,6 +48,7 @@ function App() {
         </Routes>
       </BrowserRouter>
       <ChatBot></ChatBot>
+      </NotificationProvider>
     </div>
   );
 }
