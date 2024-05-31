@@ -3,7 +3,7 @@ import { useParams } from "react-router-dom";
 import axios from "axios";
 import { format } from "date-fns";
 import { toZonedTime } from "date-fns-tz";
- 
+
 const TransactionDetails = () => {
   const [transactions, setTransactions] = useState([]);
   const [selectedTransaction, setSelectedTransaction] = useState(null);
@@ -13,9 +13,9 @@ const TransactionDetails = () => {
   const [visibleStartPage, setVisibleStartPage] = useState(1);
   const transactionsPerPage = 5; // Number of transactions per page
   const pagesPerSet = 5; // Number of pages per set
- 
+
   const { transactionId } = useParams();
- 
+
   useEffect(() => {
     const fetchTransactions = async () => {
       try {
@@ -28,31 +28,31 @@ const TransactionDetails = () => {
         setLoading(false);
       }
     };
- 
+
     fetchTransactions();
   }, []);
- 
+
   const convertToIST = (timestamp) => {
     if (!timestamp) return "";
- 
+
     const utcDate = new Date(timestamp);
     const istDate = toZonedTime(utcDate, "Asia/Kolkata");
- 
+
     const formattedDate = format(istDate, "yyyy-MM-dd HH:mm:ss");
     return formattedDate;
   };
- 
+
   // Get current transactions
   const indexOfLastTransaction = currentPage * transactionsPerPage;
   const indexOfFirstTransaction = indexOfLastTransaction - transactionsPerPage;
   const currentTransactions = transactions.slice(indexOfFirstTransaction, indexOfLastTransaction);
- 
+
   // Change page
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
- 
+
   // Calculate total number of pages
   const totalPages = Math.ceil(transactions.length / transactionsPerPage);
- 
+
   // Change visible start page and current page
   const nextPage = () => {
     if (currentPage < totalPages) {
@@ -63,7 +63,7 @@ const TransactionDetails = () => {
       }
     }
   };
- 
+
   const prevPage = () => {
     if (currentPage > 1) {
       const newPage = currentPage - 1;
@@ -73,12 +73,12 @@ const TransactionDetails = () => {
       }
     }
   };
- 
+
   // Display pagination buttons
   const renderPageNumbers = () => {
     const pageNumbers = [];
     const endPage = Math.min(visibleStartPage + pagesPerSet - 1, totalPages);
- 
+
     if (currentPage > 1) {
       pageNumbers.push(
         <button
@@ -90,7 +90,7 @@ const TransactionDetails = () => {
         </button>
       );
     }
- 
+
     for (let i = visibleStartPage; i <= endPage; i++) {
       pageNumbers.push(
         <button
@@ -102,7 +102,7 @@ const TransactionDetails = () => {
         </button>
       );
     }
- 
+
     if (currentPage < totalPages) {
       pageNumbers.push(
         <button
@@ -114,31 +114,31 @@ const TransactionDetails = () => {
         </button>
       );
     }
- 
+
     return pageNumbers;
   };
- 
+
   if (loading) {
     return <div>Loading...</div>;
   }
- 
+
   if (error) {
     return <div>Error: {error}</div>;
   }
- 
+
   return (
-    <div className="flex min-h-screen bg-white">
-      <div className="flex flex-col flex-grow p-4">
-        <main className="bg-white rounded-lg p-6 mt-6 w-full">
+    <div className="flex min-h-screen bg-white justify-center items-center">
+      <div className="flex flex-col flex-grow p-4 max-w-4xl w-full">
+        <main className="bg-white rounded-lg p-6 mt-6 w-full h-full">
           <h1 className="text-2xl font-bold mb-4">Transaction Details</h1>
           <div className="space-y-4">
             {currentTransactions.map((tx) => {
               const timestamp = convertToIST(tx.timeStamp);
- 
+
               return (
                 <div
                   key={tx.transactionId}
-                  className="bg-gray-100 p-4 rounded-md cursor-pointer"
+                  className="bg-gray-100 p-4 rounded-md cursor-pointer transform transition-transform hover:scale-105 hover:shadow-lg hover:shadow-blue-500"
                   onClick={() => setSelectedTransaction(tx)}
                 >
                   <div className="flex justify-between items-center">
@@ -163,7 +163,8 @@ const TransactionDetails = () => {
           </div>
           {selectedTransaction && (
             <div className="fixed inset-0 flex items-center justify-center z-10">
-              <div className="bg-white text-black p-6 rounded-lg shadow-lg max-w-md">
+              <div className="bg-white text-black p-6 rounded-lg shadow-lg max-w-md transform transition-transform hover:scale-105 hover:shadow-lg hover:shadow-blue-500">
+                <h2 className="text-xl font-semibold mb-4">Transaction Details</h2>
                 <p>Details for Rs.{selectedTransaction.planPrice}</p>
                 <ul>
                   <li>Status: {selectedTransaction.transactionStatus}</li>
@@ -184,6 +185,5 @@ const TransactionDetails = () => {
     </div>
   );
 };
- 
+
 export default TransactionDetails;
- 
