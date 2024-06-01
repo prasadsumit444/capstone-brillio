@@ -1,12 +1,18 @@
 import axios from "axios";
 import React, { useState } from "react";
+import { useAuth } from './AuthGuard'
+import { useNavigate } from "react-router-dom";
+
 
 export default function Signup() {
+
+  const auth = useAuth();
+  const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
     fullName: "",
     mobileNumber: "",
-    email: "",
+    emailId: "",
     password: "",
     securityQuestion: "",
     securityAnswer: "",
@@ -36,34 +42,21 @@ export default function Signup() {
 
   const handleSignup = async (e) => {
     e.preventDefault();
-    // setError(null);
-    // setSuccess(false);
 
-    try {
-      // Perform form validations here
-
-      // Example: Check if password is at least 6 characters
-      // if (formData.password.length < 6) {
-      //   throw new Error("Password must be at least 6 characters long");
-      // }
-
-      // Example: Send form data to backend API for authentication
-      const response = await axios.post("http://localhost:8101/user/signup", JSON.stringify(formData));
-
-      // Check if the response is successful
-      if (response.status === 200) {
-        // Handle successful signup
-        alert("User id is: " + response.data);
-      } else {
-        // Handle errors returned by the server
-        alert("Signup failed. Please try again.");
+    axios.post("http://localhost:8101/user/signup", JSON.stringify(formData), {
+      headers: {
+        'Content-Type': 'application/json'
       }
-    } catch (error) {
-      // Handle network or other errors
-      alert("Signup error:", error.message);
-      // Example: Display an error message to the user
-      // setError("Signup failed. Please try again later.");
-    }
+    })
+      .then(function (response) {
+        // handle success
+        auth.signup(response.data);
+        navigate("/dashboard")
+      })
+      .catch(function (error) {
+        // handle error
+        alert("Signup failed. User already exists");
+      });
   };
 
   return (
@@ -178,8 +171,8 @@ export default function Signup() {
                 <input
                   required
                   type="email"
-                  id="Email"
-                  name="email"
+                  id="emailId"
+                  name="emailId"
                   className="mt-1 w-full rounded-md border-gray-200 bg-white text-sm text-gray-700 shadow-sm font-normal"
                   onChange={handleChange}
                 />

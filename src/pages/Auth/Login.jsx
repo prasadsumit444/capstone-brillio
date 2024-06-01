@@ -1,8 +1,15 @@
 import React, { useState } from "react";
 import { ResetPasswordModal } from "../../Components/ResetPasswordModal";
 import '../../App.css';
+import axios from "axios";
+import { useAuth } from './AuthGuard'
+import { useNavigate } from "react-router-dom";
 
 export default function Login() {
+
+  const { login } = useAuth()
+  const navigate = useNavigate();
+
   const [showResetPasswordModal, setShowResetPasswordModal] = useState(false);
   const [mobileNumber, setMobileNumber] = useState("");
   const [password, setPassword] = useState("");
@@ -22,9 +29,23 @@ export default function Login() {
 
   const handleLogin = (e) => {
     e.preventDefault();
-    // Perform login authentication here
-    console.log(mobileNumber);
-    console.log(password);
+
+    axios.get("http://localhost:8101/user/login", {
+      params: {
+        mobileNumber: mobileNumber,
+        password: password
+      }
+    })
+      .then(function (response) {
+        // handle success
+        login(response.data);
+        navigate("/dashboard")
+
+      })
+      .catch(function (error) {
+        // handle error
+        alert("Login failed." + error);
+      });
 
   };
 

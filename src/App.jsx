@@ -23,9 +23,9 @@ function App() {
   return (
     <div>
       <AuthGuard>
-      <NotificationProvider>
-          <Navbar />
-          <BrowserRouter>
+        <BrowserRouter>
+          <NotificationProvider>
+            <Navbar />
             <Routes>
               <Route path="/" element={<HomePage />} />
               <Route path="/login" element={<Login />} />
@@ -38,9 +38,9 @@ function App() {
               <Route path="/support" element={<SupportPage />} />
               <Route path="/*" element={<AuthenticatedRoutes />} />
             </Routes>
-          </BrowserRouter>
-          <ChatBot />
-      </NotificationProvider>
+            <ChatBot />
+          </NotificationProvider>
+        </BrowserRouter>
       </AuthGuard>
     </div>
   );
