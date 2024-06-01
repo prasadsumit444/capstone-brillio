@@ -3,7 +3,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { format } from "date-fns";
 import { toZonedTime } from "date-fns-tz";
- 
+
 const Invoices = () => {
   const [invoices, setInvoices] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
@@ -12,7 +12,7 @@ const Invoices = () => {
   const pagesPerSet = 5; // Number of pages per set
   const navigate = useNavigate();
   const userId = 1; // Replace with dynamic user ID if needed
- 
+
   const fetchData = async () => {
     try {
       const result = await axios.get(`http://localhost:8102/transaction/invoice/userid/${userId}`);
@@ -23,32 +23,32 @@ const Invoices = () => {
       console.error(error);
     }
   };
- 
+
   useEffect(() => {
     fetchData();
   }, []);
- 
+
   const convertToIST = (timestamp) => {
     if (!timestamp) return "";
- 
+
     const utcDate = new Date(timestamp);
     const istDate = toZonedTime(utcDate, "Asia/Kolkata");
- 
+
     const formattedDate = format(istDate, "yyyy-MM-dd");
     return formattedDate;
   };
- 
+
   // Get current invoices
   const indexOfLastInvoice = currentPage * invoicesPerPage;
   const indexOfFirstInvoice = indexOfLastInvoice - invoicesPerPage;
   const currentInvoices = invoices.slice(indexOfFirstInvoice, indexOfLastInvoice);
- 
+
   // Change page
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
- 
+
   // Calculate total number of pages
   const totalPages = Math.ceil(invoices.length / invoicesPerPage);
- 
+
   // Change visible start page and current page
   const nextPage = () => {
     if (currentPage < totalPages) {
@@ -59,7 +59,7 @@ const Invoices = () => {
       }
     }
   };
- 
+
   const prevPage = () => {
     if (currentPage > 1) {
       const newPage = currentPage - 1;
@@ -69,12 +69,12 @@ const Invoices = () => {
       }
     }
   };
- 
+
   // Display pagination buttons
   const renderPageNumbers = () => {
     const pageNumbers = [];
     const endPage = Math.min(visibleStartPage + pagesPerSet - 1, totalPages);
- 
+
     if (currentPage > 1) {
       pageNumbers.push(
         <button
@@ -86,7 +86,7 @@ const Invoices = () => {
         </button>
       );
     }
- 
+
     for (let i = visibleStartPage; i <= endPage; i++) {
       pageNumbers.push(
         <button
@@ -98,7 +98,7 @@ const Invoices = () => {
         </button>
       );
     }
- 
+
     if (currentPage < totalPages) {
       pageNumbers.push(
         <button
@@ -110,20 +110,20 @@ const Invoices = () => {
         </button>
       );
     }
- 
+
     return pageNumbers;
   };
- 
+
   return (
-    <div className="flex min-h-screen bg-white">
-      <div className="flex flex-col flex-grow p-4">
-        <main className="bg-white rounded-lg p-6 mt-6 w-full">
+    <div className="flex min-h-screen bg-white justify-center items-center">
+      <div className="flex flex-col flex-grow p-4 max-w-4xl">
+        <main className="bg-white rounded-lg p-6 mt-1 w-full">
           <h1 className="text-2xl font-bold mb-4">Invoices</h1>
           <div className="space-y-4">
             {currentInvoices.map((invoice) => (
               <div
                 key={invoice.id}
-                className="bg-gray-100 p-4 rounded-md cursor-pointer hover:bg-gray-200"
+                className="bg-gray-100 p-4 rounded-md cursor-pointer transform transition-transform hover:scale-105 hover:shadow-lg hover:shadow-blue-100"
                 onClick={() => navigate(`/invoice/${invoice.invoiceId}`)}
               >
                 <div className="flex justify-between items-center">
@@ -153,7 +153,5 @@ const Invoices = () => {
     </div>
   );
 };
-console.log("Hello world");
- 
+
 export default Invoices;
- 

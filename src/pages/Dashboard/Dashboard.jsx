@@ -125,11 +125,16 @@ export default function Dashboard() {
   };
 
   return (
-    <div className="flex min-h-screen bg-gray-300">
+    <div
+      className="flex min-h-screen "
+      style={{
+        background: "linear-gradient(to bottom, #ffffff, #e0e0e0, #1a1a1a)",
+      }}
+    >
       {/* Left Section with Image */}
-      <div className="hidden md:flex md:w-1/4 rounded-md ">
+      <div className="hidden md:flex md:w-2/4 rounded-md ">
         <img
-          src={require("../../Media/dashboard.jpg")} // Replace with your image URL
+          src={require("../../Media/pexels-george-milton-6954039.jpg")} // Replace with your image URL
           alt="Profile Background"
           className="object-cover h-full w-full"
         />

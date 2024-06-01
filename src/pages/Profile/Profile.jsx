@@ -80,7 +80,7 @@ export default function Profile() {
   };
 
   return (
-    <div className="flex min-h-screen bg-white">
+    <div className="flex min-h-screen bg-gray-100">
       {/* Left Section with Image */}
       <div className="hidden md:flex md:w-1/2 lg:w-2/5 bg-gray-800">
         <img
