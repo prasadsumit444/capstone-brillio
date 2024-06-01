@@ -1,11 +1,18 @@
+import axios from "axios";
 import React, { useState } from "react";
+import { useAuth } from './AuthGuard'
+import { useNavigate } from "react-router-dom";
+
 
 export default function Signup() {
+
+  const auth = useAuth();
+  const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
     fullName: "",
     mobileNumber: "",
-    email: "",
+    emailId: "",
     password: "",
     securityQuestion: "",
     securityAnswer: "",
@@ -33,12 +40,23 @@ export default function Signup() {
     });
   };
 
-  const handleSignup = (e) => {
+  const handleSignup = async (e) => {
     e.preventDefault();
-    // Perform form validations here
-    // If validations pass, proceed with form submission
-    // Example: Send form data to backend API
-    console.log(formData);
+
+    axios.post("http://localhost:8101/user/signup", JSON.stringify(formData), {
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    })
+      .then(function (response) {
+        // handle success
+        auth.signup(response.data);
+        navigate("/dashboard")
+      })
+      .catch(function (error) {
+        // handle error
+        alert("Signup failed. User already exists");
+      });
   };
 
   return (
@@ -153,8 +171,8 @@ export default function Signup() {
                 <input
                   required
                   type="email"
-                  id="Email"
-                  name="email"
+                  id="emailId"
+                  name="emailId"
                   className="mt-1 w-full rounded-md border-gray-200 bg-white text-sm text-gray-700 shadow-sm font-normal"
                   onChange={handleChange}
                 />
@@ -254,6 +272,7 @@ export default function Signup() {
               <div className="col-span-6 sm:flex sm:items-center sm:gap-2">
                 <button
                   type="submit"
+                  onClick={handleSignup}
                   className="inline-block shrink-0 rounded-md border border-blue-600 bg-blue-600 px-12 py-3 text-sm font-medium text-white transition hover:bg-transparent hover:text-blue-600 focus:outline-none focus:ring active:text-blue-500"
                 >
                   Create an account

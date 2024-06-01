@@ -38,7 +38,17 @@ const TransactionDetails = () => {
     const utcDate = new Date(timestamp);
     const istDate = toZonedTime(utcDate, "Asia/Kolkata");
 
-    const formattedDate = format(istDate, "yyyy-MM-dd HH:mm:ss");
+    const formattedDate = format(istDate, "yyyy-MM-dd");
+    return formattedDate;
+  };
+
+  const convertToISTwithtime = (timestamp) => {
+    if (!timestamp) return "";
+
+    const utcDate = new Date(timestamp);
+    const istDate = toZonedTime(utcDate, "Asia/Kolkata");
+
+    const formattedDate = format(istDate, "yyyy-MM-dd HH:MM:SS");
     return formattedDate;
   };
 
@@ -129,7 +139,7 @@ const TransactionDetails = () => {
   return (
     <div className="flex min-h-screen bg-white justify-center items-center">
       <div className="flex flex-col flex-grow p-4 max-w-4xl w-full">
-        <main className="bg-white rounded-lg p-6 mt-6 w-full h-full">
+        <main className="bg-white rounded-lg p-6 mt-1 w-full h-full"> {/* Reduced top margin */}
           <h1 className="text-2xl font-bold mb-4">Transaction Details</h1>
           <div className="space-y-4">
             {currentTransactions.map((tx) => {
@@ -138,12 +148,14 @@ const TransactionDetails = () => {
               return (
                 <div
                   key={tx.transactionId}
-                  className="bg-gray-100 p-4 rounded-md cursor-pointer transform transition-transform hover:scale-105 hover:shadow-lg hover:shadow-blue-500"
+                  className="bg-gray-100 p-4 rounded-md cursor-pointer transform transition-transform hover:scale-105 hover:shadow-lg hover:shadow-blue-100"
                   onClick={() => setSelectedTransaction(tx)}
                 >
                   <div className="flex justify-between items-center">
                     <span>
-                      <div>Paid Rs.{tx.planPrice} on {timestamp}</div>
+                      <div> <h3 className="text-lg font-bold">Date: {convertToIST(timestamp)}</h3>
+                        <p>Paid Rs.{tx.planPrice}</p>
+                        </div>
                     </span>
                     <button className="bg-blue-600 hover:bg-blue-500 text-white p-2 rounded-md">
                       View Details
@@ -169,7 +181,7 @@ const TransactionDetails = () => {
                 <ul>
                   <li>Status: {selectedTransaction.transactionStatus}</li>
                   <li>Purchase Mode: {selectedTransaction.paymentMode}</li>
-                  <li>Plan Start Date: {convertToIST(selectedTransaction.timeStamp)}</li>
+                  <li>Transaction Date: {convertToISTwithtime(selectedTransaction.timeStamp)}</li>
                 </ul>
                 <button
                   className="mt-4 bg-blue-600 hover:bg-blue-700 text-white p-2 rounded-md"
