@@ -16,7 +16,7 @@ export default function Profile() {
   useEffect(() => {
     // Fetch profile data from backend
     axios
-      .get("http://localhost:8104/profile/1/userProfile")
+      .get("http://localhost:8104/account/profile/1/userProfile")
       .then((response) => {
         setFormData(response.data);
       })
@@ -65,7 +65,7 @@ export default function Profile() {
       // Save the edited data to backend
       axios
         .patch(
-          `http://localhost:8104/profile/1/updateProfile?address=${encodeURIComponent(
+          `http://localhost:8104/account/profile/1/updateProfile?address=${encodeURIComponent(
             formData.address
           )}&altMobileNumber=${encodeURIComponent(formData.altMobileNumber)}`
         )
@@ -80,20 +80,23 @@ export default function Profile() {
   };
 
   return (
-    <div className="flex min-h-screen bg-white">
+    <div className="flex min-h-screen bg-black">
       {/* Left Section with Image */}
       <div className="hidden md:flex md:w-1/2 lg:w-2/5 bg-gray-800">
         <img
-          src="https://via.placeholder.com/800x800" // Replace with your image URL
+          src={require("../../Media/profile.jpg")} // Replace with your image URL
           alt="Profile Background"
           className="object-cover h-full w-full"
         />
+        <div className="absolute  left-0 p-4 text-white w-full text-left  rounded-b-lg">
+          <h3 className="text-2xl font-bold mb-2">PROFILE</h3>
+        </div>
       </div>
 
       {/* Right Section with Profile Content */}
       <div className="flex flex-col w-full md:w-1/2 lg:w-3/5 overflow-auto justify-center items-center ">
-        <div className="w-full max-w-lg mx-6 p-5 bg-blue-100 shadow-2xl rounded-2xl shadow-blue-200">
-          <div className=" bg-blue-100 rounded-lg">
+        <div className="w-full max-w-lg mx-6 p-5 bg-gray-200 shadow-lg  rounded-2xl shadow-gray-100">
+          <div className=" bg-gray-200 rounded-lg">
             <div className="px-4 sm:px-0">
               <h3 className="text-2xl font-bold leading-7 text-blue-900">
                 ASAAP APPLICATION

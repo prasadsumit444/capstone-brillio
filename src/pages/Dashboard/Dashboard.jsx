@@ -23,7 +23,7 @@ export default function Dashboard() {
 
   useEffect(() => {
     axios
-      .get("http://localhost:8104/dashboard/1/dashboardInfo") // Replace with your API endpoint
+      .get("http://localhost:8104/account/dashboard/1/dashboardInfo") // Replace with your API endpoint
       .then((response) => {
         const {
           fullName,
@@ -125,11 +125,11 @@ export default function Dashboard() {
   };
 
   return (
-    <div className="flex min-h-screen bg-gray-300">
+    <div className="flex min-h-screen  bg-slate-950">
       {/* Left Section with Image */}
-      <div className="hidden md:flex md:w-1/4 rounded-md ">
+      <div className="hidden md:flex md:w-2/4 rounded-md ">
         <img
-          src={require("../../Media/dashboard.jpg")} // Replace with your image URL
+          src={require("../../Media/pexels-cottonbro-3205612.jpg")} // Replace with your image URL
           alt="Profile Background"
           className="object-cover h-full w-full"
         />
