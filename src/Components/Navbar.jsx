@@ -1,10 +1,11 @@
 import React, { useState, useEffect, useRef } from "react";
-import { CgProfile } from "react-icons/cg";
+import { useAuth } from "../pages/Auth/AuthGuard";
 
 export default function Navbar() {
   const [accountDropdownOpen, setAccountDropdownOpen] = useState(false);
-  const [isUserLoggedIn, setIsUserLoggedIn] = useState(true);
+  const [isUserLoggedIn, setIsUserLoggedIn] = useState(false);
   const dropdownRef = useRef(null);
+  const auth = useAuth()
 
   const toggleAccountDropdown = () => {
     setAccountDropdownOpen(!accountDropdownOpen);
@@ -23,6 +24,9 @@ export default function Navbar() {
       document.removeEventListener("mousedown", handleClickOutside);
     }
 
+    if (auth.userId != null) {
+      setIsUserLoggedIn(true)
+    }
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
@@ -57,8 +61,8 @@ export default function Navbar() {
                     class="text-gray-500 transition hover:text-blue-600"
                     href="/prepaid"
                   >
-                    {" "}
-                    Prepaid{" "}
+
+                    Prepaid
                   </a>
                 </li>
 
@@ -67,8 +71,8 @@ export default function Navbar() {
                     class="text-gray-500 transition hover:text-blue-600"
                     href="/postpaid"
                   >
-                    {" "}
-                    Postpaid{" "}
+
+                    Postpaid
                   </a>
                 </li>
 
@@ -77,8 +81,8 @@ export default function Navbar() {
                     class="text-gray-500 transition hover:text-blue-600"
                     href="/recharge"
                   >
-                    {" "}
-                    Recharge{" "}
+
+                    Recharge
                   </a>
                 </li>
 
@@ -87,8 +91,8 @@ export default function Navbar() {
                     class="text-gray-500 transition hover:text-blue-600"
                     href="/support"
                   >
-                    {" "}
-                    Support{" "}
+
+                    Support
                   </a>
                 </li>
               </ul>
@@ -115,7 +119,7 @@ export default function Navbar() {
                 <div>
                   <a
                     className="rounded-md bg-blue-600 px-5 py-2.5 text-sm font-medium text-white"
-                    href="#"
+                      href="/login"
                   >
                     Login
                   </a>
@@ -147,7 +151,7 @@ export default function Navbar() {
                   </li>
                   <li>
                     <a
-                      href="/"
+                      href="/transaction"
                       className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                     >
                       Transactions
@@ -155,7 +159,7 @@ export default function Navbar() {
                   </li>
                   <li>
                     <a
-                      href="#"
+                      href="/settings"
                       className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                     >
                       Settings

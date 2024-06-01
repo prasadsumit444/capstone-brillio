@@ -1,5 +1,5 @@
 import React from "react";
-import { Route, Routes } from "react-router-dom";
+import { Navigate, Route, Routes, useLocation } from "react-router-dom";
 import Dashboard from "./pages/Dashboard/Dashboard";
 import Profile from "./pages/Profile/Profile";
 import TicketGeneration from "./pages/Support/TicketGeneration";
@@ -9,8 +9,19 @@ import Invoice from "./pages/BillingStatement/Invoice";
 import TransactionDetails from "./pages/BillingStatement/TransactionDetails";
 import DataUsage from "./pages/DataUsage/DataUsage.jsx";
 import Setting from "./pages/Settings/Setting.jsx";
+import InvoiceDetails from "./pages/BillingStatement/InvoiceDetails";
+import Invoices from "./pages/BillingStatement/Invoice";
+import { useAuth } from './pages/Auth/AuthGuard.jsx'
+
 
 export default function AuthenticatedRoutes() {
+
+  const location = useLocation();
+  const auth = useAuth()
+  if (!auth.userId) {
+    return <Navigate to='/login' state={{ path: location.pathname }}></Navigate>
+  }
+
   return (
     <Routes>
       <Route path="/dashboard" element={<Dashboard />} />
@@ -19,9 +30,11 @@ export default function AuthenticatedRoutes() {
       <Route path="/tickets" element={<TicketStatus />} />
       <Route path="/tickets/:ticketId" element={<TicketDetails />} />
       <Route path="/invoice" element={<Invoice></Invoice>}></Route>
-      <Route path="/transactiondetails" element={<TransactionDetails></TransactionDetails>} />
+      <Route path="/transaction" element={<TransactionDetails></TransactionDetails>} />
       <Route path="/datausage" element={<DataUsage/>}></Route>
       <Route path="/settings" element={<Setting/>} />
+      <Route path="/invoice" element={<Invoices></Invoices>}></Route>
+      <Route path="/invoice/:invoiceId" element={<InvoiceDetails></InvoiceDetails>} />
     </Routes>
   );
 }

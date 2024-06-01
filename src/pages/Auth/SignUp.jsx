@@ -1,3 +1,4 @@
+import axios from "axios";
 import React, { useState } from "react";
 
 export default function Signup() {
@@ -33,12 +34,36 @@ export default function Signup() {
     });
   };
 
-  const handleSignup = (e) => {
+  const handleSignup = async (e) => {
     e.preventDefault();
-    // Perform form validations here
-    // If validations pass, proceed with form submission
-    // Example: Send form data to backend API
-    console.log(formData);
+    // setError(null);
+    // setSuccess(false);
+
+    try {
+      // Perform form validations here
+
+      // Example: Check if password is at least 6 characters
+      // if (formData.password.length < 6) {
+      //   throw new Error("Password must be at least 6 characters long");
+      // }
+
+      // Example: Send form data to backend API for authentication
+      const response = await axios.post("http://localhost:8101/user/signup", JSON.stringify(formData));
+
+      // Check if the response is successful
+      if (response.status === 200) {
+        // Handle successful signup
+        alert("User id is: " + response.data);
+      } else {
+        // Handle errors returned by the server
+        alert("Signup failed. Please try again.");
+      }
+    } catch (error) {
+      // Handle network or other errors
+      alert("Signup error:", error.message);
+      // Example: Display an error message to the user
+      // setError("Signup failed. Please try again later.");
+    }
   };
 
   return (
@@ -254,6 +279,7 @@ export default function Signup() {
               <div className="col-span-6 sm:flex sm:items-center sm:gap-2">
                 <button
                   type="submit"
+                  onClick={handleSignup}
                   className="inline-block shrink-0 rounded-md border border-blue-600 bg-blue-600 px-12 py-3 text-sm font-medium text-white transition hover:bg-transparent hover:text-blue-600 focus:outline-none focus:ring active:text-blue-500"
                 >
                   Create an account
