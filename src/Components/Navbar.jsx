@@ -1,10 +1,12 @@
 import React, { useState, useEffect, useRef } from "react";
-import { CgProfile } from "react-icons/cg";
+import { useAuth } from "../pages/Auth/AuthGuard";
+import { Link } from "react-router-dom";
 
 export default function Navbar() {
   const [accountDropdownOpen, setAccountDropdownOpen] = useState(false);
-  const [isUserLoggedIn, setIsUserLoggedIn] = useState(true);
+  const [isUserLoggedIn, setIsUserLoggedIn] = useState(false);
   const dropdownRef = useRef(null);
+  const { userId } = useAuth()
 
   const toggleAccountDropdown = () => {
     setAccountDropdownOpen(!accountDropdownOpen);
@@ -23,17 +25,20 @@ export default function Navbar() {
       document.removeEventListener("mousedown", handleClickOutside);
     }
 
+    if (userId != null) {
+      setIsUserLoggedIn(true)
+    }
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
-  }, [accountDropdownOpen]);
+  }, [accountDropdownOpen, userId]);
 
   return (
     <header class="bg-white">
       <div class="mx-auto max-w-screen-xl px-4 sm:px-6 lg:px-8">
         <div class="flex h-16 items-center justify-between">
           <div class="md:flex md:items-center md:gap-12">
-            <a class="block text-teal-600" href="/homepage">
+            <Link className="block text-teal-600" to="/">
               <span class="sr-only">Home</span>
               <svg
                 class="h-8"
@@ -46,50 +51,46 @@ export default function Navbar() {
                   fill="currentColor"
                 />
               </svg>
-            </a>
+            </Link>
           </div>
 
           <div class="hidden md:block">
             <nav aria-label="Global">
               <ul class="flex items-center gap-6 text-sm font-medium">
                 <li>
-                  <a
-                    class="text-gray-500 transition hover:text-blue-600"
-                    href="/prepaid"
+                  <Link
+                    className="text-gray-500 transition hover:text-blue-600"
+                    to="/prepaid"
                   >
-                    {" "}
-                    Prepaid{" "}
-                  </a>
+                    Prepaid
+                  </Link>
                 </li>
 
                 <li>
-                  <a
-                    class="text-gray-500 transition hover:text-blue-600"
-                    href="/postpaid"
+                  <Link
+                    className="text-gray-500 transition hover:text-blue-600"
+                    to="/postpaid"
                   >
-                    {" "}
-                    Postpaid{" "}
-                  </a>
+                    Postpaid
+                  </Link>
                 </li>
 
                 <li>
-                  <a
-                    class="text-gray-500 transition hover:text-blue-600"
-                    href="/recharge"
+                  <Link
+                    className="text-gray-500 transition hover:text-blue-600"
+                    to="/recharge"
                   >
-                    {" "}
-                    Recharge{" "}
-                  </a>
+                    Recharge
+                  </Link>
                 </li>
 
                 <li>
-                  <a
-                    class="text-gray-500 transition hover:text-blue-600"
-                    href="/support"
+                  <Link
+                    className="text-gray-500 transition hover:text-blue-600"
+                    to="/support"
                   >
-                    {" "}
-                    Support{" "}
-                  </a>
+                    Support
+                  </Link>
                 </li>
               </ul>
             </nav>
@@ -103,7 +104,6 @@ export default function Navbar() {
                     className="rounded-full px-5 py-2.5 text-sm object-cover focus:outline-none"
                     onClick={toggleAccountDropdown}
                   >
-                    {/* <CgProfile size="2em" className="text-blue-600"/> */}
                     <img
                       src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png"
                       alt="Profile"
@@ -113,12 +113,12 @@ export default function Navbar() {
                 </div>
               ) : (
                 <div>
-                  <a
+                    <Link
                     className="rounded-md bg-blue-600 px-5 py-2.5 text-sm font-medium text-white"
-                    href="#"
+                      to="/login"
                   >
                     Login
-                  </a>
+                    </Link>
                 </div>
               )}
             </div>
@@ -128,46 +128,46 @@ export default function Navbar() {
                 ref={dropdownRef}
                 className="absolute z-10 top-12 right-28 mt-2 list-none bg-white shadow divide-y divide-gray-700 rounded-lg"
               >
-                {/* <div className="px-4 py-3">
-                  <span className="block text-sm text-gray-900 dark:text-white">
-                    Bonnie Green
-                  </span>
-                  <span className="block text-sm text-gray-500 truncate dark:text-gray-400">
-                    name@flowbite.com
-                  </span>
-                </div> */}
                 <ul aria-labelledby="user-menu-button">
                   <li>
-                    <a
-                      href="/profile"
+                    <Link
+                      to="/profile"
                       className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                     >
                       Profile
-                    </a>
+                    </Link>
                   </li>
                   <li>
-                    <a
-                      href="/"
+                    <Link
+                      to="/dashboard"
+                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                    >
+                      Dashboard
+                    </Link>
+                  </li>
+                  <li>
+                    <Link
+                      to="/transaction"
                       className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                     >
                       Transactions
-                    </a>
+                    </Link>
                   </li>
                   <li>
-                    <a
-                      href="#"
+                    <Link
+                      to="/settings"
                       className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                     >
                       Settings
-                    </a>
+                    </Link>
                   </li>
                   <li>
-                    <a
-                      href="/"
+                    <Link
+                      to="/"
                       className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                     >
                       Log Out
-                    </a>
+                    </Link>
                   </li>
                 </ul>
               </div>
