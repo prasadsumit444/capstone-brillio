@@ -1,12 +1,13 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useAuth } from "../Auth/AuthGuard.jsx";
 import axios from "axios";
 import { FaEdit, FaSave } from 'react-icons/fa';
 import { ConfirmationModal } from "../../Components/ConfirmationModal.jsx";
+import { ThemeContext } from "../../Components/ThemeContext.jsx";
 
 const Setting = () => {
   const [promotionalEmailNotification, setPromotionalEmailNotification] = useState("ON");
-  const [theme, setTheme] = useState("Light");
+
   const [userStatus, setUserStatus] = useState("ACTIVE");
   const [isEditing, setIsEditing] = useState(false);
   const [showSuspendServiceModal, setShowSuspendServiceModal] = useState(false);
@@ -17,6 +18,7 @@ const Setting = () => {
   const [isPasswordVerified, setIsPasswordVerified] = useState(false);
 
   const { userId, logout } = useAuth();
+  const { theme, setTheme } = useContext(ThemeContext);
 
   const suspendServiceMessage = "Are you sure you want to suspend your service?";
   const resumeServiceMessage = "Do you  want to resume your service?";
@@ -127,9 +129,9 @@ const Setting = () => {
   };
 
   return (
-    <div className="flex justify-center items-center min-h-screen bg-gray-100">
+    <div className="flex justify-center items-center min-h-screen bg-gray-100 ">
       <div className="w-4/5 lg:w-3/5 bg-white p-8 shadow-lg rounded-lg mt-4 relative">
-        <h2 className="text-3xl font-bold mb-6 text-blue-500">Account Settings</h2>
+        <h2 className="text-3xl font-bold mb-6 text-blue-500 dark:text-red-500">Account Settings</h2>
         <button
           onClick={toggleEditMode}
           className="absolute top-4 right-4 px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 flex items-center"

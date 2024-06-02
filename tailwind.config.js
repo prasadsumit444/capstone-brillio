@@ -4,8 +4,10 @@ module.exports = {
     "./src/**/*.{js,jsx,ts,tsx}",
   ],
   theme: {
-    extend: {},
+    extend: {
+    },
   },
+  darkMode: "class",
   plugins: [
     require('@tailwindcss/forms')
   ],

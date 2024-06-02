@@ -15,6 +15,7 @@ import HomePage from "./pages/HomePage/Homepage";
 
 import { NotificationProvider } from "./pages/NotificationContext";
 import { AuthGuard } from "./pages/Auth/AuthGuard";
+import ThemeProvider from "./Components/ThemeContext";
 
 
 function App() {
@@ -22,6 +23,7 @@ function App() {
     <div>
       <AuthGuard>
         <BrowserRouter>
+          <ThemeProvider>
           <NotificationProvider>
             <Navbar />
             <Routes>
@@ -37,6 +39,7 @@ function App() {
             </Routes>
             <ChatBot />
           </NotificationProvider>
+          </ThemeProvider>
         </BrowserRouter>
       </AuthGuard>
     </div>
