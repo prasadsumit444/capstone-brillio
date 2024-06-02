@@ -6,7 +6,7 @@ export default function Navbar() {
   const [accountDropdownOpen, setAccountDropdownOpen] = useState(false);
   const [isUserLoggedIn, setIsUserLoggedIn] = useState(false);
   const dropdownRef = useRef(null);
-  const { userId } = useAuth()
+  const { userId, logout } = useAuth()
 
   const toggleAccountDropdown = () => {
     setAccountDropdownOpen(!accountDropdownOpen);
@@ -16,6 +16,10 @@ export default function Navbar() {
     if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
       setAccountDropdownOpen(false);
     }
+  };
+
+  const handleLogout = () => {
+    logout();
   };
 
   useEffect(() => {
@@ -184,6 +188,7 @@ export default function Navbar() {
                   <li>
                     <Link
                       to="/"
+                      onClick={handleLogout}
                       className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                     >
                       Log Out
