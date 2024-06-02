@@ -5,7 +5,7 @@ const AuthContext = createContext(null)
 
 export const AuthGuard = ({ children }) => {
 
-    const [userId, setUser] = useState(null)
+    const [userId, setUser] = useState(1)
 
     const signup = (userId) => {
         setUser(userId)
