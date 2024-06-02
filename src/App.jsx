@@ -9,9 +9,7 @@ import Postpaid from "./pages/Recharge/Postpaid";
 import Faq from "./pages/Support/Faq";
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import AuthenticatedRoutes from "./AuthenticatedRoutes";
-import PaymentPage from "./pages/Payment/PaymentPage";
 import ChatBot from "./pages/Support/ChatBot";
-import TransactionDetails from "./pages/BillingStatement/TransactionDetails";
 import SupportPage from "./pages/Support/SupportPage";
 import HomePage from "./pages/HomePage/Homepage";
 
@@ -34,7 +32,6 @@ function App() {
               <Route path="/prepaid" element={<Prepaid />} />
               <Route path="/postpaid" element={<Postpaid />} />
               <Route path="/faq" element={<Faq />} />
-              <Route path="/payment-page" element={<PaymentPage />} />
               <Route path="/support" element={<SupportPage />} />
               <Route path="/*" element={<AuthenticatedRoutes />} />
             </Routes>

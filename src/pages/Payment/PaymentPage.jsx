@@ -7,6 +7,7 @@ import { setMonth, setYear, getMonth, getYear } from "date-fns";
 import { FaCreditCard, FaMobileAlt } from "react-icons/fa";
 import { AiOutlineCheckCircle, AiOutlineLoading } from "react-icons/ai";
 import axios from "axios"; // Import Axios
+import { useAuth } from "../Auth/AuthGuard";
 
 const formatCardNumber = (value) => {
   return value
@@ -14,6 +15,7 @@ const formatCardNumber = (value) => {
     .replace(/(.{4})/g, "$1 ")
     .trim();
 };
+
 
 const CardDetailsForm = ({ onSubmit }) => {
   const [cardNumber, setCardNumber] = useState("");
@@ -265,9 +267,9 @@ const PaymentPage = () => {
       sendPaymentData("UPI");
     }, 2000); // Simulate 2-second delay for UPI processing
   };
-
+  const {userId} = useAuth();
   const sendPaymentData = (paymentMode) => {
-    axios.post('http://localhost:8102/transaction/userid/1/paymentdetails', {
+    axios.post(`http://localhost:8102/transaction/userid/${userId}/paymentdetails`, {
       planId: 1,
       paymentMode,
       transactionStatus: "Success"
@@ -284,7 +286,7 @@ const PaymentPage = () => {
     setPaymentSuccess(false);
     setShowProcessing(false);
     setTimeRemaining(300);
-    navigate('/transactiondetails'); // Navigate to /transactiondetails on close
+    navigate('/dashboard');
 };
 
 
@@ -295,7 +297,6 @@ const PaymentPage = () => {
       .toString()
       .padStart(2, "0")}`;
   };
-
   return (
     <div className="container mx-auto p-6 flex flex-col md:flex-row space-y-8 md:space-y-0 md:space-x-8">
       <div className="md:w-2/3 space-y-4">
