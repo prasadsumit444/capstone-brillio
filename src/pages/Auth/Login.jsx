@@ -119,25 +119,6 @@ export default function Login() {
               </p>
             </div>
 
-            {/* <div className="flex justify-center">
-              <span className="inline-flex -space-x-px overflow-hidden rounded-full border bg-white shadow-sm">
-                <button
-                  className={`inline-block px-4 py-2 text-sm font-medium ${selectedOption === 'Mobile' ? 'text-white bg-blue-600' : 'text-gray-700 hover:bg-gray-50'
-                    }`}
-                  onClick={() => handleOptionClick('Mobile')}
-                >
-                  Mobile
-                </button>
-                <button
-                  className={`inline-block px-4 py-2 text-sm font-medium ${selectedOption === 'Email' ? 'text-white bg-blue-600' : 'text-gray-700 hover:bg-gray-50'
-                    }`}
-                  onClick={() => handleOptionClick('Email')}
-                >
-                  Email
-                </button>
-              </span>
-            </div> */}
-
             <div>
               <form onSubmit={handleLogin} className="mt-6 grid grid-cols-6 gap-4 max-w-2xl">
 

@@ -12,9 +12,14 @@ const Setting = () => {
   const [showSuspendServiceModal, setShowSuspendServiceModal] = useState(false);
   const [showDeleteAccountModal, setShowDeleteAccountModal] = useState(false);
 
-  const { userId } = useAuth();
+  const [oldPassword, setOldPassword] = useState("");
+  const [newPassword, setNewPassword] = useState("");
+  const [isPasswordVerified, setIsPasswordVerified] = useState(false);
+
+  const { userId, logout } = useAuth();
 
   const suspendServiceMessage = "Are you sure you want to suspend your service?";
+  const resumeServiceMessage = "Do you  want to resume your service?";
   const accountDeleteMessage = "Are you sure you want to delete your account?";
 
   useEffect(() => {
@@ -29,6 +34,22 @@ const Setting = () => {
       });
   }, [userId]);
 
+  useEffect(() => {
+    axios.patch(`http://localhost:8101/user/${userId}/suspendService`, null, {
+      params: {
+        userStatus: userStatus,
+      }
+    })
+      .then(response => {
+        setShowSuspendServiceModal(false);
+        console.log(response.data);
+      })
+      .catch(error => {
+        console.error("Error: ", error);
+      });
+  }, [userStatus])
+
+
   const handleShowSuspendServiceModal = (value) => {
     setShowSuspendServiceModal(value);
   };
@@ -36,7 +57,6 @@ const Setting = () => {
   const handleShowDeleteAccountModal = (value) => {
     setShowDeleteAccountModal(value);
   };
-
 
   const handleSettingUpdate = () => {
     axios.patch(`http://localhost:8101/user/${userId}/saveSetting`, null, {
@@ -61,11 +81,49 @@ const Setting = () => {
   };
 
   const handleSuspendService = () => {
-    alert("Your Jio service has been temporarily suspended.");
+    if (userStatus === "ACTIVE") {
+      setUserStatus("INACTIVE");
+    }
+    else {
+      setUserStatus("ACTIVE");
+    }
   };
 
   const handleDeleteAccount = () => {
     alert("Your Jio account has been permanently deleted.");
+  };
+
+  const handlePasswordVerify = () => {
+    axios.get(`http://localhost:8101/user/${userId}/checkPassword`, {
+      params: {
+        password: oldPassword
+      }
+    })
+      .then(response => {
+        alert(response.data)
+        setIsPasswordVerified(true);
+      })
+      .catch(error => {
+        alert("Password is incorrect");
+        console.error(error);
+      });
+  };
+
+  const handleChangePassword = () => {
+    axios.patch(`http://localhost:8101/user/${userId}/changePassword`, null, {
+      params: {
+        newPassword: newPassword
+      }
+    })
+      .then(response => {
+        alert("Password changed successfully.");
+        setIsPasswordVerified(false);
+        setOldPassword("");
+        setNewPassword("");
+      })
+      .catch(error => {
+        console.error("Error changing password:", error);
+      });
   };
 
   return (
@@ -180,28 +238,74 @@ const Setting = () => {
             Delete Account
           </button>
         </div>
-        {showSuspendServiceModal ? (
+
+        <div className="mt-8">
+          <h3 className="text-lg font-bold text-blue-500 mb-2">Change Password</h3>
+          <p className="text-sm text-gray-700 mb-4">
+            Update your account password for enhanced security. Please verify
+            your old password before setting a new one.
+          </p>
+          {!isPasswordVerified ? (
+            <div className="flex gap-4 items-end">
+              <div className="">
+                <label className="block text-xs font-medium text-blue-500" htmlFor="oldPassword">
+                  Old Password
+                </label>
+                <input
+                  id="oldPassword"
+                  type="password"
+                  value={oldPassword}
+                  onChange={(e) => setOldPassword(e.target.value)}
+                  className="mt-1 w-64 rounded-md border-gray-200 bg-white text-sm text-gray-700 shadow-sm font-normal"
+                />
+              </div>
+              <button
+                onClick={handlePasswordVerify}
+                className="px-4 py-2 h-10 bg-blue-500 text-white rounded-md hover:bg-blue-600"
+              >
+                Verify
+              </button>
+            </div>
+          ) : (
+            <div className="flex gap-4 items-end">
+              <div className="">
+                <label className="block text-xs font-medium text-blue-500" htmlFor="newPassword">
+                  New Password
+                </label>
+                <input
+                  id="newPassword"
+                  type="password"
+                  value={newPassword}
+                  onChange={(e) => setNewPassword(e.target.value)}
+                  className="mt-1 w-64 rounded-md border-gray-200 bg-white text-sm text-gray-700 shadow-sm font-normal"
+                />
+              </div>
+              <button
+                onClick={handleChangePassword}
+                className="px-4 py-2 h-10 bg-blue-500 text-white rounded-md hover:bg-blue-600"
+              >
+                Submit
+              </button>
+            </div>
+          )}
+        </div>
+
+        {showSuspendServiceModal && (
           <ConfirmationModal
             onClose={() => handleShowSuspendServiceModal(false)}
-            heading={"Suspend Service"}
-            message={suspendServiceMessage}
+            heading={userStatus === "ACTIVE" ? "Suspend Service" : "Resume Service"}
+            message={userStatus === "ACTIVE" ? suspendServiceMessage : resumeServiceMessage}
             action={handleSuspendService}
           />
-        ) : (
-          <></>
-        )
-        }
-        {showDeleteAccountModal ? (
+        )}
+        {showDeleteAccountModal && (
           <ConfirmationModal
             onClose={() => handleShowDeleteAccountModal(false)}
             heading={"Delete Account"}
             message={accountDeleteMessage}
             action={handleDeleteAccount}
           />
-        ) : (
-          <></>
-        )
-        }
+        )}
       </div>
     </div>
   );
