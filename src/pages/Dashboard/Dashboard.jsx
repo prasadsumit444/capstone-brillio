@@ -11,12 +11,11 @@ export default function Dashboard() {
   const [usageData, setUsageData] = useState({
     fullName: "User!",
     mobileNumber: "",
-    userStatus: "STATUS",
-    planType: "Kindly Recharge",
-    planDescription:
-      "Hi there, We're thrilled to have you on board. It looks like you haven't chosen a plan yet. To start enjoying all the benefits and features we offer, explore our various plans and pick the one that suits you best.",
+    userStatus: "",
+    planType: "",
+    planDescription: "",
     planPrice: 0,
-    expiryDate: "Loading...",
+    expiryDate: "",
     planData: 100,
     remainingData: 0,
     planSms: 100,
@@ -60,11 +59,17 @@ export default function Dashboard() {
       .catch((error) => {
         console.error("There was an error fetching the usage data!", error);
       });
-  }, []);
+  }, [userId]);
 
   // Calculate used data
-  const usedData = usageData.planData - usageData.remainingData;
-  const usedSms = usageData.planSms - usageData.remainingSms;
+  const usedData =
+    usageData.planData == null
+      ? 100
+      : usageData.planData - usageData.remainingData;
+  const usedSms =
+    usageData.planSms == null
+      ? 100
+      : usageData.planSms - usageData.remainingSms;
 
   const dataUsage = {
     datasets: [
@@ -155,16 +160,23 @@ export default function Dashboard() {
           </Link>
           <div className="bg-white rounded-lg shadow-md p-5 h-2/4">
             <h2 className="text-3xl font-semibold text-gray-900 mb-6">
-              {usageData.planType}
+              {usageData.planType == null
+                ? "Kindly Recharge"
+                : usageData.planType}
             </h2>
             <div className="text-2xl flex justify-between mb-4 text-gray-700">
               ₹ {usageData.planPrice}
             </div>
             <div className="text-xl flex justify-between mb-4 text-gray-700">
-              {usageData.planDescription}
+              {usageData.planDescription == null
+                ? "Hi there, We're thrilled to have you on board. It looks like you haven't chosen a plan yet. To start enjoying all the benefits and features we offer, explore our various plans and pick the one that suits you best."
+                : usageData.planDescription}
             </div>
             <div className="text-xl flex justify-between mb-3 text-gray-500">
-              Plan expires on: {usageData.expiryDate}
+              Plan expires on:{" "}
+              {usageData.expiryDate == null
+                ? "Loading..."
+                : usageData.expiryDate}
             </div>
           </div>
 
