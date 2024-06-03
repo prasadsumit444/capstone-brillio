@@ -6,7 +6,7 @@ export default function Navbar() {
   const [accountDropdownOpen, setAccountDropdownOpen] = useState(false);
   const [isUserLoggedIn, setIsUserLoggedIn] = useState(false);
   const dropdownRef = useRef(null);
-  const { userId } = useAuth()
+  const { userId, logout } = useAuth()
 
   const toggleAccountDropdown = () => {
     setAccountDropdownOpen(!accountDropdownOpen);
@@ -18,6 +18,10 @@ export default function Navbar() {
     }
   };
 
+  const handleLogout = () => {
+    logout();
+  };
+
   useEffect(() => {
     if (accountDropdownOpen) {
       document.addEventListener("mousedown", handleClickOutside);
@@ -26,7 +30,10 @@ export default function Navbar() {
     }
 
     if (userId != null) {
-      setIsUserLoggedIn(true)
+      setIsUserLoggedIn(true);
+    } else {
+      setIsUserLoggedIn(false);
+      setAccountDropdownOpen(false);
     }
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
@@ -34,11 +41,11 @@ export default function Navbar() {
   }, [accountDropdownOpen, userId]);
 
   return (
-    <header class="bg-white">
-      <div class="mx-auto max-w-screen-xl px-4 sm:px-6 lg:px-8">
-        <div class="flex h-16 items-center justify-between">
+    <header class="bg-white sticky top-0 z-10">
+      <div class="mx-auto max-w-screen-xl px-4 sm:px-6 lg:px-8 ">
+        <div class="flex h-16 items-center justify-between ">
           <div class="md:flex md:items-center md:gap-12">
-            <Link className="block text-teal-600" to="/">
+            <Link className="block text-blue-500" to="/">
               <span class="sr-only">Home</span>
               <svg
                 class="h-8"
@@ -132,7 +139,7 @@ export default function Navbar() {
                   <li>
                     <Link
                       to="/profile"
-                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                      className="block pl-4 pr-16 py-2 text-sm text-gray-700 hover:bg-gray-100"
                     >
                       Profile
                     </Link>
@@ -153,6 +160,26 @@ export default function Navbar() {
                       Transactions
                     </Link>
                   </li>
+
+                  <li>
+                    <Link
+                      to="/invoice"
+                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                    >
+                      Invoice
+                    </Link>
+                  </li>
+
+                  
+                  <li>
+                    <Link
+                      to="/payment-page"
+                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                    >
+                      Payment
+                    </Link>
+                  </li>
+
                   <li>
                     <Link
                       to="/settings"
@@ -164,6 +191,7 @@ export default function Navbar() {
                   <li>
                     <Link
                       to="/"
+                      onClick={handleLogout}
                       className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                     >
                       Log Out

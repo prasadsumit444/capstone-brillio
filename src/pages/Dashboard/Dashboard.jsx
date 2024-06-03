@@ -3,27 +3,31 @@ import axios from "axios";
 import { Doughnut } from "react-chartjs-2";
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
 import { Link } from "react-router-dom";
+import { useAuth } from "../Auth/AuthGuard";
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
 export default function Dashboard() {
   const [usageData, setUsageData] = useState({
-    fullName: "",
+    fullName: "User!",
     mobileNumber: "",
-    userStatus: "",
-    planType: "",
-    planDescription: "",
+    userStatus: "STATUS",
+    planType: "Kindly Recharge",
+    planDescription:
+      "Hi there, We're thrilled to have you on board. It looks like you haven't chosen a plan yet. To start enjoying all the benefits and features we offer, explore our various plans and pick the one that suits you best.",
     planPrice: 0,
-    expiryDate: "",
-    planData: 0,
+    expiryDate: "Loading...",
+    planData: 100,
     remainingData: 0,
-    planSms: 0,
+    planSms: 100,
     remainingSms: 0,
   });
 
+  const { userId } = useAuth();
+
   useEffect(() => {
     axios
-      .get("http://localhost:8104/dashboard/1/dashboardInfo") // Replace with your API endpoint
+      .get(`http://localhost:8104/account/dashboard/${userId}/dashboardInfo`) // Replace with your API endpoint
       .then((response) => {
         const {
           fullName,
@@ -91,7 +95,7 @@ export default function Dashboard() {
   const voiceUsage = {
     datasets: [
       {
-        data: [0, 100],
+        data: [100, 0],
         backgroundColor: ["#e0f2fe", "#1e3a8a"],
         hoverBackgroundColor: ["#e0f2fe", "#1d4ed8"],
         borderWidth: 1,
@@ -125,37 +129,32 @@ export default function Dashboard() {
   };
 
   return (
-    <div
-      className="flex min-h-screen "
-      style={{
-        background: "linear-gradient(to bottom, #ffffff, #e0e0e0, #1a1a1a)",
-      }}
-    >
+    <div className="flex flex-col md:flex-row min-h-screen bg-black ">
       {/* Left Section with Image */}
-      <div className="hidden md:flex md:w-2/4 rounded-md ">
+      <div className="hidden md:flex md:w-2/4 rounded-lg">
         <img
-          src={require("../../Media/pexels-george-milton-6954039.jpg")} // Replace with your image URL
+          src={require("../../Media/pexels-cottonbro-3205612.jpg")} // Replace with your image URL
           alt="Profile Background"
           className="object-cover h-full w-full"
         />
       </div>
 
-      <div className="flex flex-grow m-4 space-x-4">
+      <div className="flex flex-col md:flex-row flex-grow m-4 space-x-0 md:space-x-4 space-y-4 md:space-y-0">
         {/* Center Column: Plan Details and Data Usage */}
         <div className="flex-1 flex flex-col space-y-4">
-          <Link to="/profile" className="flex-grow">
+          <Link to="/profile" className="flex-grow h-1/4">
             <div className="bg-white rounded-lg shadow-lg p-5 transform transition-transform duration-300 hover:scale-105 hover:shadow-m hover:shadow-blue-200">
               <h1 className="text-3xl font-semibold text-gray-900 mb-6">
                 Hi {usageData.fullName},
               </h1>
-              <div className="text-2xl text-gray-700 flex space justify-between">
+              <div className="text-2xl text-gray-700 flex justify-between">
                 <p>{usageData.mobileNumber}</p>
                 <p>{usageData.userStatus}</p>
               </div>
             </div>
           </Link>
-          <div className="bg-white rounded-lg shadow-md p-5">
-            <h2 className="text-4xl font-semibold text-gray-900 mb-6">
+          <div className="bg-white rounded-lg shadow-md p-5 h-2/4">
+            <h2 className="text-3xl font-semibold text-gray-900 mb-6">
               {usageData.planType}
             </h2>
             <div className="text-2xl flex justify-between mb-4 text-gray-700">
@@ -169,7 +168,7 @@ export default function Dashboard() {
             </div>
           </div>
 
-          <div className="bg-white rounded-lg shadow-md p-5 flex-grow transform transition-transform duration-300 hover:scale-105 hover:shadow-m hover:shadow-blue-200">
+          <div className="bg-white rounded-lg shadow-md h-1/4 p-5 flex-grow transform transition-transform duration-300 hover:scale-105 hover:shadow-m hover:shadow-blue-200">
             <h2 className="text-lg font-semibold text-gray-900 mb-6">
               Quick Access
             </h2>
@@ -197,8 +196,8 @@ export default function Dashboard() {
         </div>
 
         {/* Right Column: Data, SMS, and Voice */}
-        <div className="w-1/4 flex flex-col space-y-4">
-          <Link to="/data-usage" className="flex-grow">
+        <div className="w-full md:w-1/4 flex flex-col space-y-4">
+          <Link to="/datausage?tab=data" className="flex-grow">
             <div className="bg-white rounded-lg shadow-md p-5 flex-grow transform transition-transform duration-300 hover:scale-105 relative hover:shadow-m hover:shadow-blue-200">
               <h2 className="text-lg font-semibold text-gray-900 pb-4">Data</h2>
               <div className="relative h-24">
@@ -209,7 +208,7 @@ export default function Dashboard() {
               </div>
             </div>
           </Link>
-          <Link to="/sms-usage" className="flex-grow">
+          <Link to="/datausage?tab=sms" className="flex-grow">
             <div className="bg-white rounded-lg shadow-md p-5 flex-grow transform transition-transform duration-300 hover:scale-105 relative hover:shadow-m hover:shadow-blue-200">
               <h2 className="text-lg font-semibold text-gray-900 pb-4">SMS</h2>
               <div className="relative h-24">
@@ -220,7 +219,7 @@ export default function Dashboard() {
               </div>
             </div>
           </Link>
-          <Link to="/voice-usage" className="flex-grow">
+          <Link to="/datausage?tab=voice" className="flex-grow">
             <div className="bg-white rounded-lg shadow-md p-5 flex-grow transform transition-transform duration-300 hover:scale-105 relative hover:shadow-m hover:shadow-blue-200">
               <h2 className="text-lg font-semibold text-gray-900 pb-4">
                 Voice

@@ -1,12 +1,15 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import { useAuth } from "../Auth/AuthGuard";
 
 const PrepaidPlans = () => {
+  //const {userId} = useAuth();
   const [plans, setPlans] = useState([]);
   const [filteredPlans, setFilteredPlans] = useState([]);
   const [activeFilter, setActiveFilter] = useState("All");
   const [currentPlan, setCurrentPlan] = useState(null);
   const [clickedPlanId, setClickedPlanId] = useState(null);
+  const [searchQuery, setSearchQuery] = useState("");
 
   useEffect(() => {
     const fetchPlans = async () => {
@@ -22,7 +25,7 @@ const PrepaidPlans = () => {
 
     const fetchCurrentPlan = async () => {
       try {
-        const userId = 1; // Replace with dynamic user ID if needed
+        const userId = 2; // Replace with dynamic user ID if needed
         const planResponse = await axios.get(`http://localhost:8100/user/${userId}/currentPlan`);
         setCurrentPlan(planResponse.data);
       } catch (error) {
@@ -36,6 +39,7 @@ const PrepaidPlans = () => {
 
   const filterPlans = (category) => {
     setActiveFilter(category);
+    setSearchQuery("");
     if (category === "All") {
       setFilteredPlans(plans);
     } else {
@@ -48,11 +52,31 @@ const PrepaidPlans = () => {
     setClickedPlanId(clickedPlanId === planId ? null : planId);
   };
 
+  const handleSearch = (e) => {
+    const query = e.target.value.toLowerCase();
+    setSearchQuery(query);
+    setActiveFilter("All");
+    const filtered = plans.filter(plan => 
+      plan.planBenefits.toLowerCase().includes(query) ||
+      plan.planCategory.toLowerCase().includes(query)
+    );
+    setFilteredPlans(filtered);
+  };
+
   return (
     <div className="flex min-h-screen bg-gray-100">
       <div className="flex flex-col flex-grow p-4">
-        <main className="bg-white rounded-lg p-6 mt-6 shadow-lg w-full">
-          <h1 className="text-3xl font-bold text-center mb-6 text-blue-600">Prepaid Plans</h1>
+        <main className="bg-white rounded-lg p-6 mt-5 shadow-lg w-full">
+          <h1 className="text-3xl font-bold text-center mb-8 text-blue-600">Prepaid Plans</h1>
+          <div className="mb-6">
+            <input
+              type="text"
+              className="w-3/12 px-5 ml-50  border border-gray-700 rounded-full"
+              placeholder="Search plans (e.g., OTT, Unlimited or Data)"
+              value={searchQuery}
+              onChange={handleSearch}
+            />
+          </div>
           <div 
             className="flex justify-between items-center bg-blue-100 p-4 rounded-md mb-6"
             onClick={() => handlePlanClick('current')}
@@ -117,3 +141,4 @@ const PrepaidPlans = () => {
 };
 
 export default PrepaidPlans;
+

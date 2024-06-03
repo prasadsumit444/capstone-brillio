@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom";
 import axios from "axios";
 import { format } from "date-fns";
 import { toZonedTime } from "date-fns-tz";
+import { useAuth } from "../Auth/AuthGuard";
 
 const TransactionDetails = () => {
   const [transactions, setTransactions] = useState([]);
@@ -14,12 +15,12 @@ const TransactionDetails = () => {
   const transactionsPerPage = 5; // Number of transactions per page
   const pagesPerSet = 5; // Number of pages per set
 
-  const { transactionId } = useParams();
+  const { userId } = useAuth();
 
   useEffect(() => {
     const fetchTransactions = async () => {
       try {
-        const response = await axios.get("http://localhost:8102/transaction/userid/1");
+        const response = await axios.get(`http://localhost:8102/transaction/userid/${userId}`);
         const sortedTransactions = response.data.sort((a, b) => new Date(b.timeStamp) - new Date(a.timeStamp));
         setTransactions(sortedTransactions);
         setLoading(false);
@@ -30,26 +31,15 @@ const TransactionDetails = () => {
     };
 
     fetchTransactions();
-  }, []);
+  }, [userId]);
 
-  const convertToIST = (timestamp) => {
+  const convertToIST = (timestamp, formatString) => {
     if (!timestamp) return "";
 
     const utcDate = new Date(timestamp);
     const istDate = toZonedTime(utcDate, "Asia/Kolkata");
 
-    const formattedDate = format(istDate, "yyyy-MM-dd");
-    return formattedDate;
-  };
-
-  const convertToISTwithtime = (timestamp) => {
-    if (!timestamp) return "";
-
-    const utcDate = new Date(timestamp);
-    const istDate = toZonedTime(utcDate, "Asia/Kolkata");
-
-    const formattedDate = format(istDate, "yyyy-MM-dd HH:MM:SS");
-    return formattedDate;
+    return format(istDate, formatString);
   };
 
   // Get current transactions
@@ -137,42 +127,51 @@ const TransactionDetails = () => {
   }
 
   return (
-    <div className="flex min-h-screen bg-white justify-center items-center">
+    <div className="flex min-h-screen bg-white justify-center items-start"> {/* Align items to start */}
       <div className="flex flex-col flex-grow p-4 max-w-4xl w-full">
-        <main className="bg-white rounded-lg p-6 mt-1 w-full h-full"> {/* Reduced top margin */}
-          <h1 className="text-2xl font-bold mb-4">Transaction Details</h1>
-          <div className="space-y-4">
-            {currentTransactions.map((tx) => {
-              const timestamp = convertToIST(tx.timeStamp);
+        <main className="bg-white rounded-lg p-6 w-full h-full"> {/* Removed top margin */}
+          {transactions.length > 0 ? (
+            <>
+              <h1 className="text-2xl font-bold mb-4">Transaction Details</h1>
+              <div className="space-y-4">
+                {currentTransactions.map((tx) => {
+                  const timestamp = convertToIST(tx.timeStamp, "yyyy-MM-dd");
 
-              return (
-                <div
-                  key={tx.transactionId}
-                  className="bg-gray-100 p-4 rounded-md cursor-pointer transform transition-transform hover:scale-105 hover:shadow-lg hover:shadow-blue-100"
-                  onClick={() => setSelectedTransaction(tx)}
-                >
-                  <div className="flex justify-between items-center">
-                    <span>
-                      <div> <h3 className="text-lg font-bold">Date: {convertToIST(timestamp)}</h3>
-                        <p>Paid Rs.{tx.planPrice}</p>
-                        </div>
-                    </span>
-                    <button className="bg-blue-600 hover:bg-blue-500 text-white p-2 rounded-md">
-                      View Details
-                    </button>
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-          {/* Pagination */}
-          <div className="flex justify-center mt-4">
-            <nav>
-              <div className="flex">
-                {renderPageNumbers()}
+                  return (
+                    <div
+                      key={tx.transactionId}
+                      className="bg-gray-100 p-4 rounded-md cursor-pointer transform transition-transform hover:scale-105 hover:shadow-lg hover:shadow-blue-100"
+                      onClick={() => setSelectedTransaction(tx)}
+                    >
+                      <div className="flex justify-between items-center">
+                        <span>
+                          <div>
+                            <h3 className="text-lg font-bold">Date: {timestamp}</h3>
+                            <p>Paid Rs.{tx.planPrice}</p>
+                          </div>
+                        </span>
+                        <button className="bg-blue-600 hover:bg-blue-500 text-white p-2 rounded-md">
+                          View Details
+                        </button>
+                      </div>
+                    </div>
+                  );
+                })}
               </div>
-            </nav>
-          </div>
+              {/* Pagination */}
+              <div className="flex justify-center mt-4">
+                <nav>
+                  <div className="flex">
+                    {renderPageNumbers()}
+                  </div>
+                </nav>
+              </div>
+            </>
+          ) : (
+            <div className="bg-blue-100 text-gray-800 p-4 rounded-md">
+              <h2 className="font-bold">No Transaction done yet</h2>
+            </div>
+          )}
           {selectedTransaction && (
             <div className="fixed inset-0 flex items-center justify-center z-10">
               <div className="bg-white text-black p-6 rounded-lg shadow-lg max-w-md transform transition-transform hover:scale-105 hover:shadow-lg hover:shadow-blue-500">
@@ -181,7 +180,7 @@ const TransactionDetails = () => {
                 <ul>
                   <li>Status: {selectedTransaction.transactionStatus}</li>
                   <li>Purchase Mode: {selectedTransaction.paymentMode}</li>
-                  <li>Transaction Date: {convertToISTwithtime(selectedTransaction.timeStamp)}</li>
+                  <li>Transaction Date: {convertToIST(selectedTransaction.timeStamp, "yyyy-MM-dd HH:mm:ss")}</li>
                 </ul>
                 <button
                   className="mt-4 bg-blue-600 hover:bg-blue-700 text-white p-2 rounded-md"
