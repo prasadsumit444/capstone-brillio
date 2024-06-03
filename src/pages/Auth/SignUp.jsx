@@ -7,7 +7,7 @@ import '../../App.css';
 
 export default function Signup() {
 
-  const auth = useAuth();
+  const { signup } = useAuth();
   const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
@@ -52,7 +52,7 @@ export default function Signup() {
     })
       .then(function (response) {
         // handle success
-        auth.signup(response.data);
+        signup(response.data);
         navigate("/dashboard")
       })
       .catch(function (error) {
