@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 const PostpaidPlans = () => {
   const [plans, setPlans] = useState([]);
   const [filteredPlans, setFilteredPlans] = useState([]);
   const [clickedPlanId, setClickedPlanId] = useState(null);
   const [searchQuery, setSearchQuery] = useState("");
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchPlans = async () => {
@@ -34,6 +36,10 @@ const PostpaidPlans = () => {
         (plan.planCategory && plan.planCategory.toLowerCase().includes(query))
     );
     setFilteredPlans(filtered);
+  };
+
+  const handleBuyPlan = (plan) => {
+    navigate('/payment-page', { state: { plan } });
   };
 
   return (
@@ -69,7 +75,10 @@ const PostpaidPlans = () => {
                       : `Description: ${plan.planBenefits.substring(0, 50)}...`}
                   </p>
                 </div>
-                <button className="bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded-md mt-auto">
+                <button className="bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded-md mt-auto"
+                  onClick={() => handleBuyPlan(plan)}
+                >
+
                   Buy Plan
                 </button>
               </div>

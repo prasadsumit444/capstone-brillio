@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import "tailwindcss/tailwind.css";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
@@ -234,6 +234,9 @@ const UpiPaymentForm = ({ onSubmit }) => {
 };
 
 const PaymentPage = () => {
+
+  
+
   const navigate = useNavigate(); // Add useNavigate hook
   const [selectedOption, setSelectedOption] = useState("card");
   const [paymentSuccess, setPaymentSuccess] = useState(false);
@@ -251,7 +254,11 @@ const PaymentPage = () => {
       });
   }, [userId]);
 
+  
+
+  
   useEffect(() => {
+    
     let interval;
     if (showProcessing && timeRemaining > 0) {
       interval = setInterval(() => {
@@ -292,6 +299,12 @@ const PaymentPage = () => {
     }, 2000); // Simulate 2-second delay for UPI processing
   };
   
+  const location = useLocation();
+  const { plan } = location.state || {};
+  const {userId} = useAuth();
+  if (!plan) {
+    return <div className="flex min-h-screen bg-gray-100 p-4">No plan details available.</div>;
+  }
   const sendPaymentData = (paymentMode) => {
     axios.post(`http://localhost:8102/transaction/userid/${userId}/paymentdetails`, {
       planId: 1,
@@ -369,12 +382,12 @@ const PaymentPage = () => {
         <div className="bg-white shadow-md rounded-lg p-6">
           <div className="mb-4">
             <h3 className="text-gray-800 font-medium">
-              Postpaid Bill | {mobileNumber}
+              {plan.planType} | 9880572182
             </h3>
             <p className="text-gray-600">Bill Payment</p>
             <div className="border-t mt-4 pt-4">
               <p className="text-gray-800 font-medium">Amount Payable</p>
-              <p className="text-gray-800 font-medium">₹1</p>
+              <p className="text-gray-800 font-medium">₹ {plan.planPrice}</p>
             </div>
           </div>
           <div className="mt-4 text-center">

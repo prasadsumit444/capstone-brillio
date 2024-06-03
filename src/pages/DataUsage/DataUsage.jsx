@@ -3,8 +3,10 @@ import { Bar } from "react-chartjs-2";
 import "chart.js/auto";
 import axios from "axios";
 import { useSearchParams } from "react-router-dom";
+import { useAuth } from "../Auth/AuthGuard";
 
 const DataUsage = () => {
+  const { userId } = useAuth();
   const [usage, setUsage] = useState({
     hourlyData: [],
     voiceHourly: [],
@@ -16,17 +18,23 @@ const DataUsage = () => {
     voiceUsed: 0,
     smsRemaining: 0,
   });
+  const [searchParams] = useSearchParams();
+
+  useEffect(() => {
+    if (searchParams.get("tab")) setActiveTab(searchParams.get("tab"));
+  }, [searchParams]);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:8100/datausage/userId/1"
-        ); // Add userId dynamically here
-        console.log("Data Usage Response:", response.data); // Log API response
+          `http://localhost:8100/datausage/userId/${userId}`
+        );
+        console.log("Data Usage Response:", response.data);
+
         const userData = response.data.dataUsageList.filter(
-          (usage) => usage.user.userId === 2
-        ); // Add userId dynamically here
+          (usage) => usage.user.userId === userId
+        );
 
         const hourlyData = Array.from({ length: 24 }, (_, i) => {
           const data = userData.find((usage) => usage.usageHour === i);
@@ -61,7 +69,7 @@ const DataUsage = () => {
     };
 
     fetchData();
-  }, []);
+  }, [userId]);
 
   const barChartOptions = (yLabel) => ({
     scales: {
@@ -69,7 +77,7 @@ const DataUsage = () => {
         title: {
           display: true,
           text: "Hour of the Day",
-          color: "#333", // X-axis label color
+          color: "#333",
           font: {
             size: 14,
           },
@@ -82,17 +90,17 @@ const DataUsage = () => {
         title: {
           display: true,
           text: yLabel,
-          color: "#333", // Y-axis label color
+          color: "#333",
           font: {
             size: 14,
           },
         },
         beginAtZero: true,
         grid: {
-          color: "#ddd", // Y-axis grid color
+          color: "#ddd",
         },
         ticks: {
-          color: "#666", // Y-axis tick color
+          color: "#666",
           font: {
             size: 12,
           },
@@ -103,7 +111,7 @@ const DataUsage = () => {
       legend: {
         display: true,
         labels: {
-          color: "#333", // Legend label color
+          color: "#333",
           font: {
             size: 14,
           },
@@ -152,13 +160,10 @@ const DataUsage = () => {
               <div className="md:w-1/3 bg-gray-50 p-4 rounded-lg shadow text-center">
                 <h3 className="text-xl font-semibold mb-2">Data Usage Stats</h3>
                 <p className="mb-2">
-                  <strong>Remaining Data:</strong>{" "}
-                  {remainingStats.dataRemaining} MB
+                  <strong>Remaining Data:</strong> {remainingStats.dataRemaining} MB
                 </p>
               </div>
-              <h2 className="py-4 text-2xl mb-4 text-center">
-                Data Usage (Hourly)
-              </h2>
+              <h2 className="py-4 text-2xl mb-4 text-center">Data Usage (Hourly)</h2>
               <div className="chart-container w-full h-96">
                 <Bar
                   data={barChartData(
@@ -177,13 +182,10 @@ const DataUsage = () => {
               <div className="md:w-1/3 bg-gray-50 p-4 rounded-lg shadow text-center">
                 <h3 className="text-xl font-semibold mb-2">Call Usage Stats</h3>
                 <p className="mb-2">
-                  <strong>Voice Used:</strong> {remainingStats.voiceUsed}{" "}
-                  minutes
+                  <strong>Voice Used:</strong> {remainingStats.voiceUsed} minutes
                 </p>
               </div>
-              <h2 className="py-4 text-2xl mb-4 text-center">
-                Voice Usage (Hourly)
-              </h2>
+              <h2 className="py-4 text-2xl mb-4 text-center">Voice Usage (Hourly)</h2>
               <div className="chart-container w-full h-96">
                 <Bar
                   data={barChartData(
@@ -202,14 +204,11 @@ const DataUsage = () => {
               <div className="md:w-1/3 bg-gray-50 p-4 rounded-lg shadow text-center">
                 <h3 className="text-xl font-semibold mb-2">SMS Usage Stats</h3>
                 <p className="mb-2">
-                  <strong>SMS Remaining:</strong> {remainingStats.smsRemaining}
-                  /100 SMS
+                  <strong>SMS Remaining:</strong> {remainingStats.smsRemaining}/100 SMS
                 </p>
               </div>
-              <h2 className="py-4 text-2xl mb-4 text-center">
-                SMS Usage (Hourly)
-              </h2>
-              <div className="chart-container w-full  h-96">
+              <h2 className="py-4 text-2xl mb-4 text-center">SMS Usage (Hourly)</h2>
+              <div className="chart-container w-full h-96">
                 <Bar
                   data={barChartData(
                     usage.smsHourly,
