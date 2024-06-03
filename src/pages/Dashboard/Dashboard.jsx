@@ -75,7 +75,7 @@ export default function Dashboard() {
     datasets: [
       {
         data: [usedData, usageData.remainingData],
-        backgroundColor: ["#e0f2fe", "#1e3a8a"],
+        backgroundColor: ["#e0f2fe", "#1e40af"],
         hoverBackgroundColor: ["#e0f2fe", "#1d4ed8"],
         borderWidth: 1,
         borderColor: "#ffffff",
@@ -88,7 +88,7 @@ export default function Dashboard() {
     datasets: [
       {
         data: [usedSms, usageData.remainingSms],
-        backgroundColor: ["#e0f2fe", "#1e3a8a"],
+        backgroundColor: ["#e0f2fe", "#1e40af"],
         hoverBackgroundColor: ["#e0f2fe", "#1d4ed8"],
         borderWidth: 1,
         borderColor: "#ffffff",
@@ -101,7 +101,7 @@ export default function Dashboard() {
     datasets: [
       {
         data: [100, 0],
-        backgroundColor: ["#e0f2fe", "#1e3a8a"],
+        backgroundColor: ["#e0f2fe", "#1e40af"],
         hoverBackgroundColor: ["#e0f2fe", "#1d4ed8"],
         borderWidth: 1,
         borderColor: "#ffffff",
@@ -134,7 +134,7 @@ export default function Dashboard() {
   };
 
   return (
-    <div className="flex flex-col md:flex-row min-h-screen bg-black ">
+    <div className="flex flex-col md:flex-row min-h-screen bg-white">
       {/* Left Section with Image */}
       <div className="hidden md:flex md:w-2/4 rounded-lg">
         <img
@@ -148,7 +148,7 @@ export default function Dashboard() {
         {/* Center Column: Plan Details and Data Usage */}
         <div className="flex-1 flex flex-col space-y-4">
           <Link to="/profile" className="flex-grow h-1/4">
-            <div className="bg-white rounded-lg shadow-lg p-5 transform transition-transform duration-300 hover:scale-105 hover:shadow-m hover:shadow-blue-200">
+            <div className="bg-gray-100 rounded-lg shadow-lg p-5 transform transition-transform duration-300 hover:scale-105 hover:shadow-m hover:shadow-blue-200">
               <h1 className="text-3xl font-semibold text-gray-900 mb-6">
                 Hi {usageData.fullName},
               </h1>
@@ -158,7 +158,7 @@ export default function Dashboard() {
               </div>
             </div>
           </Link>
-          <div className="bg-white rounded-lg shadow-md p-5 h-2/4">
+          <div className="bg-gray-100 rounded-lg shadow-md p-5 h-2/4">
             <h2 className="text-3xl font-semibold text-gray-900 mb-6">
               {usageData.planType == null
                 ? "Kindly Recharge"
@@ -180,7 +180,7 @@ export default function Dashboard() {
             </div>
           </div>
 
-          <div className="bg-white rounded-lg shadow-md h-1/4 p-5 flex-grow transform transition-transform duration-300 hover:scale-105 hover:shadow-m hover:shadow-blue-200">
+          <div className="bg-gray-100 rounded-lg shadow-md h-1/4 p-5 flex-grow transform transition-transform duration-300 hover:scale-105 hover:shadow-m hover:shadow-blue-200">
             <h2 className="text-lg font-semibold text-gray-900 mb-6">
               Quick Access
             </h2>
@@ -210,7 +210,7 @@ export default function Dashboard() {
         {/* Right Column: Data, SMS, and Voice */}
         <div className="w-full md:w-1/4 flex flex-col space-y-4">
           <Link to="/datausage?tab=data" className="flex-grow">
-            <div className="bg-white rounded-lg shadow-md p-5 flex-grow transform transition-transform duration-300 hover:scale-105 relative hover:shadow-m hover:shadow-blue-200">
+            <div className="bg-gray-100 rounded-lg shadow-md p-5 flex-grow transform transition-transform duration-300 hover:scale-105 relative hover:shadow-m hover:shadow-blue-200">
               <h2 className="text-lg font-semibold text-gray-900 pb-4">Data</h2>
               <div className="relative h-24">
                 <Doughnut data={dataUsage} options={options} />
@@ -221,7 +221,7 @@ export default function Dashboard() {
             </div>
           </Link>
           <Link to="/datausage?tab=sms" className="flex-grow">
-            <div className="bg-white rounded-lg shadow-md p-5 flex-grow transform transition-transform duration-300 hover:scale-105 relative hover:shadow-m hover:shadow-blue-200">
+            <div className="bg-gray-100 rounded-lg shadow-md p-5 flex-grow transform transition-transform duration-300 hover:scale-105 relative hover:shadow-m hover:shadow-blue-200">
               <h2 className="text-lg font-semibold text-gray-900 pb-4">SMS</h2>
               <div className="relative h-24">
                 <Doughnut data={smsUsage} options={options} />
@@ -232,7 +232,7 @@ export default function Dashboard() {
             </div>
           </Link>
           <Link to="/datausage?tab=voice" className="flex-grow">
-            <div className="bg-white rounded-lg shadow-md p-5 flex-grow transform transition-transform duration-300 hover:scale-105 relative hover:shadow-m hover:shadow-blue-200">
+            <div className="bg-gray-100 rounded-lg shadow-md p-5 flex-grow transform transition-transform duration-300 hover:scale-105 relative hover:shadow-m hover:shadow-blue-200">
               <h2 className="text-lg font-semibold text-gray-900 pb-4">
                 Voice
               </h2>
