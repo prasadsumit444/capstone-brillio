@@ -21,7 +21,7 @@ const DataUsage = () => {
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:8100/datausage/userId/2"
+          "http://localhost:8100/datausage/userId/1"
         ); // Add userId dynamically here
         console.log("Data Usage Response:", response.data); // Log API response
         const userData = response.data.dataUsageList.filter(
