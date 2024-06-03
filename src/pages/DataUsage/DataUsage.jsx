@@ -16,11 +16,6 @@ const DataUsage = () => {
     voiceUsed: 0,
     smsRemaining: 0,
   });
-  const [searchParams] = useSearchParams();
-
-  useEffect(() => {
-    if (searchParams.get("tab")) setActiveTab(searchParams.get("tab"));
-  }, []);
 
   const [searchParams] = useSearchParams();
 
@@ -32,7 +27,7 @@ const DataUsage = () => {
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:8100/datausage/userId/3"
+          "http://localhost:8100/datausage/userId/2"
         ); // Add userId dynamically here
         console.log("Data Usage Response:", response.data); // Log API response
         const userData = response.data.dataUsageList.filter(

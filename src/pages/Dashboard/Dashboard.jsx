@@ -3,6 +3,7 @@ import axios from "axios";
 import { Doughnut } from "react-chartjs-2";
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
 import { Link } from "react-router-dom";
+import { useAuth } from "../Auth/AuthGuard";
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
@@ -11,7 +12,7 @@ export default function Dashboard() {
     fullName: "User!",
     mobileNumber: "",
     userStatus: "STATUS",
-    planType: "",
+    planType: "Kindly Recharge",
     planDescription:
       "Hi there, We're thrilled to have you on board. It looks like you haven't chosen a plan yet. To start enjoying all the benefits and features we offer, explore our various plans and pick the one that suits you best.",
     planPrice: 0,
@@ -22,9 +23,11 @@ export default function Dashboard() {
     remainingSms: 0,
   });
 
+  const { userId } = useAuth();
+
   useEffect(() => {
     axios
-      .get("http://localhost:8104/account/dashboard/3/dashboardInfo") // Replace with your API endpoint
+      .get(`http://localhost:8104/account/dashboard/${userId}/dashboardInfo`) // Replace with your API endpoint
       .then((response) => {
         const {
           fullName,
@@ -151,7 +154,7 @@ export default function Dashboard() {
             </div>
           </Link>
           <div className="bg-white rounded-lg shadow-md p-5 h-2/4">
-            <h2 className="text-4xl font-semibold text-gray-900 mb-6">
+            <h2 className="text-3xl font-semibold text-gray-900 mb-6">
               {usageData.planType}
             </h2>
             <div className="text-2xl flex justify-between mb-4 text-gray-700">
