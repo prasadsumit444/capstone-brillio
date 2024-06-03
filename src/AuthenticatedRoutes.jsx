@@ -12,15 +12,15 @@ import Setting from "./pages/Settings/Setting.jsx";
 import InvoiceDetails from "./pages/BillingStatement/InvoiceDetails";
 import PaymentPage from "./pages/Payment/PaymentPage";
 import Invoices from "./pages/BillingStatement/Invoice";
-import { useAuth } from './pages/Auth/AuthGuard.jsx'
-
+import { useAuth } from "./pages/Auth/AuthGuard.jsx";
 
 export default function AuthenticatedRoutes() {
-
   const location = useLocation();
-  const auth = useAuth()
+  const auth = useAuth();
   if (!auth.userId) {
-    return <Navigate to='/login' state={{ path: location.pathname }}></Navigate>
+    return (
+      <Navigate to="/login" state={{ path: location.pathname }}></Navigate>
+    );
   }
 
   return (
@@ -31,12 +31,18 @@ export default function AuthenticatedRoutes() {
       <Route path="/tickets" element={<TicketStatus />} />
       <Route path="/tickets/:ticketId" element={<TicketDetails />} />
       <Route path="/invoice" element={<Invoice></Invoice>}></Route>
-      <Route path="/transaction" element={<TransactionDetails></TransactionDetails>} />
+      <Route
+        path="/transaction"
+        element={<TransactionDetails></TransactionDetails>}
+      />
       <Route path="/payment-page" element={<PaymentPage />} />
-      <Route path="/datausage" element={<DataUsage/>}></Route>
-      <Route path="/settings" element={<Setting/>} />
+      <Route path="/datausage" element={<DataUsage />}></Route>
+      <Route path="/settings" element={<Setting />} />
       <Route path="/invoice" element={<Invoices></Invoices>}></Route>
-      <Route path="/invoice/:invoiceId" element={<InvoiceDetails></InvoiceDetails>} />
+      <Route
+        path="/invoice/:invoiceId"
+        element={<InvoiceDetails></InvoiceDetails>}
+      />
     </Routes>
   );
 }

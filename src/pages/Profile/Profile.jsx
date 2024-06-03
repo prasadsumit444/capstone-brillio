@@ -2,8 +2,9 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 
 export default function Profile() {
-  const [editMode, setEditMode] = useState(false);
+  const [editMode, setEditMode] = useState(false); //The initial state is set to false in order to render edit on screen which is a button
   const [formData, setFormData] = useState({
+    //formData is a state,setFormData(setter function) is to set its value,useState is a react hook that returns a state and its setter function (to change the state on rerendering )
     fullName: "",
     emailId: "",
     mobileNumber: "",
@@ -11,33 +12,38 @@ export default function Profile() {
     address: "",
     userStatus: "",
   });
-  const [errors, setErrors] = useState({});
+  const [errors, setErrors] = useState({}); //taken as a state in order to render error messages
 
   useEffect(() => {
+    //When the component mounts request for the data is sent to the backend
     // Fetch profile data from backend
-    axios
-      .get("http://localhost:8104/account/profile/1/userProfile")
+    axios // axios is used for making a http req
+      .get("http://localhost:8104/account/profile/1/userProfile") //axios.get returns a promise
       .then((response) => {
+        // we use it for resolved promise
         setFormData(response.data);
       })
       .catch((error) => {
+        // we use it for rejections of promise to get the error message
         console.error("Error fetching profile data:", error);
       });
   }, []);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
+    console.log(e);
 
     // Restrict alternate mobile number to 10 digits
     if (name === "altMobileNumber" && value.length > 10) {
       return;
     }
+    if (name === "altMobileNumber" && value && !/^\d+$/.test(value)) return;
 
     setFormData((prev) => ({ ...prev, [name]: value }));
 
     // Validation for alternate mobile number
     if (name === "altMobileNumber") {
-      if (value.length !== 10) {
+      if (value && value.length !== 10) {
         setErrors((prev) => ({
           ...prev,
           altMobileNumber: "Number must be of 10 digits*",
@@ -54,7 +60,7 @@ export default function Profile() {
   const toggleEditMode = () => {
     if (editMode) {
       // Check if the alternate mobile number is valid before saving
-      if (formData.altMobileNumber.length !== 10) {
+      if (formData.altMobileNumber && formData.altMobileNumber.length !== 10) {
         setErrors((prev) => ({
           ...prev,
           altMobileNumber: "Kindly enter a 10 digit number*",
@@ -99,7 +105,7 @@ export default function Profile() {
           <div className=" bg-gray-200 rounded-lg">
             <div className="px-4 sm:px-0">
               <h3 className="text-2xl font-bold leading-7 text-blue-900">
-                ASAAP APPLICATION
+                My Profile
               </h3>
               <p className="mt-1 text-sm text-gray-600">
                 Please review and update your personal details.
@@ -138,6 +144,7 @@ export default function Profile() {
                     Mobile Number
                   </label>
                   <div className="mt-1 py-2 px-3 bg-gray-50 rounded-md shadow-sm">
+                    <span className=" text-blue-900  font-mono">+91</span>{" "}
                     {formData.mobileNumber}
                   </div>
                 </div>
@@ -165,7 +172,7 @@ export default function Profile() {
                   <div className="mt-1">
                     {editMode ? (
                       <input
-                        type="number"
+                        type="text"
                         name="altMobileNumber"
                         value={formData.altMobileNumber}
                         onChange={handleChange}
@@ -174,6 +181,7 @@ export default function Profile() {
                       />
                     ) : (
                       <div className="py-2 px-3 bg-gray-50 rounded-md shadow-sm">
+                        <span className=" text-blue-900 font-mono">+91</span>{" "}
                         {formData.altMobileNumber}
                       </div>
                     )}
