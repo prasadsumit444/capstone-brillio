@@ -172,15 +172,28 @@ const UpiPaymentForm = ({ onSubmit }) => {
   const validateFormUPI = () => {
     let valid = true;
     const newErrors = {};
-
+  
+    // Assuming upiId is defined somewhere in your component's state
     if (!upiId) {
       newErrors.upiId = "Please enter a valid UPI ID";
       setErrorsupi(newErrors);
       valid = false;
+    } else if (upiId.indexOf('@') <= 0) {
+      newErrors.upiId = "Please enter a valid UPI ID";
+      setErrorsupi(newErrors);
+      valid = false;
+    } else if (!/^[A-Za-z]+$/.test(upiId.slice(upiId.indexOf('@') + 1))) {
+      newErrors.upiId = "Please enter a valid UPI ID";
+      setErrorsupi(newErrors);
+      valid = false;
     }
-
+  
     return valid;
   };
+  
+  
+  
+  
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -272,7 +285,7 @@ const PaymentPage = () => {
     axios.post(`http://localhost:8102/transaction/userid/${userId}/paymentdetails`, {
       planId: 1,
       paymentMode,
-      transactionStatus: "Success"
+      transactionStatus: "SUCCESS"
     })
     .then(response => {
       console.log("Payment data sent successfully:", response.data);
