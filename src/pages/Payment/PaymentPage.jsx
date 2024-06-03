@@ -240,7 +240,7 @@ const PaymentPage = () => {
   const [showProcessing, setShowProcessing] = useState(false);
   const [timeRemaining, setTimeRemaining] = useState(300); // 5 minute timer
   const [mobileNumber,setMobileNumber] =useState("");
-
+  const {userId} = useAuth();
   useEffect(() => {
     axios.get(`http://localhost:8101/user/${userId}/getUser`)
       .then(response => {
@@ -291,7 +291,7 @@ const PaymentPage = () => {
       sendPaymentData("UPI");
     }, 2000); // Simulate 2-second delay for UPI processing
   };
-  const {userId} = useAuth();
+  
   const sendPaymentData = (paymentMode) => {
     axios.post(`http://localhost:8102/transaction/userid/${userId}/paymentdetails`, {
       planId: 1,
