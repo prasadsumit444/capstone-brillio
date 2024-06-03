@@ -3,7 +3,7 @@ import { ResetPasswordModal } from "../../Components/ResetPasswordModal";
 import '../../App.css';
 import axios from "axios";
 import { useAuth } from './AuthGuard'
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 export default function Login() {
 
@@ -14,12 +14,38 @@ export default function Login() {
   const [mobileNumber, setMobileNumber] = useState("");
   const [password, setPassword] = useState("");
 
+  const [mobileNumberError, setMobileNumberError] = useState("");
+
   const handleResetPasswordModal = (value) => {
     setShowResetPasswordModal(value);
   };
 
   const handleMobileNumberChange = (e) => {
-    setMobileNumber(e.target.value);
+    let value = e.target.value;
+
+    // Remove non-numeric characters
+    value = value.replace(/\D/g, '');
+
+    // Validate the first digit
+    if (value.length > 0 && !/^[6-9]/.test(value)) {
+      return;
+    }
+
+    // Truncate to 10 digits
+    if (value.length > 10) {
+      value = value.slice(0, 10);
+    }
+
+    // Update the form data
+    setMobileNumber(value);
+
+    // Check if the mobile number is valid
+    const mobileNumberPattern = /^[6-9]\d{9}$/;
+    if (mobileNumberPattern.test(value)) {
+      setMobileNumberError("");
+    } else {
+      setMobileNumberError("Invalid mobile number");
+    }
   };
 
   const handlePasswordChange = (e) => {
@@ -30,22 +56,24 @@ export default function Login() {
   const handleLogin = (e) => {
     e.preventDefault();
 
-    axios.get("http://localhost:8101/user/login", {
-      params: {
-        mobileNumber: mobileNumber,
-        password: password
-      }
-    })
-      .then(function (response) {
-        // handle success
-        login(response.data);
-        navigate("/dashboard")
-
+    if (mobileNumberError === "") {
+      axios.get("http://localhost:8101/user/login", {
+        params: {
+          mobileNumber: mobileNumber,
+          password: password
+        }
       })
-      .catch(function (error) {
+        .then(function (response) {
+          // handle success
+          login(response.data);
+          navigate("/dashboard")
+
+        })
+        .catch(function (error) {
         // handle error
-        alert("Login failed." + error);
-      });
+          alert("Login failed. Invalid Credentials");
+        });
+    }
 
   };
 
@@ -93,24 +121,29 @@ export default function Login() {
             <div>
               <form onSubmit={handleLogin} className="mt-6 grid grid-cols-6 gap-4 max-w-2xl">
 
-                <div className="col-span-6 ">
+                <div className="col-span-6">
                   <label htmlFor="mobileNumber" className="block text-xs font-medium text-gray-700">
                     Mobile Number
                   </label>
-
-                  <input
-                    required
-                    type="number"
-                    id="mobileNumber"
-                    name="mobileNumber"
-                    className="mt-1 w-full rounded-md border-gray-200 bg-white text-sm text-gray-700 shadow-sm font-normal"
-                    value={mobileNumber}
-                    onChange={handleMobileNumberChange}
-                  />
+                  <div className="mt-1 flex rounded-md shadow-sm">
+                    <span className="inline-flex items-center px-3 rounded-l-md border border-r-0 border-gray-200 bg-gray-50 text-gray-500 text-sm">
+                      +91
+                    </span>
+                    <input
+                      required
+                      type="number"
+                      id="mobileNumber"
+                      name="mobileNumber"
+                      value={mobileNumber}
+                      onChange={handleMobileNumberChange}
+                      className="w-full rounded-r-md border-gray-200 bg-white text-sm text-gray-700  font-normal"
+                    />
+                  </div>
+                  {mobileNumberError && <p className="mt-1 text-xs text-red-600">{mobileNumberError}</p>}
                 </div>
 
                 <div className="col-span-6">
-                  <label htmlFor="passwordHash" className="block text-xs font-medium text-gray-700"> Password </label>
+                  <label htmlFor="password" className="block text-xs font-medium text-gray-700"> Password </label>
 
                   <input
                     required
@@ -141,7 +174,7 @@ export default function Login() {
                 <div className="col-span-6 flex justify-center max-w-screen-md w-full">
                   <p className="mt-2 px-16 text-xs text-gray-500 sm:mt-0 ">
                     Don't have an account?
-                    <a href="/signup" className="text-blue-900 font-semibold"> Create account</a>
+                    <Link to="/signup" className="text-blue-900 font-semibold"> Create account</Link>
                   </p>
                 </div>
               </form>
