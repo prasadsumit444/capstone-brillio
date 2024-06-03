@@ -1,5 +1,5 @@
 import Navbar from "./Components/Navbar";
-import React, { useRef } from 'react';
+import React, { useRef } from "react";
 
 import Login from "./pages/Auth/Login";
 import SignUp from "./pages/Auth/SignUp";
@@ -11,14 +11,10 @@ import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import AuthenticatedRoutes from "./AuthenticatedRoutes";
 import PaymentPage from "./pages/Payment/PaymentPage";
 import ChatBot from "./pages/Support/ChatBot";
-import TransactionDetails from "./pages/BillingStatement/TransactionDetails";
 import SupportPage from "./pages/Support/SupportPage";
 import HomePage from "./pages/HomePage/Homepage";
-
 import { NotificationProvider } from "./pages/NotificationContext";
 import { AuthGuard } from "./pages/Auth/AuthGuard";
-
-
 function App() {
   return (
     <div>
