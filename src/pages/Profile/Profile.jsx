@@ -3,9 +3,8 @@ import axios from "axios";
 import { useAuth } from "../Auth/AuthGuard";
 
 export default function Profile() {
-  const [editMode, setEditMode] = useState(false); //The initial state is set to false in order to render edit on screen which is a button
+  const [editMode, setEditMode] = useState(false);
   const [formData, setFormData] = useState({
-    //formData is a state,setFormData(setter function) is to set its value,useState is a react hook that returns a state and its setter function (to change the state on rerendering )
     fullName: "",
     emailId: "",
     mobileNumber: "",
@@ -15,41 +14,34 @@ export default function Profile() {
   });
   const { userId } = useAuth();
 
-  const [errors, setErrors] = useState({}); //taken as a state in order to render error messages
+  const [errors, setErrors] = useState({});
 
   useEffect(() => {
-    //When the component mounts request for the data is sent to the backend
-    // Fetch profile data from backend
-    axios // axios is used for making a http req
-      .get(`http://localhost:8104/account/profile/${userId}/userProfile`) //axios.get returns a promise
+    axios
+      .get(`http://localhost:8104/account/profile/${userId}/userProfile`)
       .then((response) => {
-        // we use it for resolved promise
         setFormData(response.data);
       })
       .catch((error) => {
-        // we use it for rejections of promise to get the error message
         console.error("Error fetching profile data:", error);
       });
-  }, []);
+  }, [userId]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    console.log(e);
 
-    // Restrict alternate mobile number to 10 digits
-    if (name === "altMobileNumber" && value.length > 10) {
-      return;
-    }
-    if (name === "altMobileNumber" && value && !/^\d+$/.test(value)) return;
-
-    setFormData((prev) => ({ ...prev, [name]: value }));
-
-    // Validation for alternate mobile number
     if (name === "altMobileNumber") {
-      if (value && value.length !== 10) {
+      if (value.length > 10 || !/^\d*$/.test(value)) {
+        return;
+      }
+
+      setFormData((prev) => ({ ...prev, [name]: value }));
+
+      if (value && (!/^[6-9]/.test(value) || value === formData.mobileNumber)) {
         setErrors((prev) => ({
           ...prev,
-          altMobileNumber: "Number must be of 10 digits*",
+          altMobileNumber:
+            "Alternate number must be 10 digits, start with 6, 7, 8, or 9, and cannot be the same as the primary mobile number",
         }));
       } else {
         setErrors((prev) => {
@@ -57,21 +49,26 @@ export default function Profile() {
           return rest;
         });
       }
+    } else {
+      setFormData((prev) => ({ ...prev, [name]: value }));
     }
   };
 
   const toggleEditMode = () => {
     if (editMode) {
-      // Check if the alternate mobile number is valid before saving
-      if (formData.altMobileNumber && formData.altMobileNumber.length !== 10) {
+      if (
+        formData.altMobileNumber.length !== 10 ||
+        !/^[6-9]/.test(formData.altMobileNumber) ||
+        formData.altMobileNumber === formData.mobileNumber
+      ) {
         setErrors((prev) => ({
           ...prev,
-          altMobileNumber: "Kindly enter a 10 digit number*",
+          altMobileNumber:
+            "Alternate number must be 10 digits, start with 6, 7, 8, or 9, and cannot be the same as the primary mobile number",
         }));
         return;
       }
 
-      // Save the edited data to backend
       axios
         .patch(
           `http://localhost:8104/account/profile/${userId}/updateProfile?address=${encodeURIComponent(
@@ -90,22 +87,19 @@ export default function Profile() {
 
   return (
     <div className="flex min-h-screen bg-black">
-      {/* Left Section with Image */}
       <div className="hidden md:flex md:w-1/2 lg:w-2/5 bg-gray-800">
         <img
-          src={require("../../Media/profile.jpg")} // Replace with your image URL
+          src={require("../../Media/profile.jpg")}
           alt="Profile Background"
           className="object-cover h-full w-full"
         />
-        <div className="absolute  left-0 p-4 text-white w-full text-left  rounded-b-lg">
+        <div className="absolute left-0 p-4 text-white w-full text-left rounded-b-lg">
           <h3 className="text-2xl font-bold mb-2">PROFILE</h3>
         </div>
       </div>
-
-      {/* Right Section with Profile Content */}
-      <div className="flex flex-col w-full md:w-1/2 lg:w-3/5 overflow-auto justify-center items-center ">
-        <div className="w-full max-w-lg mx-6 p-5 bg-gray-200 shadow-lg  rounded-2xl shadow-gray-100">
-          <div className=" bg-gray-200 rounded-lg">
+      <div className="flex flex-col w-full md:w-1/2 lg:w-3/5 overflow-auto justify-center items-center">
+        <div className="w-full max-w-lg mx-6 p-5 bg-gray-200 shadow-lg rounded-2xl shadow-gray-100">
+          <div className="bg-gray-200 rounded-lg">
             <div className="px-4 sm:px-0">
               <h3 className="text-2xl font-bold leading-7 text-blue-900">
                 My Profile
@@ -115,7 +109,6 @@ export default function Profile() {
               </p>
             </div>
             <div className="mt-6">
-              {/* Non-editable fields in a 2x2 grid */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div className="flex flex-col">
                   <label
@@ -147,7 +140,7 @@ export default function Profile() {
                     Mobile Number
                   </label>
                   <div className="mt-1 py-2 px-3 bg-gray-50 rounded-md shadow-sm">
-                    <span className=" text-blue-900  font-mono">+91</span>{" "}
+                    <span className="text-blue-900 font-mono">+91</span>{" "}
                     {formData.mobileNumber}
                   </div>
                 </div>
@@ -163,7 +156,6 @@ export default function Profile() {
                   </div>
                 </div>
               </div>
-              {/* Editable fields in a single column */}
               <div className="mt-4">
                 <div className="flex flex-col">
                   <label
@@ -184,7 +176,7 @@ export default function Profile() {
                       />
                     ) : (
                       <div className="py-2 px-3 bg-gray-50 rounded-md shadow-sm">
-                        <span className=" text-blue-900 font-mono">+91</span>{" "}
+                        <span className="text-blue-900 font-mono">+91</span>{" "}
                         {formData.altMobileNumber}
                       </div>
                     )}
