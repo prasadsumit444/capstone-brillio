@@ -1,20 +1,22 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useAuth } from "../Auth/AuthGuard";
+import { useNavigate } from "react-router-dom";
 
 const PrepaidPlans = () => {
-  //const {userId} = useAuth();
+  const { userId } = useAuth();
   const [plans, setPlans] = useState([]);
   const [filteredPlans, setFilteredPlans] = useState([]);
   const [activeFilter, setActiveFilter] = useState("All");
   const [currentPlan, setCurrentPlan] = useState(null);
   const [clickedPlanId, setClickedPlanId] = useState(null);
   const [searchQuery, setSearchQuery] = useState("");
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchPlans = async () => {
       try {
-        const response = await axios.get('http://localhost:8100/plans/prepaid'); // Replace with your actual API endpoint
+        const response = await axios.get('http://localhost:8100/plans/prepaid');
         const prepaidPlans = response.data.filter(plan => plan.planType === 'PREPAID');
         setPlans(prepaidPlans);
         setFilteredPlans(prepaidPlans);
@@ -25,7 +27,6 @@ const PrepaidPlans = () => {
 
     const fetchCurrentPlan = async () => {
       try {
-        const userId = 2; // Replace with dynamic user ID if needed
         const planResponse = await axios.get(`http://localhost:8100/user/${userId}/currentPlan`);
         setCurrentPlan(planResponse.data);
       } catch (error) {
@@ -35,7 +36,7 @@ const PrepaidPlans = () => {
 
     fetchPlans();
     fetchCurrentPlan();
-  }, []);
+  }, [userId]);
 
   const filterPlans = (category) => {
     setActiveFilter(category);
@@ -56,11 +57,15 @@ const PrepaidPlans = () => {
     const query = e.target.value.toLowerCase();
     setSearchQuery(query);
     setActiveFilter("All");
-    const filtered = plans.filter(plan => 
+    const filtered = plans.filter(plan =>
       plan.planBenefits.toLowerCase().includes(query) ||
       plan.planCategory.toLowerCase().includes(query)
     );
     setFilteredPlans(filtered);
+  };
+
+  const handleBuyPlan = (plan) => {
+    navigate('/payment-page', { state: { plan } });
   };
 
   return (
@@ -71,13 +76,13 @@ const PrepaidPlans = () => {
           <div className="mb-6">
             <input
               type="text"
-              className="w-3/12 px-5 ml-50  border border-gray-700 rounded-full"
+              className="w-3/12 px-5 ml-50 border border-gray-700 rounded-full"
               placeholder="Search plans (e.g., OTT, Unlimited or Data)"
               value={searchQuery}
               onChange={handleSearch}
             />
           </div>
-          <div 
+          <div
             className="flex justify-between items-center bg-blue-100 p-4 rounded-md mb-6"
             onClick={() => handlePlanClick('current')}
           >
@@ -85,12 +90,14 @@ const PrepaidPlans = () => {
               <>
                 <div className="text-gray-800">
                   <h2 className="font-bold">
-                    Current Plan: ₹ {currentPlan.planPrice}, 
+                    Current Plan: ₹ {currentPlan.planPrice},
                     Validity: {currentPlan.planValidity === 0 ? "Unlimited" : currentPlan.planValidity === 1 ? "1 Day" : `${currentPlan.planValidity} Days`}
                   </h2>
                   <p>{clickedPlanId === 'current' ? currentPlan.planBenefits : `${currentPlan.planBenefits.substring(0, 30)}...`}</p>
                 </div>
-                <button className="bg-blue-600 text-white px-4 py-2 rounded-md shadow hover:bg-blue-700">
+                <button className="bg-blue-600 text-white px-4 py-2 rounded-md shadow hover:bg-blue-700"
+                onClick={() => handleBuyPlan(currentPlan)}
+                >
                   Repeat Recharge
                 </button>
               </>
@@ -128,7 +135,10 @@ const PrepaidPlans = () => {
                     {clickedPlanId === plan.planId ? plan.planBenefits : `Description: ${plan.planBenefits.substring(0, 50)}...`}
                   </p>
                 </div>
-                <button className="bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded-md">
+                <button
+                  className="bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded-md"
+                  onClick={() => handleBuyPlan(plan)}
+                >
                   Buy Plan
                 </button>
               </div>
@@ -141,4 +151,3 @@ const PrepaidPlans = () => {
 };
 
 export default PrepaidPlans;
-
