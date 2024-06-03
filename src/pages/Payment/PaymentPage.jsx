@@ -301,13 +301,13 @@ const PaymentPage = () => {
   
   const location = useLocation();
   const { plan } = location.state || {};
-  const {userId} = useAuth();
   if (!plan) {
     return <div className="flex min-h-screen bg-gray-100 p-4">No plan details available.</div>;
   }
   const sendPaymentData = (paymentMode) => {
+    console.log(plan.planId)
     axios.post(`http://localhost:8102/transaction/userid/${userId}/paymentdetails`, {
-      planId: 1,
+      planId: plan.planId,
       paymentMode,
       transactionStatus: "SUCCESS"
     })
@@ -318,6 +318,7 @@ const PaymentPage = () => {
       console.error("Error sending payment data:", error);
     });
   };
+  console.log(plan.planId)
 
   const closeModal = () => {
     setPaymentSuccess(false);
@@ -382,7 +383,7 @@ const PaymentPage = () => {
         <div className="bg-white shadow-md rounded-lg p-6">
           <div className="mb-4">
             <h3 className="text-gray-800 font-medium">
-              {plan.planType} | 9880572182
+              {plan.planType} | {mobileNumber}
             </h3>
             <p className="text-gray-600">Bill Payment</p>
             <div className="border-t mt-4 pt-4">
