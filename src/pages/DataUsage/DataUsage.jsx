@@ -159,7 +159,7 @@ const DataUsage = () => {
               <h2 className="py-4 text-2xl mb-4 text-center">
                 Data Usage (Hourly)
               </h2>
-              <div className="chart-container w-full">
+              <div className="chart-container w-full h-96">
                 <Bar
                   data={barChartData(
                     usage.hourlyData,
@@ -184,7 +184,7 @@ const DataUsage = () => {
               <h2 className="py-4 text-2xl mb-4 text-center">
                 Voice Usage (Hourly)
               </h2>
-              <div className="chart-container w-full">
+              <div className="chart-container w-full h-96">
                 <Bar
                   data={barChartData(
                     usage.voiceHourly,
@@ -209,7 +209,7 @@ const DataUsage = () => {
               <h2 className="py-4 text-2xl mb-4 text-center">
                 SMS Usage (Hourly)
               </h2>
-              <div className="chart-container w-full">
+              <div className="chart-container w-full  h-96">
                 <Bar
                   data={barChartData(
                     usage.smsHourly,

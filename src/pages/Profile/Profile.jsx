@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useAuth } from "../Auth/AuthGuard";
 
-
 export default function Profile() {
   const [editMode, setEditMode] = useState(false); //The initial state is set to false in order to render edit on screen which is a button
   const [formData, setFormData] = useState({
