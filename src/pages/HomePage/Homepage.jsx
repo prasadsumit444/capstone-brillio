@@ -23,7 +23,7 @@ const HomePage = () => {
             />
             <div className="absolute bottom-0 left-0 p-4 text-white w-full text-center">
               <h2 className="text-3xl font-bold mb-2">Welcome to ASAAP</h2>
-              <p className="mb-4">
+              <p className="mb-4 dark:text-red-500">
                 Experience the best connectivity and services.
               </p>
             </div>
