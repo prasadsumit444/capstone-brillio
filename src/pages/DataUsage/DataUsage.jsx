@@ -26,7 +26,7 @@ const DataUsage = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get('http://localhost:8100/datausage/userId/3'); // Add userId dynamically here
+        const response = await axios.get('http://localhost:8100/datausage/userId/2'); // Add userId dynamically here
         console.log('Data Usage Response:', response.data); // Log API response
         const userData = response.data.dataUsageList.filter((usage) => usage.user.userId === 2); // Add userId dynamically here
 
