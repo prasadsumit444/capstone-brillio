@@ -1,11 +1,10 @@
 import React, { createContext, useContext } from "react";
 import { useState } from "react";
-import Signup from "./SignUp";
 
 const AuthContext = createContext(null);
 
 export const AuthGuard = ({ children }) => {
-  const [userId, setUser] = useState(3);
+  const [userId, setUser] = useState(null);
 
   const signup = (userId) => {
     setUser(userId);
@@ -21,7 +20,7 @@ export const AuthGuard = ({ children }) => {
 
   return (
     <div>
-      <AuthContext.Provider value={{ userId, login, logout, Signup }}>
+      <AuthContext.Provider value={{ userId, login, logout, signup }}>
         {children}
       </AuthContext.Provider>
     </div>

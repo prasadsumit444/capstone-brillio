@@ -186,8 +186,8 @@ const Setting = () => {
             <span className="text-md font-normal text-gray-700 mr-4">Set App Theme</span>
             <div className="inline-flex overflow-hidden rounded-md border bg-white shadow-sm">
               <button
-                onClick={() => isEditing && setTheme("Light")}
-                className={`border-1 px-3 py-2 ${theme === "Light"
+                onClick={() => isEditing && setTheme("LIGHT")}
+                className={`border-1 px-3 py-2 ${theme === "LIGHT"
                   ? "bg-blue-500 text-white"
                   : "text-gray-700 hover:bg-gray-50 focus:relative"
                   }`}
@@ -196,8 +196,8 @@ const Setting = () => {
                 Light
               </button>
               <button
-                onClick={() => isEditing && setTheme("Dark")}
-                className={`border-l px-3 py-2 ${theme === "Dark"
+                onClick={() => isEditing && setTheme("DARK")}
+                className={`border-l px-3 py-2 ${theme === "DARK"
                   ? "bg-blue-500 text-white"
                   : "text-gray-700 hover:bg-gray-50 focus:relative"
                   }`}
