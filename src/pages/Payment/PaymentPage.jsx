@@ -239,6 +239,17 @@ const PaymentPage = () => {
   const [paymentSuccess, setPaymentSuccess] = useState(false);
   const [showProcessing, setShowProcessing] = useState(false);
   const [timeRemaining, setTimeRemaining] = useState(300); // 5 minute timer
+  const [mobileNumber,setMobileNumber] =useState("");
+
+  useEffect(() => {
+    axios.get(`http://localhost:8101/user/${userId}/getUser`)
+      .then(response => {
+        setMobileNumber(response.data.mobileNumber);
+      })
+      .catch(error => {
+        console.error("Error fetching user data:", error);
+      });
+  }, [userId]);
 
   useEffect(() => {
     let interval;
@@ -358,7 +369,7 @@ const PaymentPage = () => {
         <div className="bg-white shadow-md rounded-lg p-6">
           <div className="mb-4">
             <h3 className="text-gray-800 font-medium">
-              Postpaid Bill | 9880572182
+              Postpaid Bill | {mobileNumber}
             </h3>
             <p className="text-gray-600">Bill Payment</p>
             <div className="border-t mt-4 pt-4">
