@@ -17,12 +17,6 @@ const DataUsage = () => {
     smsRemaining: 0,
   });
 
-  const [searchParams] = useSearchParams();
-
-  useEffect(() => {
-    if (searchParams.get("tab")) setActiveTab(searchParams.get("tab"));
-  }, []);
-
   useEffect(() => {
     const fetchData = async () => {
       try {
