@@ -4,7 +4,6 @@ import { useState } from 'react'
 const AuthContext = createContext(null)
 
 export const AuthGuard = ({ children }) => {
-    
     const [userId, setUser] = useState(null)
 
     const signup = (userId) => {
