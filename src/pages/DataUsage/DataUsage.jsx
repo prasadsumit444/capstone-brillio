@@ -16,18 +16,12 @@ const DataUsage = () => {
     voiceUsed: 0,
     smsRemaining: 0,
   });
-  const [searchParams] = useSearchParams();
-
-  useEffect(() => {
-    if (searchParams.get("tab")) setActiveTab(searchParams.get("tab"));
-  }, []);
-
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:8100/datausage/userId/3"
+          "http://localhost:8100/datausage/userId/1"
         ); // Add userId dynamically here
         console.log("Data Usage Response:", response.data); // Log API response
         const userData = response.data.dataUsageList.filter(
@@ -165,7 +159,7 @@ const DataUsage = () => {
               <h2 className="py-4 text-2xl mb-4 text-center">
                 Data Usage (Hourly)
               </h2>
-              <div className="chart-container w-full">
+              <div className="chart-container w-full h-96">
                 <Bar
                   data={barChartData(
                     usage.hourlyData,
@@ -190,7 +184,7 @@ const DataUsage = () => {
               <h2 className="py-4 text-2xl mb-4 text-center">
                 Voice Usage (Hourly)
               </h2>
-              <div className="chart-container w-full">
+              <div className="chart-container w-full h-96">
                 <Bar
                   data={barChartData(
                     usage.voiceHourly,
@@ -215,7 +209,7 @@ const DataUsage = () => {
               <h2 className="py-4 text-2xl mb-4 text-center">
                 SMS Usage (Hourly)
               </h2>
-              <div className="chart-container w-full">
+              <div className="chart-container w-full  h-96">
                 <Bar
                   data={barChartData(
                     usage.smsHourly,

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import { useAuth } from "../Auth/AuthGuard";
 
 export default function Profile() {
   const [editMode, setEditMode] = useState(false); //The initial state is set to false in order to render edit on screen which is a button
@@ -12,13 +13,15 @@ export default function Profile() {
     address: "",
     userStatus: "",
   });
+  const { userId } = useAuth();
+
   const [errors, setErrors] = useState({}); //taken as a state in order to render error messages
 
   useEffect(() => {
     //When the component mounts request for the data is sent to the backend
     // Fetch profile data from backend
     axios // axios is used for making a http req
-      .get("http://localhost:8104/account/profile/1/userProfile") //axios.get returns a promise
+      .get(`http://localhost:8104/account/profile/${userId}/userProfile`) //axios.get returns a promise
       .then((response) => {
         // we use it for resolved promise
         setFormData(response.data);
@@ -71,7 +74,7 @@ export default function Profile() {
       // Save the edited data to backend
       axios
         .patch(
-          `http://localhost:8104/account/profile/1/updateProfile?address=${encodeURIComponent(
+          `http://localhost:8104/account/profile/${userId}/updateProfile?address=${encodeURIComponent(
             formData.address
           )}&altMobileNumber=${encodeURIComponent(formData.altMobileNumber)}`
         )
