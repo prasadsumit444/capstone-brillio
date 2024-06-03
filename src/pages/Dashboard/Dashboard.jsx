@@ -3,6 +3,7 @@ import axios from "axios";
 import { Doughnut } from "react-chartjs-2";
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
 import { Link } from "react-router-dom";
+import { useAuth } from "../Auth/AuthGuard";
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
@@ -10,21 +11,22 @@ export default function Dashboard() {
   const [usageData, setUsageData] = useState({
     fullName: "User!",
     mobileNumber: "",
-    userStatus: "STATUS",
+    userStatus: "",
     planType: "",
-    planDescription:
-      "Hi there, We're thrilled to have you on board. It looks like you haven't chosen a plan yet. To start enjoying all the benefits and features we offer, explore our various plans and pick the one that suits you best.",
+    planDescription: "",
     planPrice: 0,
-    expiryDate: "Loading...",
+    expiryDate: "",
     planData: 100,
     remainingData: 0,
     planSms: 100,
     remainingSms: 0,
   });
 
+  const { userId } = useAuth();
+
   useEffect(() => {
     axios
-      .get("http://localhost:8104/account/dashboard/3/dashboardInfo") // Replace with your API endpoint
+      .get(`http://localhost:8104/account/dashboard/${userId}/dashboardInfo`) // Replace with your API endpoint
       .then((response) => {
         const {
           fullName,
@@ -57,11 +59,17 @@ export default function Dashboard() {
       .catch((error) => {
         console.error("There was an error fetching the usage data!", error);
       });
-  }, []);
+  }, [userId]);
 
   // Calculate used data
-  const usedData = usageData.planData - usageData.remainingData;
-  const usedSms = usageData.planSms - usageData.remainingSms;
+  const usedData =
+    usageData.planData == null
+      ? 100
+      : usageData.planData - usageData.remainingData;
+  const usedSms =
+    usageData.planSms == null
+      ? 100
+      : usageData.planSms - usageData.remainingSms;
 
   const dataUsage = {
     datasets: [
@@ -151,17 +159,24 @@ export default function Dashboard() {
             </div>
           </Link>
           <div className="bg-white rounded-lg shadow-md p-5 h-2/4">
-            <h2 className="text-4xl font-semibold text-gray-900 mb-6">
-              {usageData.planType}
+            <h2 className="text-3xl font-semibold text-gray-900 mb-6">
+              {usageData.planType == null
+                ? "Kindly Recharge"
+                : usageData.planType}
             </h2>
             <div className="text-2xl flex justify-between mb-4 text-gray-700">
               ₹ {usageData.planPrice}
             </div>
             <div className="text-xl flex justify-between mb-4 text-gray-700">
-              {usageData.planDescription}
+              {usageData.planDescription == null
+                ? "Hi there, We're thrilled to have you on board. It looks like you haven't chosen a plan yet. To start enjoying all the benefits and features we offer, explore our various plans and pick the one that suits you best."
+                : usageData.planDescription}
             </div>
             <div className="text-xl flex justify-between mb-3 text-gray-500">
-              Plan expires on: {usageData.expiryDate}
+              Plan expires on:{" "}
+              {usageData.expiryDate == null
+                ? "Loading..."
+                : usageData.expiryDate}
             </div>
           </div>
 

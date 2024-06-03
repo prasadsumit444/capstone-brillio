@@ -242,6 +242,17 @@ const PaymentPage = () => {
   const [paymentSuccess, setPaymentSuccess] = useState(false);
   const [showProcessing, setShowProcessing] = useState(false);
   const [timeRemaining, setTimeRemaining] = useState(300); // 5 minute timer
+  const [mobileNumber,setMobileNumber] =useState("");
+
+  useEffect(() => {
+    axios.get(`http://localhost:8101/user/${userId}/getUser`)
+      .then(response => {
+        setMobileNumber(response.data.mobileNumber);
+      })
+      .catch(error => {
+        console.error("Error fetching user data:", error);
+      });
+  }, [userId]);
 
   
 
