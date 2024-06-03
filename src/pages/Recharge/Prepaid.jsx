@@ -1,42 +1,41 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import { useAuth } from "../Auth/AuthGuard";
 
 const PrepaidPlans = () => {
+  //const {userId} = useAuth();
   const [plans, setPlans] = useState([]);
   const [filteredPlans, setFilteredPlans] = useState([]);
-  const [currentPlan, setCurrentPlan] = useState(null);
-  const [searchQuery, setSearchQuery] = useState("");
   const [activeFilter, setActiveFilter] = useState("All");
+  const [currentPlan, setCurrentPlan] = useState(null);
+  const [clickedPlanId, setClickedPlanId] = useState(null);
+  const [searchQuery, setSearchQuery] = useState("");
 
   useEffect(() => {
-    const fetchData = async () => {
+    const fetchPlans = async () => {
       try {
-        const response = await axios.get("http://localhost:8100/plans/prepaid");
-        const prepaidPlans = response.data.filter((plan) => plan.planType === "PREPAID");
+        const response = await axios.get('http://localhost:8100/plans/prepaid'); // Replace with your actual API endpoint
+        const prepaidPlans = response.data.filter(plan => plan.planType === 'PREPAID');
         setPlans(prepaidPlans);
         setFilteredPlans(prepaidPlans);
       } catch (error) {
-        console.error("Error fetching data:", error);
+        console.error('Error fetching plans:', error);
       }
     };
 
-    fetchData();
+    const fetchCurrentPlan = async () => {
+      try {
+        const userId = 2; // Replace with dynamic user ID if needed
+        const planResponse = await axios.get(`http://localhost:8100/user/${userId}/currentPlan`);
+        setCurrentPlan(planResponse.data);
+      } catch (error) {
+        console.error('Error fetching current plan:', error);
+      }
+    };
+
+    fetchPlans();
+    fetchCurrentPlan();
   }, []);
-
-  const handlePlanClick = (planId) => {
-    setCurrentPlan(planId === "current" ? null : planId);
-  };
-
-  const handleSearch = (e) => {
-    const query = e.target.value.toLowerCase();
-    setSearchQuery(query);
-    setActiveFilter("All");
-    const filtered = plans.filter((plan) =>
-      plan.planBenefits.toLowerCase().includes(query) ||
-      plan.planCategory.toLowerCase().includes(query)
-    );
-    setFilteredPlans(filtered);
-  };
 
   const filterPlans = (category) => {
     setActiveFilter(category);
@@ -44,9 +43,24 @@ const PrepaidPlans = () => {
     if (category === "All") {
       setFilteredPlans(plans);
     } else {
-      const filtered = plans.filter((plan) => plan.planCategory === category);
+      const filtered = plans.filter(plan => plan.planCategory === category);
       setFilteredPlans(filtered);
     }
+  };
+
+  const handlePlanClick = (planId) => {
+    setClickedPlanId(clickedPlanId === planId ? null : planId);
+  };
+
+  const handleSearch = (e) => {
+    const query = e.target.value.toLowerCase();
+    setSearchQuery(query);
+    setActiveFilter("All");
+    const filtered = plans.filter(plan => 
+      plan.planBenefits.toLowerCase().includes(query) ||
+      plan.planCategory.toLowerCase().includes(query)
+    );
+    setFilteredPlans(filtered);
   };
 
   return (
@@ -57,24 +71,41 @@ const PrepaidPlans = () => {
           <div className="mb-6">
             <input
               type="text"
-              className="w-3/12 px-5 ml-50 border border-gray-700 rounded-full"
+              className="w-3/12 px-5 ml-50  border border-gray-700 rounded-full"
               placeholder="Search plans (e.g., OTT, Unlimited or Data)"
               value={searchQuery}
               onChange={handleSearch}
             />
           </div>
+          <div 
+            className="flex justify-between items-center bg-blue-100 p-4 rounded-md mb-6"
+            onClick={() => handlePlanClick('current')}
+          >
+            {currentPlan ? (
+              <>
+                <div className="text-gray-800">
+                  <h2 className="font-bold">
+                    Current Plan: ₹ {currentPlan.planPrice}, 
+                    Validity: {currentPlan.planValidity === 0 ? "Unlimited" : currentPlan.planValidity === 1 ? "1 Day" : `${currentPlan.planValidity} Days`}
+                  </h2>
+                  <p>{clickedPlanId === 'current' ? currentPlan.planBenefits : `${currentPlan.planBenefits.substring(0, 30)}...`}</p>
+                </div>
+                <button className="bg-blue-600 text-white px-4 py-2 rounded-md shadow hover:bg-blue-700">
+                  Repeat Recharge
+                </button>
+              </>
+            ) : (
+              <span className="text-gray-800">Seems you don't have a plan. Please recharge!!</span>
+            )}
+          </div>
           <div className="mb-6 flex space-x-4">
-            {["All", "Data", "Unlimited", "TalkTime"].map((category) => (
+            {['All', 'Data', 'Unlimited', 'TalkTime'].map(category => (
               <button
                 key={category}
-                className={`border-2 px-6 py-2 rounded-full ${
-                  activeFilter === category
-                    ? "bg-blue-600 border-blue-600 text-white"
-                    : "bg-white border-gray-400 text-gray-800"
-                }`}
+                className={`border-2 px-6 py-2 rounded-full ${activeFilter === category ? 'bg-blue-600 border-blue-600 text-white' : 'bg-white border-gray-400 text-gray-800'}`}
                 onClick={() => filterPlans(category)}
               >
-                {category === "All" ? "All Plans" : `${category} Packs`}
+                {category === 'All' ? 'All Plans' : `${category} Packs`}
               </button>
             ))}
           </div>
@@ -89,18 +120,12 @@ const PrepaidPlans = () => {
                   <div className="flex justify-between items-center">
                     <h3 className="text-2xl font-bold text-blue-600 mb-2">₹ {plan.planPrice}</h3>
                     <h3 className="text-md font-medium text-gray-500 mb-2">
-                      {plan.planValidity === 0
-                        ? "Unlimited"
-                        : plan.planValidity === 1
-                        ? "1 Day"
-                        : `${plan.planValidity} Days`}
+                      {plan.planValidity === 0 ? "Unlimited" : plan.planValidity === 1 ? "1 Day" : `${plan.planValidity} Days`}
                     </h3>
                   </div>
                   <hr className="my-2" />
                   <p className="text-gray-700 mb-4">
-                    {currentPlan === plan.planId
-                      ? plan.planBenefits
-                      : `Description: ${plan.planBenefits.substring(0, 50)}...`}
+                    {clickedPlanId === plan.planId ? plan.planBenefits : `Description: ${plan.planBenefits.substring(0, 50)}...`}
                   </p>
                 </div>
                 <button className="bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded-md">
@@ -116,3 +141,4 @@ const PrepaidPlans = () => {
 };
 
 export default PrepaidPlans;
+

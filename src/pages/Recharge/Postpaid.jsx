@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 
-const RechargePlans = () => {
+const PostpaidPlans = () => {
   const [plans, setPlans] = useState([]);
   const [filteredPlans, setFilteredPlans] = useState([]);
   const [clickedPlanId, setClickedPlanId] = useState(null);
@@ -81,4 +81,4 @@ const RechargePlans = () => {
   );
 };
 
-export default RechargePlans;
+export default PostpaidPlans;

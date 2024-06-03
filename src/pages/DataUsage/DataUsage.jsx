@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Bar } from 'react-chartjs-2';
 import 'chart.js/auto';
 import axios from 'axios';
+import { useSearchParams } from 'react-router-dom';
 
 const DataUsage = () => {
   const [usage, setUsage] = useState({
@@ -16,12 +17,18 @@ const DataUsage = () => {
     smsRemaining: 0,
   });
 
+  const [searchParams] = useSearchParams();
+ 
+  useEffect(() => {
+    if (searchParams.get("tab")) setActiveTab(searchParams.get("tab"));
+  }, []);
+
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get('http://localhost:8100/datausage/userId/1');
+        const response = await axios.get('http://localhost:8100/datausage/userId/3'); // Add userId dynamically here
         console.log('Data Usage Response:', response.data); // Log API response
-        const userData = response.data.dataUsageList.filter((usage) => usage.user.userId === 1);
+        const userData = response.data.dataUsageList.filter((usage) => usage.user.userId === 2); // Add userId dynamically here
 
         const hourlyData = Array.from({ length: 24 }, (_, i) => {
           const data = userData.find((usage) => usage.usageHour === i);

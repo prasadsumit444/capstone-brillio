@@ -35,7 +35,7 @@ const HomePage = () => {
               className="w-full h-auto"
             />
             <div className="absolute bottom-0 left-0 p-4 text-white w-full text-center">
-              <h2 className="text-3xl font-bold mb-2">Join Jio Today</h2>
+              <h2 className="text-3xl font-bold mb-2">Join ASSAP Today</h2>
               <p className="mb-4">Unlimited plans and offers await you.</p>
             </div>
           </div>
@@ -51,7 +51,7 @@ const HomePage = () => {
             </h2>
             <p className="text-gray-700 mb-4">
               Watch 900+ TV channels, stream content in more than 18 languages,
-              and much more on the JioTV app.
+              and much more on the Entertainment app.
             </p>
           </div>
           <div>
@@ -114,7 +114,7 @@ const HomePage = () => {
                   className="w-full rounded-lg shadow-md"
                 />
                 <div className="absolute bottom-0 left-0 p-4 text-white w-full text-center  rounded-b-lg">
-                  <h3 className="text-xl font-bold mb-2">JioSaavn</h3>
+                  <h3 className="text-xl font-bold mb-2">Tune Into ASSAP</h3>
                   <p className="mb-2">
                     Create your own playlist for long drives
                   </p>
@@ -127,8 +127,8 @@ const HomePage = () => {
                   className="w-full rounded-lg shadow-md"
                 />
                 <div className="absolute bottom-0 left-0 p-4 text-white w-full text-center  rounded-b-lg">
-                  <h3 className="text-xl font-bold mb-2">JioCinema</h3>
-                  <p className="mb-2">Brings American OTT shows</p>
+                  <h3 className="text-xl font-bold mb-2">ASSAP Entertainment</h3>
+                  <p className="mb-2">Brings world class OTT shows</p>
                 </div>
               </div>
             </div>
@@ -153,7 +153,7 @@ const HomePage = () => {
                 </svg>
               </div>
               <h3 className="text-xl font-bold mb-2">
-                International roaming packs
+                Launching International roaming packs
               </h3>
               <p className="text-gray-700 mb-4 text-center">
                 Enjoy international Wi-Fi calling, in-flight connectivity,
