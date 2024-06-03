@@ -22,11 +22,6 @@ const DataUsage = () => {
     if (searchParams.get("tab")) setActiveTab(searchParams.get("tab"));
   }, []);
 
-  const [searchParams] = useSearchParams();
-
-  useEffect(() => {
-    if (searchParams.get("tab")) setActiveTab(searchParams.get("tab"));
-  }, []);
 
   useEffect(() => {
     const fetchData = async () => {
