@@ -74,7 +74,7 @@ export default function Dashboard() {
   const dataUsage = {
     datasets: [
       {
-        data: [usedData, usageData.remainingData],
+        data: [usedData, usageData.remainingData || 0],
         backgroundColor: ["#e0f2fe", "#1e40af"],
         hoverBackgroundColor: ["#e0f2fe", "#1d4ed8"],
         borderWidth: 1,
@@ -87,7 +87,7 @@ export default function Dashboard() {
   const smsUsage = {
     datasets: [
       {
-        data: [usedSms, usageData.remainingSms],
+        data: [usedSms, usageData.remainingSms || 0],
         backgroundColor: ["#e0f2fe", "#1e40af"],
         hoverBackgroundColor: ["#e0f2fe", "#1d4ed8"],
         borderWidth: 1,
@@ -122,16 +122,22 @@ export default function Dashboard() {
     cutout: "70%",
   };
 
-  const renderCenterText = (chartData, label) => {
+  const renderCenterText = (chartData, isDataUsage) => {
     const remaining = chartData.datasets[0].data[1];
 
-    // Check if we are rendering data usage
-    const isDataUsage = label.toLowerCase().includes("mb");
     const remainingText = isDataUsage
       ? remaining > 1024
         ? `${(remaining / 1024).toFixed(2)} GB`
-        : `${remaining.toFixed(2)} MB`
+        : remaining != null
+        ? `${remaining.toFixed(2)} MB`
+        : "0 MB"
       : remaining;
+
+    const label = isDataUsage
+      ? remaining > 1024
+        ? "data Left"
+        : "Left"
+      : "SMS Left";
 
     return (
       <div className="text-center">
@@ -219,7 +225,7 @@ export default function Dashboard() {
               <div className="relative h-24">
                 <Doughnut data={dataUsage} options={options} />
                 <div className="absolute inset-0 flex items-center justify-center pl-24 pb-6">
-                  {renderCenterText(dataUsage, "MB Left")}
+                  {renderCenterText(dataUsage, true)}
                 </div>
               </div>
             </div>
@@ -230,7 +236,7 @@ export default function Dashboard() {
               <div className="relative h-24">
                 <Doughnut data={smsUsage} options={options} />
                 <div className="absolute inset-0 flex items-center justify-center pl-24 pb-6">
-                  {renderCenterText(smsUsage, "SMS Left")}
+                  {renderCenterText(smsUsage, false)}
                 </div>
               </div>
             </div>
