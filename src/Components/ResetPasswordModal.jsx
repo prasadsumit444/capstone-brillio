@@ -1,5 +1,7 @@
 import axios from "axios";
 import React, { useState } from "react";
+import { useNotification } from "../../src/pages/NotificationContext";
+
 
 export function ResetPasswordModal({ onClose }) {
     const [isValidationComplete, setIsValidationComplete] = useState(false);
@@ -12,6 +14,7 @@ export function ResetPasswordModal({ onClose }) {
     const [verifiedUserId, setVerifiedUserId] = useState(null);
 
     const [mobileNumberError, setMobileNumberError] = useState("");
+    const { showNotification } = useNotification();
 
     const SecurityQuestions = {
         "MOTHERS_MAIDEN_NAME": "What is your mother's maiden name?",
@@ -59,15 +62,16 @@ export function ResetPasswordModal({ onClose }) {
                 setVerifiedUserId(response.data);
                 setIsValidationComplete(true);
                 setIsVisible(false);
+                showNotification("User Validated", "success");
             }).catch((error) => {
-                alert("Invalid User")
+                showNotification("Invalid User", "error");
             })
         }
     };
 
     const handleResetPassword = () => {
         if (confirmPassword !== newPassword) {
-            alert("Passwords do not match");
+            showNotification("Passwords do not match", "error");
         } else {
             axios.patch(`http://localhost:8101/user/${verifiedUserId}/changePassword`, null, {
                 params: {
@@ -75,11 +79,11 @@ export function ResetPasswordModal({ onClose }) {
                 }
             })
                 .then(response => {
-                    alert("Password reset successfully. Please Login.");
+                    showNotification("Password reset successfully. Please Login.", "success");
                     onClose();
                 })
                 .catch(error => {
-                    console.error("Error changing password:", error);
+                    showNotification("Error changing password", "error");
                 });
         }
     }

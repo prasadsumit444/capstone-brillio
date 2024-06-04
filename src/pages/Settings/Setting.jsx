@@ -5,6 +5,7 @@ import { FaEdit, FaSave } from 'react-icons/fa';
 import { ConfirmationModal } from "../../Components/ConfirmationModal.jsx";
 import { ThemeContext } from "../../Components/ThemeContext.jsx";
 import { useNavigate } from "react-router-dom";
+import { useNotification } from "./../NotificationContext";
 
 const Setting = () => {
   const [promotionalEmailNotification, setPromotionalEmailNotification] = useState("ON");
@@ -21,6 +22,7 @@ const Setting = () => {
   const { userId, logout } = useAuth();
   const { theme, setTheme } = useContext(ThemeContext);
   const navigate = useNavigate();
+  const { showNotification } = useNotification();
 
   const suspendServiceMessage = "Are you sure you want to suspend your service?";
   const resumeServiceMessage = "Do you  want to resume your service?";
@@ -70,10 +72,10 @@ const Setting = () => {
       }
     })
       .then(response => {
-        console.log("Settings saved successfully:", response.data);
+        showNotification("Settings saved successfully", "success");
       })
       .catch(error => {
-        console.error("Error saving settings:", error);
+        showNotification("Error saving settings", "error");
       });
   };
 
@@ -105,6 +107,7 @@ const Setting = () => {
         setShowDeleteAccountModal(false);
         logout();
         navigate("/");
+        showNotification("Account Deleted", "success");
       })
 
   };
@@ -116,12 +119,11 @@ const Setting = () => {
       }
     })
       .then(response => {
-        alert(response.data)
+        showNotification("Password Verified", "success");
         setIsPasswordVerified(true);
       })
       .catch(error => {
-        alert("Password is incorrect");
-        console.error(error);
+        showNotification("Password is incorrect", "error");
       });
   };
 
@@ -132,13 +134,13 @@ const Setting = () => {
       }
     })
       .then(response => {
-        alert("Password changed successfully.");
+        showNotification("Password changed successfully", "success");
         setIsPasswordVerified(false);
         setOldPassword("");
         setNewPassword("");
       })
       .catch(error => {
-        console.error("Error changing password:", error);
+        showNotification("Error changing password", "error");
       });
   };
 
