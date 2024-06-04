@@ -1,13 +1,13 @@
 import axios from "axios";
 import React, { useState } from "react";
 import { useAuth } from './AuthGuard'
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import '../../App.css';
 
 
 export default function Signup() {
 
-  const auth = useAuth();
+  const { signup } = useAuth();
   const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
@@ -21,19 +21,96 @@ export default function Signup() {
     promotionalEmails: "OFF"
   });
 
+  const [mobileNumberError, setMobileNumberError] = useState("");
+  const [emailIdError, setEmailIdError] = useState("");
+  const [passwordError, setPasswordError] = useState("");
+
   const SecurityQuestions = {
     "MOTHERS_MAIDEN_NAME": "What is your mother's maiden name?",
     "FIRST_PET_NAME": "What is the name of your first pet?",
     "CITY_OF_BIRTH": "Which city were you born in?"
   };
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
+  const handleMobileNumberChange = (e) => {
+    let value = e.target.value;
+
+    // Remove non-numeric characters
+    value = value.replace(/\D/g, '');
+
+    // Validate the first digit
+    if (value.length > 0 && !/^[6-9]/.test(value)) {
+      return;
+    }
+
+    // Truncate to 10 digits
+    if (value.length > 10) {
+      value = value.slice(0, 10);
+    }
+
+  // Update the form data
     setFormData({
       ...formData,
-      [name]: value
+      mobileNumber: value
     });
+
+    // Check if the mobile number is valid
+    const mobileNumberPattern = /^[6-9]\d{9}$/;
+    if (mobileNumberPattern.test(value)) {
+      setMobileNumberError("");
+    } else {
+      setMobileNumberError("Invalid mobile number");
+    }
   };
+
+
+  const handleEmailChange = (e) => {
+    const email = e.target.value.trim();
+
+    // Email validation regex pattern
+    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    setFormData({
+      ...formData,
+      emailId: email
+    });
+    // Check if the entered email matches the pattern
+    if (emailPattern.test(email)) {
+      setEmailIdError("");
+    } else {
+      setEmailIdError("Invalid email address")
+    }
+  }
+
+
+  const handlePasswordChange = (e) => {
+    const password = e.target.value;
+
+    const minLength = 8; // Minimum length of the password
+    const containsUpperCase = /[A-Z]/.test(password); // At least one uppercase letter
+    const containsLowerCase = /[a-z]/.test(password); // At least one lowercase letter
+    const containsNumber = /\d/.test(password); // At least one digit
+    const containsSpecial = /[@#$%]/.test(password); // Only @, #, $, and % as special characters
+
+    setFormData({
+      ...formData,
+      password: password
+    });
+
+    // Check if password meets all validation criteria
+    if (password.length >= minLength &&
+      containsUpperCase &&
+      containsLowerCase &&
+      containsNumber &&
+      containsSpecial) {
+      setPasswordError("");
+    } else {
+      // If password is not strong enough, you may handle it appropriately,
+      // like displaying an error message or preventing form submission.
+      // For now, let's log an error message.
+      setPasswordError("Weak password")
+    }
+  }
+
 
   const handleCheckbox = (e) => {
     setFormData({
@@ -45,20 +122,25 @@ export default function Signup() {
   const handleSignup = async (e) => {
     e.preventDefault();
 
-    axios.post("http://localhost:8101/user/signup", JSON.stringify(formData), {
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    })
-      .then(function (response) {
-        // handle success
-        auth.signup(response.data);
-        navigate("/dashboard")
+    if (mobileNumberError === "" && emailIdError === "") {
+      axios.post("http://localhost:8101/user/signup", JSON.stringify(formData), {
+        headers: {
+          'Content-Type': 'application/json'
+        }
       })
-      .catch(function (error) {
-        // handle error
-        alert("Signup failed. User already exists");
-      });
+        .then(function (response) {
+          // handle success
+          signup(response.data);
+          navigate("/dashboard")
+        })
+        .catch(function (error) {
+      // handle error
+          alert("Signup failed");
+        });
+    }
+    else {
+      alert("Resolve erorrs to Signup")
+    }
   };
 
   return (
@@ -118,8 +200,12 @@ export default function Signup() {
                   type="text"
                   id="fullName"
                   name="fullName"
+                  value={formData.fullName}
                   className="mt-1 w-full rounded-md border-gray-200 bg-white text-sm text-gray-700 shadow-sm font-normal"
-                  onChange={handleChange}
+                  onChange={(e) => setFormData({
+                    ...formData,
+                    fullName: e.target.value
+                  })}
                 />
               </div>
 
@@ -127,15 +213,21 @@ export default function Signup() {
                 <label htmlFor="mobileNumber" className="block text-xs font-medium text-gray-700">
                   Mobile Number
                 </label>
-
-                <input
-                  required
-                  type="text"
-                  id="mobileNumber"
-                  name="mobileNumber"
-                  className="mt-1 w-full rounded-md border-gray-200 bg-white text-sm text-gray-700 shadow-sm font-normal"
-                  onChange={handleChange}
-                />
+                <div className="mt-1 flex rounded-md shadow-sm">
+                  <span className="inline-flex items-center px-3 rounded-l-md border border-r-0 border-gray-200 bg-gray-50 text-gray-500 text-sm">
+                    +91
+                  </span>
+                  <input
+                    required
+                    type="number"
+                    id="mobileNumber"
+                    name="mobileNumber"
+                    value={formData.mobileNumber}
+                    onChange={handleMobileNumberChange}
+                    className="w-full rounded-r-md border-gray-200 bg-white text-sm text-gray-700  font-normal"
+                  />
+                </div>
+                {mobileNumberError && <p className="mt-1 text-xs text-red-600">{mobileNumberError}</p>}
               </div>
 
               <div className="col-span-6 sm:col-span-3">
@@ -146,9 +238,11 @@ export default function Signup() {
                   type="email"
                   id="emailId"
                   name="emailId"
+                  value={formData.emailId}
                   className="mt-1 w-full rounded-md border-gray-200 bg-white text-sm text-gray-700 shadow-sm font-normal"
-                  onChange={handleChange}
+                  onChange={handleEmailChange}
                 />
+                {emailIdError && <p className="mt-1 text-xs text-red-600">{emailIdError}</p>}
               </div>
 
               <div className="col-span-6 sm:col-span-3">
@@ -159,9 +253,11 @@ export default function Signup() {
                   type="password"
                   id="password"
                   name="password"
+                  value={formData.password}
                   className="mt-1 w-full rounded-md border-gray-200 bg-white text-sm text-gray-700 shadow-sm font-normal"
-                  onChange={handleChange}
+                  onChange={handlePasswordChange}
                 />
+                {passwordError && <p className="mt-1 text-xs text-yellow-600">{passwordError}</p>}
               </div>
               <div className="col-span-6 ">
                 <label htmlFor="password" className="block text-xs font-medium text-gray-700 textarea-restricted"> Address </label>
@@ -170,8 +266,12 @@ export default function Signup() {
                   required
                   id="address"
                   name="address"
+                  value={formData.address}
                   className="mt-1 w-full rounded-md border-gray-200 bg-white text-sm text-gray"
-                  onChange={handleChange}
+                  onChange={(e) => setFormData({
+                    ...formData,
+                    address: e.target.value
+                  })}
                   rows="2"
                   maxLength="200"
                   style={{ resize: 'none', maxHeight: '6em' }} // Adjust maxHeight to fit 4 rows based on line height
@@ -180,7 +280,13 @@ export default function Signup() {
 
               <div className="col-span-6">
                 <label htmlFor="securityQuestion" className="block text-xs font-medium text-gray-700"> Security Question </label>
-                <select required id="securityQuestion" name="securityQuestion" className="mt-1 w-full rounded-md border-gray-200 bg-white text-sm text-gray-700 shadow-sm font-normal" onChange={handleChange}>
+                <select required id="securityQuestion" name="securityQuestion" className="mt-1 w-full rounded-md border-gray-200 bg-white text-sm text-gray-700 shadow-sm font-normal"
+                  value={formData.securityQuestion}
+                  onChange={(e) => setFormData({
+                    ...formData,
+                    securityQuestion: e.target.value
+                  })}
+                >
                   <option value="" disabled selected>Select a security question</option>
                   {Object.keys(SecurityQuestions).map(key => (
                     <option key={key} value={key}>{SecurityQuestions[key]}</option>
@@ -195,8 +301,12 @@ export default function Signup() {
                   placeholder="Your answer"
                   id="securityAnswer"
                   name="securityAnswer"
+                  value={formData.securityAnswer}
                   className="mt-1 w-full rounded-md border-gray-200 bg-white text-sm text-gray-700 shadow-sm"
-                  onChange={handleChange}
+                  onChange={(e) => setFormData({
+                    ...formData,
+                    securityAnswer: e.target.value
+                  })}
                 />
               </div>
 
@@ -220,7 +330,6 @@ export default function Signup() {
               <div className="col-span-6 sm:flex sm:items-center sm:gap-2">
                 <button
                   type="submit"
-                  onClick={handleSignup}
                   className="inline-block shrink-0 rounded-md border border-blue-600 bg-blue-600 px-12 py-3 text-sm font-medium text-white transition hover:bg-transparent hover:text-blue-600 focus:outline-none focus:ring active:text-blue-500"
                 >
                   Create an account
@@ -228,7 +337,7 @@ export default function Signup() {
 
                 <p className="mt-2 text-xs text-gray-500 sm:mt-0">
                   Already have an account?
-                  <a href="/login" className="text-blue-900 font-semibold"> Login</a>.
+                  <Link to="/login" className="text-blue-900 font-semibold"> Login</Link>.
                 </p>
               </div>
             </form>

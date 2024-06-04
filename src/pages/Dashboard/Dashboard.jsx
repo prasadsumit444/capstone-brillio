@@ -11,12 +11,11 @@ export default function Dashboard() {
   const [usageData, setUsageData] = useState({
     fullName: "User!",
     mobileNumber: "",
-    userStatus: "STATUS",
-    planType: "Kindly Recharge",
-    planDescription:
-      "Hi there, We're thrilled to have you on board. It looks like you haven't chosen a plan yet. To start enjoying all the benefits and features we offer, explore our various plans and pick the one that suits you best.",
+    userStatus: "",
+    planType: "",
+    planDescription: "",
     planPrice: 0,
-    expiryDate: "Loading...",
+    expiryDate: "",
     planData: 100,
     remainingData: 0,
     planSms: 100,
@@ -60,17 +59,23 @@ export default function Dashboard() {
       .catch((error) => {
         console.error("There was an error fetching the usage data!", error);
       });
-  }, []);
+  }, [userId]);
 
   // Calculate used data
-  const usedData = usageData.planData - usageData.remainingData;
-  const usedSms = usageData.planSms - usageData.remainingSms;
+  const usedData =
+    usageData.planData == null
+      ? 100
+      : usageData.planData - usageData.remainingData;
+  const usedSms =
+    usageData.planSms == null
+      ? 100
+      : usageData.planSms - usageData.remainingSms;
 
   const dataUsage = {
     datasets: [
       {
         data: [usedData, usageData.remainingData],
-        backgroundColor: ["#e0f2fe", "#1e3a8a"],
+        backgroundColor: ["#e0f2fe", "#1e40af"],
         hoverBackgroundColor: ["#e0f2fe", "#1d4ed8"],
         borderWidth: 1,
         borderColor: "#ffffff",
@@ -83,7 +88,7 @@ export default function Dashboard() {
     datasets: [
       {
         data: [usedSms, usageData.remainingSms],
-        backgroundColor: ["#e0f2fe", "#1e3a8a"],
+        backgroundColor: ["#e0f2fe", "#1e40af"],
         hoverBackgroundColor: ["#e0f2fe", "#1d4ed8"],
         borderWidth: 1,
         borderColor: "#ffffff",
@@ -96,7 +101,7 @@ export default function Dashboard() {
     datasets: [
       {
         data: [100, 0],
-        backgroundColor: ["#e0f2fe", "#1e3a8a"],
+        backgroundColor: ["#e0f2fe", "#1e40af"],
         hoverBackgroundColor: ["#e0f2fe", "#1d4ed8"],
         borderWidth: 1,
         borderColor: "#ffffff",
@@ -129,16 +134,7 @@ export default function Dashboard() {
   };
 
   return (
-    <div className="flex flex-col md:flex-row min-h-screen bg-black ">
-      {/* Left Section with Image */}
-      <div className="hidden md:flex md:w-2/4 rounded-lg">
-        <img
-          src={require("../../Media/pexels-cottonbro-3205612.jpg")} // Replace with your image URL
-          alt="Profile Background"
-          className="object-cover h-full w-full"
-        />
-      </div>
-
+    <div className="flex flex-col md:flex-row min-h-screen bg-gray-100 p-12">
       <div className="flex flex-col md:flex-row flex-grow m-4 space-x-0 md:space-x-4 space-y-4 md:space-y-0">
         {/* Center Column: Plan Details and Data Usage */}
         <div className="flex-1 flex flex-col space-y-4">
@@ -155,16 +151,23 @@ export default function Dashboard() {
           </Link>
           <div className="bg-white rounded-lg shadow-md p-5 h-2/4">
             <h2 className="text-3xl font-semibold text-gray-900 mb-6">
-              {usageData.planType}
+              {usageData.planType == null
+                ? "Kindly Recharge"
+                : usageData.planType}
             </h2>
             <div className="text-2xl flex justify-between mb-4 text-gray-700">
               ₹ {usageData.planPrice}
             </div>
             <div className="text-xl flex justify-between mb-4 text-gray-700">
-              {usageData.planDescription}
+              {usageData.planDescription == null
+                ? "Hi there, We're thrilled to have you on board. It looks like you haven't chosen a plan yet. To start enjoying all the benefits and features we offer, explore our various plans and pick the one that suits you best."
+                : usageData.planDescription}
             </div>
             <div className="text-xl flex justify-between mb-3 text-gray-500">
-              Plan expires on: {usageData.expiryDate}
+              Plan expires on:{" "}
+              {usageData.expiryDate == null
+                ? "Loading..."
+                : usageData.expiryDate}
             </div>
           </div>
 

@@ -129,34 +129,34 @@ const Setting = () => {
   };
 
   return (
-    <div className="flex justify-center items-center min-h-screen bg-gray-100 ">
-      <div className="w-4/5 lg:w-3/5 bg-white p-8 shadow-lg rounded-lg mt-4 relative">
-        <h2 className="text-3xl font-bold mb-6 text-blue-500 dark:text-red-500">Account Settings</h2>
+    <div className="flex justify-center items-center min-h-screen bg-gray-100 dark:bg-gray-900">
+      <div className="w-4/5 lg:w-3/5 bg-white dark:bg-gray-800 p-8 shadow-lg rounded-lg mt-4 relative">
+        <h2 className="text-3xl font-bold mb-6 text-blue-500 dark:text-blue-400">Account Settings</h2>
         <button
           onClick={toggleEditMode}
-          className="absolute top-4 right-4 px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 flex items-center"
+          className="absolute top-4 right-4 px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 dark:bg-blue-600 dark:hover:bg-blue-700 flex items-center"
         >
           {isEditing ? <FaSave className="mr-2" /> : <FaEdit className="mr-2" />}
           {isEditing ? 'Save' : 'Edit'}
         </button>
 
         <div className="mb-8">
-          <h3 className="text-lg font-bold text-blue-500 mb-2">Email Preferences</h3>
-          <p className="text-sm text-gray-700 mb-4">
+          <h3 className="text-lg font-bold text-blue-500 dark:text-blue-400 mb-2">Email Preferences</h3>
+          <p className="text-sm text-gray-700 dark:text-gray-300 mb-4">
             Update your email preferences to receive tailored offers and updates
             from Asaap, the leading telecommunications company. Stay informed
             with relevant information tailored to your needs.
           </p>
           <div className="flex items-center justify-between px-4">
-            <span className="text-md font-normal text-gray-700 mr-4">
+            <span className="text-md font-normal text-gray-700 dark:text-gray-300 mr-4">
               Receive promotional emails
             </span>
-            <div className="inline-flex overflow-hidden rounded-md border bg-white shadow-sm">
+            <div className="inline-flex overflow-hidden rounded-md border bg-white dark:bg-gray-700 shadow-sm">
               <button
                 onClick={() => isEditing && setPromotionalEmailNotification("ON")}
                 className={`border-1 px-3 py-2 ${promotionalEmailNotification === "ON"
                   ? "bg-blue-500 text-white"
-                  : "text-gray-700 hover:bg-gray-50 focus:relative"
+                  : "text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-600 focus:relative"
                   }`}
                 disabled={!isEditing}
               >
@@ -166,7 +166,7 @@ const Setting = () => {
                 onClick={() => isEditing && setPromotionalEmailNotification("OFF")}
                 className={`border-l px-3 py-2 ${promotionalEmailNotification === "OFF"
                   ? "bg-blue-500 text-white"
-                  : "text-gray-700 hover:bg-gray-50 focus:relative"
+                  : "text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-600 focus:relative"
                   }`}
                 disabled={!isEditing}
               >
@@ -177,29 +177,29 @@ const Setting = () => {
         </div>
 
         <div className="mb-8">
-          <h3 className="text-lg font-bold text-blue-500 mb-2">App Theme</h3>
-          <p className="text-sm text-gray-700 mb-4">
+          <h3 className="text-lg font-bold text-blue-500 dark:text-blue-400 mb-2">App Theme</h3>
+          <p className="text-sm text-gray-700 dark:text-gray-300 mb-4">
             Customize your Asaap app experience with your preferred theme.
             Choose between a light or dark theme for optimal comfort.
           </p>
           <div className="flex items-center justify-between px-4">
-            <span className="text-md font-normal text-gray-700 mr-4">Set App Theme</span>
-            <div className="inline-flex overflow-hidden rounded-md border bg-white shadow-sm">
+            <span className="text-md font-normal text-gray-700 dark:text-gray-300 mr-4">Set App Theme</span>
+            <div className="inline-flex overflow-hidden rounded-md border bg-white dark:bg-gray-700 shadow-sm">
               <button
-                onClick={() => isEditing && setTheme("Light")}
-                className={`border-1 px-3 py-2 ${theme === "Light"
+                onClick={() => isEditing && setTheme("LIGHT")}
+                className={`border-1 px-3 py-2 ${theme === "LIGHT"
                   ? "bg-blue-500 text-white"
-                  : "text-gray-700 hover:bg-gray-50 focus:relative"
+                  : "text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-600 focus:relative"
                   }`}
                 disabled={!isEditing}
               >
                 Light
               </button>
               <button
-                onClick={() => isEditing && setTheme("Dark")}
-                className={`border-l px-3 py-2 ${theme === "Dark"
+                onClick={() => isEditing && setTheme("DARK")}
+                className={`border-l px-3 py-2 ${theme === "DARK"
                   ? "bg-blue-500 text-white"
-                  : "text-gray-700 hover:bg-gray-50 focus:relative"
+                  : "text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-600 focus:relative"
                   }`}
                 disabled={!isEditing}
               >
@@ -210,47 +210,47 @@ const Setting = () => {
         </div>
 
         <div className="mb-8">
-          <h3 className="text-lg font-bold text-blue-500 mb-2">Temporarily Suspend Service</h3>
-          <p className="text-sm text-gray-700 mb-4">
+          <h3 className="text-lg font-bold text-blue-500 dark:text-blue-400 mb-2">Temporarily Suspend Service</h3>
+          <p className="text-sm text-gray-700 dark:text-gray-300 mb-4">
             If you need to temporarily pause your Asaap service, you can do so
             here. This feature is particularly useful if you are traveling or
             need to temporarily halt your service for any reason.
           </p>
           <button
             onClick={() => handleShowSuspendServiceModal(true)}
-            className="px-4 py-2 bg-yellow-500 text-white rounded-md hover:bg-yellow-600"
+            className="px-4 py-2 bg-yellow-500 text-white rounded-md hover:bg-yellow-600 dark:bg-yellow-600 dark:hover:bg-yellow-700"
           >
             {userStatus === "ACTIVE" ? 'Suspend Service' : 'Activate Service'}
           </button>
         </div>
 
         <div className="mt-8">
-          <h3 className="text-lg font-bold text-blue-500 mb-2">Delete Account</h3>
-          <p className="text-sm text-gray-700 mb-4">
+          <h3 className="text-lg font-bold text-blue-500 dark:text-blue-400 mb-2">Delete Account</h3>
+          <p className="text-sm text-gray-700 dark:text-gray-300 mb-4">
             If you wish to permanently delete your Asaap account, please proceed
             carefully. This action{" "}
-            <span className="text-red-500">cannot be undone</span>. Deleting
+            <span className="text-red-500 dark:text-red-400">cannot be undone</span>. Deleting
             your account will result in the loss of all your data and services
             associated with your Jio account.
           </p>
           <button
             onClick={() => handleShowDeleteAccountModal(true)}
-            className="px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-600"
+            className="px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-600 dark:bg-red-600 dark:hover:bg-red-700"
           >
             Delete Account
           </button>
         </div>
 
         <div className="mt-8">
-          <h3 className="text-lg font-bold text-blue-500 mb-2">Change Password</h3>
-          <p className="text-sm text-gray-700 mb-4">
+          <h3 className="text-lg font-bold text-blue-500 dark:text-blue-400 mb-2">Change Password</h3>
+          <p className="text-sm text-gray-700 dark:text-gray-300 mb-4">
             Update your account password for enhanced security. Please verify
             your old password before setting a new one.
           </p>
           {!isPasswordVerified ? (
             <div className="flex gap-4 items-end">
               <div className="">
-                <label className="block text-xs font-medium text-blue-500" htmlFor="oldPassword">
+                <label className="block text-xs font-medium text-blue-500 dark:text-blue-400" htmlFor="oldPassword">
                   Old Password
                 </label>
                 <input
@@ -258,12 +258,12 @@ const Setting = () => {
                   type="password"
                   value={oldPassword}
                   onChange={(e) => setOldPassword(e.target.value)}
-                  className="mt-1 w-64 rounded-md border-gray-200 bg-white text-sm text-gray-700 shadow-sm font-normal"
+                  className="mt-1 w-64 rounded-md border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-700 text-sm text-gray-700 dark:text-gray-300 shadow-sm font-normal"
                 />
               </div>
               <button
                 onClick={handlePasswordVerify}
-                className="px-4 py-2 h-10 bg-blue-500 text-white rounded-md hover:bg-blue-600"
+                className="px-4 py-2 h-10 bg-blue-500 text-white rounded-md hover:bg-blue-600 dark:bg-blue-600 dark:hover:bg-blue-700"
               >
                 Verify
               </button>
@@ -271,20 +271,20 @@ const Setting = () => {
           ) : (
             <div className="flex gap-4 items-end">
               <div className="">
-                <label className="block text-xs font-medium text-blue-500" htmlFor="newPassword">
-                  New Password
-                </label>
-                <input
-                  id="newPassword"
-                  type="password"
-                  value={newPassword}
-                  onChange={(e) => setNewPassword(e.target.value)}
-                  className="mt-1 w-64 rounded-md border-gray-200 bg-white text-sm text-gray-700 shadow-sm font-normal"
-                />
-              </div>
-              <button
-                onClick={handleChangePassword}
-                className="px-4 py-2 h-10 bg-blue-500 text-white rounded-md hover:bg-blue-600"
+                  <label className="block text-xs font-medium text-blue-500 dark:text-blue-400" htmlFor="newPassword">
+                    New Password
+                  </label>
+                  <input
+                    id="newPassword"
+                    type="password"
+                    value={newPassword}
+                    onChange={(e) => setNewPassword(e.target.value)}
+                    className="mt-1 w-64 rounded-md border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-700 text-sm text-gray-700 dark:text-gray-300 shadow-sm font-normal"
+                  />
+                </div>
+                <button
+                  onClick={handleChangePassword}
+                  className="px-4 py-2 h-10 bg-blue-500 text-white rounded-md hover:bg-blue-600 dark:bg-blue-600 dark:hover:bg-blue-700"
               >
                 Submit
               </button>
@@ -310,6 +310,7 @@ const Setting = () => {
         )}
       </div>
     </div>
+
   );
 };
 
