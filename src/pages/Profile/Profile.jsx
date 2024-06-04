@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useAuth } from "../Auth/AuthGuard";
+import { useNotification } from "./../NotificationContext";
 
 export default function Profile() {
+  const { showNotification } = useNotification();
   const [editMode, setEditMode] = useState(false);
   const [formData, setFormData] = useState({
     fullName: "",
@@ -80,6 +82,7 @@ export default function Profile() {
         .catch((error) => {
           console.error("Error updating profile:", error);
         });
+      showNotification("Profile Updated successfully", "success");
     }
     setEditMode((prev) => !prev);
   };
