@@ -56,7 +56,7 @@ const HomePage = () => {
           </div>
           <div>
             <img
-              src="https://via.placeholder.com/300x150"
+             src={require("../../Media/OTT.png")}
               alt="Unlimited entertainment"
               className="w-full rounded-lg shadow-md"
             />
@@ -67,7 +67,7 @@ const HomePage = () => {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-12">
           <div>
             <img
-              src="https://via.placeholder.com/300x150"
+              src={require("../../Media/High-speed.png")}
               alt="Reliable connectivity"
               className="w-full rounded-lg shadow-md"
             />
@@ -109,7 +109,7 @@ const HomePage = () => {
             <div className="grid grid-cols-1 gap-6">
               <div className="relative">
                 <img
-                  src="https://via.placeholder.com/300x150"
+                  src={require("../../Media/Music.png")}
                   alt="JioSaavn"
                   className="w-full rounded-lg shadow-md"
                 />
@@ -122,7 +122,7 @@ const HomePage = () => {
               </div>
               <div className="relative">
                 <img
-                  src="https://via.placeholder.com/300x150"
+                  src={require("../../Media/Entertetment.png")}
                   alt="JioCinema"
                   className="w-full rounded-lg shadow-md"
                 />
