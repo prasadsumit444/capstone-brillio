@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios"; // Import Axios
-import { tickets } from "./constant";
+
 
 const TicketStatus = () => {
   const [activeTab, setActiveTab] = useState("OPEN");
@@ -9,7 +9,7 @@ const TicketStatus = () => {
 
   useEffect(() => {
     // Fetch data when component mounts
-    axios.get("http://localhost:8103/supportticket/alltickets")
+    axios.get("http://localhost:8103/supportticket/ticketstatus/2")
       .then(response => {
         // Handle success, set tickets data
         setTicketsData(response.data);
