@@ -263,10 +263,17 @@ const steps = [
 
 const App = () => {
   const [showChat, setShowChat] = useState(false);
+  // const [isDarkTheme, setIsDarkTheme] = useState(false);
 
   const toggleChat = () => {
     setShowChat(!showChat);
   };
+
+  // const toggleTheme = () => {
+  //   setIsDarkTheme(!isDarkTheme);
+  // };
+
+  // const theme = isDarkTheme ? darkTheme : lightTheme;
 
   return (
     <div className="App">

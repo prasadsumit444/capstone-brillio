@@ -16,14 +16,14 @@ const SupportCard = ({ title, description, icon: Icon, to }) => {
     >
       <div className="p-6 flex flex-col justify-between h-full  dark:bg-gray-600 rounded-xl">
         <div className="text-center">
-          <Icon className="  text-6xl text-blue-600 mb-4  dark:text-white" />
-          <h2 className="text-3xl font-semibold text-blue-600 mb-2  dark:text-white">{title}</h2>
+          <Icon className="  text-6xl text-blue-600 mb-4  dark:text-blue-400" />
+          <h2 className="text-3xl font-semibold text-blue-600 mb-2  dark:text-blue-400">{title}</h2>
           <p className="text-lg text-gray-700 dark:text-white">{description}</p>
         </div>
         <div className="text-center mt-4">
           <Link
             to={to}
-            className="inline-block bg-blue-600 text-white px-6 py-3 rounded-full shadow hover:bg-blue-700  dark:bg-gray-900"
+            className="inline-block bg-blue-600 text-white px-6 py-3 rounded-full shadow hover:bg-blue-700 dark:hover:bg-blue-800"
           >
             {title}
           </Link>
@@ -38,7 +38,7 @@ export default function SupportPage() {
     <div className="min-h-screen bg-gray-100 flex flex-col items-center py-10 dark:bg-gray-900">
       {/* Welcome Section */}
       <div className="bg-blue-600 w-full p-12 rounded-lg shadow-lg text-center mb-12  dark:bg-gray-800 ">
-        <h1 className="text-5xl font-bold text-white mb-6">Welcome to ASAAP Support!</h1>
+        <h1 className="text-5xl font-bold text-blue-300 mb-6">Welcome to ASAAP Support!</h1>
         <p className="text-xl text-white">
           We are here to assist you with any queries or issues you may have.
         </p>

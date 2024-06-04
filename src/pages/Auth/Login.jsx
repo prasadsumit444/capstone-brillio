@@ -4,11 +4,14 @@ import '../../App.css';
 import axios from "axios";
 import { useAuth } from './AuthGuard'
 import { Link, useNavigate } from "react-router-dom";
+import { useNotification } from "./../NotificationContext";
+
 
 export default function Login() {
 
   const { login } = useAuth()
   const navigate = useNavigate();
+  const { showNotification } = useNotification();
 
   const [showResetPasswordModal, setShowResetPasswordModal] = useState(false);
   const [mobileNumber, setMobileNumber] = useState("");
@@ -64,14 +67,12 @@ export default function Login() {
         }
       })
         .then(function (response) {
-          // handle success
           login(response.data);
           navigate("/dashboard")
-
+          showNotification("Login successful", "success");
         })
         .catch(function (error) {
-        // handle error
-          alert("Login failed. Invalid Credentials");
+          showNotification("Login failed. Invalid Credentials", "error");
         });
     }
 

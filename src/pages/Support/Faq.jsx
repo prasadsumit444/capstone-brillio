@@ -92,9 +92,9 @@ const Faq = () => {
   };
  
   return (
-    <div className="flex flex-col min-h-screen bg-gray-100 dark:bg-gray-800">
+    <div className="flex flex-col min-h-screen bg-gray-100 dark:bg-gray-900">
       <div className="flex-grow max-w-4xl w-full mx-auto mt-10 p-6">
-        <h2 className="text-2xl font-bold pb-4 mb-4 dark:text-white">
+        <h2 className="text-2xl font-bold pb-4 mb-4 dark:text-blue-400">
           Frequently Asked Questions
         </h2>
         {faqData.map((item, index) => (
