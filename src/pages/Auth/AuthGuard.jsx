@@ -1,10 +1,21 @@
-import React, { createContext, useContext } from "react";
+import React, { createContext, useContext, useEffect } from "react";
 import { useState } from "react";
 
 const AuthContext = createContext(null);
 
 export const AuthGuard = ({ children }) => {
-  const [userId, setUser] = useState(null);
+  const [userId, setUser] = useState(() => {
+    return localStorage.getItem("userId");
+  });
+
+  useEffect(() => {
+
+    if (userId) {
+      localStorage.setItem("userId", userId);
+    } else {
+      localStorage.removeItem("userId");
+    }
+  }, [userId]);
 
   const signup = (userId) => {
     setUser(userId);

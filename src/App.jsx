@@ -1,13 +1,12 @@
 import Navbar from "./Components/Navbar";
-import React, { useRef } from "react";
+import React from "react";
 
 import Login from "./pages/Auth/Login";
 import SignUp from "./pages/Auth/SignUp";
-import Recharge from "./pages/Recharge/Recharge";
 import Prepaid from "./pages/Recharge/Prepaid";
 import Postpaid from "./pages/Recharge/Postpaid";
 import Faq from "./pages/Support/Faq";
-import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 import AuthenticatedRoutes from "./AuthenticatedRoutes";
 import ChatBot from "./pages/Support/ChatBot";
 import SupportPage from "./pages/Support/SupportPage";
@@ -29,7 +28,6 @@ function App() {
                 <Route path="/" element={<HomePage />} />
                 <Route path="/login" element={<Login />} />
                 <Route path="/signup" element={<SignUp />} />
-                <Route path="/recharge" element={<Recharge />} />
                 <Route path="/prepaid" element={<Prepaid />} />
                 <Route path="/postpaid" element={<Postpaid />} />
                 <Route path="/faq" element={<Faq />} />
