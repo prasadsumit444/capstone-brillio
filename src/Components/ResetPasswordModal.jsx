@@ -11,26 +11,58 @@ export function ResetPasswordModal({ onClose }) {
     const [confirmPassword, setConfirmPassword] = useState("");
     const [verifiedUserId, setVerifiedUserId] = useState(null);
 
+    const [mobileNumberError, setMobileNumberError] = useState("");
+
     const SecurityQuestions = {
         "MOTHERS_MAIDEN_NAME": "What is your mother's maiden name?",
         "FIRST_PET_NAME": "What is the name of your first pet?",
         "CITY_OF_BIRTH": "Which city were you born in?"
     };
 
+    const handleMobileNumberChange = (e) => {
+        let value = e.target.value;
+
+        // Remove non-numeric characters
+        value = value.replace(/\D/g, '');
+
+        // Validate the first digit
+        if (value.length > 0 && !/^[6-9]/.test(value)) {
+            return;
+        }
+
+        // Truncate to 10 digits
+        if (value.length > 10) {
+            value = value.slice(0, 10);
+        }
+
+        // Update the form data
+        setMobileNumber(value);
+
+        // Check if the mobile number is valid
+        const mobileNumberPattern = /^[6-9]\d{9}$/;
+        if (mobileNumberPattern.test(value)) {
+            setMobileNumberError("");
+        } else {
+            setMobileNumberError("Invalid mobile number");
+        }
+    };
+
     const handleValidationComplete = () => {
-        axios.get("http://localhost:8101/user/verifyUser", {
-            params: {
-                mobileNumber: mobileNumber,
-                securityQuestion: securityQuestion,
-                securityAnswer: securityAnswer
-            }
-        }).then((response) => {
-            setVerifiedUserId(response.data);
-            setIsValidationComplete(true);
-            setIsVisible(false);
-        }).catch((error) => {
-            alert("Invalid User")
-        })
+        if (mobileNumberError === "") {
+            axios.get("http://localhost:8101/user/verifyUser", {
+                params: {
+                    mobileNumber: mobileNumber,
+                    securityQuestion: securityQuestion,
+                    securityAnswer: securityAnswer
+                }
+            }).then((response) => {
+                setVerifiedUserId(response.data);
+                setIsValidationComplete(true);
+                setIsVisible(false);
+            }).catch((error) => {
+                alert("Invalid User")
+            })
+        }
     };
 
     const handleResetPassword = () => {
@@ -52,6 +84,16 @@ export function ResetPasswordModal({ onClose }) {
         }
     }
 
+    const handleSubmit = (e) => {
+        e.preventDefault();
+
+        if (isValidationComplete) {
+            handleResetPassword();
+        } else {
+            handleValidationComplete();
+        }
+    }
+
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
             <div className="bg-white p-6 rounded-md shadow-md w-96">
@@ -61,24 +103,35 @@ export function ResetPasswordModal({ onClose }) {
                         &times;
                     </button>
                 </div>
-                <form>
+                <form onSubmit={handleSubmit}>
                     <div className={`mb-4 ${isVisible ? '' : 'hidden'}`}>
-                        <label htmlFor="resetMobileNumber" className="block text-xs font-medium text-gray-700">
-                            Mobile Number
-                        </label>
-                        <input
-                            type="text"
-                            id="resetMobileNumber"
-                            value={mobileNumber}
-                            onChange={(e) => setMobileNumber(e.target.value)}
-                            className="mt-1 w-full rounded-md border-gray-200 bg-white text-sm text-gray-700 shadow-sm"
-                        />
+                        <div className="col-span-6">
+                            <label htmlFor="mobileNumber" className="block text-xs font-medium text-gray-700">
+                                Mobile Number
+                            </label>
+                            <div className="mt-1 flex rounded-md shadow-sm">
+                                <span className="inline-flex items-center px-3 rounded-l-md border border-r-0 border-gray-200 bg-gray-50 text-gray-500 text-sm">
+                                    +91
+                                </span>
+                                <input
+                                    required
+                                    type="number"
+                                    id="mobileNumber"
+                                    name="mobileNumber"
+                                    value={mobileNumber}
+                                    onChange={handleMobileNumberChange}
+                                    className="w-full rounded-r-md border-gray-200 bg-white text-sm text-gray-700  font-normal"
+                                />
+                            </div>
+                            {mobileNumberError && <p className="mt-1 text-xs text-red-600">{mobileNumberError}</p>}
+                        </div>
                     </div>
                     <div className={`mb-4 ${isVisible ? '' : 'hidden'}`}>
                         <label htmlFor="securityQuestion" className="block text-xs font-medium text-gray-700">
                             Security Question
                         </label>
                         <select id="securityQuestion"
+                            required
                             name="securityQuestion"
                             value={securityQuestion}
                             onChange={(e) => setSecurityQuestion(e.target.value)}
@@ -96,6 +149,7 @@ export function ResetPasswordModal({ onClose }) {
                         <input
                             type="text"
                             id="securityAnswer"
+                            required
                             value={securityAnswer}
                             onChange={(e) => setSecurityAnswer(e.target.value)}
                             className="mt-1 w-full rounded-md border-gray-200 bg-white text-sm text-gray-700 shadow-sm"
@@ -110,6 +164,7 @@ export function ResetPasswordModal({ onClose }) {
                                 <input
                                     type="password"
                                     id="newPassword"
+                                    required
                                     value={newPassword}
                                     onChange={(e) => setNewPassword(e.target.value)}
                                     className="mt-1 w-full rounded-md border-gray-200 bg-white text-sm text-gray-700 shadow-sm"
@@ -122,6 +177,7 @@ export function ResetPasswordModal({ onClose }) {
                                 <input
                                     type="password"
                                     id="confirmPassword"
+                                    required
                                     value={confirmPassword}
                                     onChange={(e) => setConfirmPassword(e.target.value)}
                                     className="mt-1 w-full rounded-md border-gray-200 bg-white text-sm text-gray-700 shadow-sm"
@@ -130,26 +186,12 @@ export function ResetPasswordModal({ onClose }) {
                         </>
                     )}
                     <div className="flex justify-end">
-                        {
-                            isValidationComplete ? (
-                                <button
-                                    type="button"
-                                    className="inline-block rounded-md border border-blue-600 bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-transparent hover:text-blue-600 focus:outline-none focus:ring"
-                                    onClick={handleResetPassword}
-                                >
-                                    Submit
-                                </button>
-                            ) : (
-                                <button
-                                    type="button"
-                                    className="inline-block rounded-md border border-blue-600 bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-transparent hover:text-blue-600 focus:outline-none focus:ring"
-                                    onClick={handleValidationComplete}
-                                >
-                                    Verify Details
-                                </button>
-                            )
-                        }
-
+                        <button
+                            type="submit"
+                            className="inline-block rounded-md border border-blue-600 bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-transparent hover:text-blue-600 focus:outline-none focus:ring"
+                        >
+                            {isValidationComplete ? "Submit" : "Verify Details"}
+                        </button>
                     </div>
                 </form>
             </div>
