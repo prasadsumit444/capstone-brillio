@@ -3,12 +3,14 @@ import React, { useState } from "react";
 import { useAuth } from './AuthGuard'
 import { Link, useNavigate } from "react-router-dom";
 import '../../App.css';
+import { useNotification } from "./../NotificationContext";
 
 
 export default function Signup() {
 
   const { signup } = useAuth();
   const navigate = useNavigate();
+  const { showNotification } = useNotification();
 
   const [formData, setFormData] = useState({
     fullName: "",
@@ -96,7 +98,7 @@ export default function Signup() {
       password: password
     });
 
-    // Check if password meets all validation criteria
+
     if (password.length >= minLength &&
       containsUpperCase &&
       containsLowerCase &&
@@ -104,9 +106,6 @@ export default function Signup() {
       containsSpecial) {
       setPasswordError("");
     } else {
-      // If password is not strong enough, you may handle it appropriately,
-      // like displaying an error message or preventing form submission.
-      // For now, let's log an error message.
       setPasswordError("Weak password")
     }
   }
@@ -129,17 +128,16 @@ export default function Signup() {
         }
       })
         .then(function (response) {
-          // handle success
           signup(response.data);
           navigate("/dashboard")
+          showNotification("Signup successful", "success");
         })
         .catch(function (error) {
-      // handle error
-          alert("Signup failed");
+          showNotification("Signup failed", "error");
         });
     }
     else {
-      alert("Resolve erorrs to Signup")
+      showNotification("Resolve erorrs to Signup", "error");
     }
   };
 
