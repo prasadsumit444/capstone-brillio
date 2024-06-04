@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import axios from "axios";
-import { useNotification } from "./../NotificationContext"; // Ensure correct path
+import { useNotification } from "./../NotificationContext";
+import { useAuth } from "../Auth/AuthGuard"; // Ensure correct path
+
 
 const TicketGeneration = () => {
   const [formData, setFormData] = useState({ description: "", issueType: "GENERAL_ENQUIRIES" });
@@ -20,6 +22,7 @@ const TicketGeneration = () => {
     }
   };
 
+  const {userId} = useAuth()
   const validateForm = () => {
     let errors = {};
     if (!formData.description) errors.description = "Description is required";
@@ -37,7 +40,7 @@ const TicketGeneration = () => {
           ticketStatus: "OPEN",
           timeStamp: timestamp
         };
-        const response = await axios.post("http://localhost:8103/supportticket/generateticket/2", dataToSend);
+        const response = await axios.post(`http://localhost:8103/supportticket/generateticket/${userId}`, dataToSend);
         console.log("Form Data Submitted:", response.data);
         showNotification("Ticket submitted successfully", "success");
         // Reset form after successful submission
@@ -66,12 +69,13 @@ const TicketGeneration = () => {
   
 
   return (
-    <div className="bg-white shadow-lg rounded-lg max-w-4xl w-full mx-auto mt-12 p-8 hover:shadow-blue-200">
-      <h2 className="text-3xl font-bold mb-8">Generate a Support Ticket</h2>
+    
+    <div className="bg-white  shadow-lg rounded-lg max-w-4xl w-full mx-auto mt-12 p-8 hover:shadow-blue-200 dark:bg-gray-800">
+      <h2 className="text-3xl font-bold mb-8 dark:text-white">Generate a Support Ticket</h2>
       <form onSubmit={handleSubmit}>
-        <div className="mb-6">
-          <label className="block text-gray-700 font-semibold mb-3" htmlFor="issueType">
-            Issue Type
+        <div className="mb-6 ">
+          <label className="block text-gray-700 font-semibold mb-3 dark:text-black" htmlFor="issueType">
+            <span className="dark:text-white">Issue Type</span> <span className="text-red-500">*</span>
           </label>
           <select
             id="issueType"
@@ -86,9 +90,9 @@ const TicketGeneration = () => {
             <option value="ACCOUNT_ISSUES">Account Issues</option>
           </select>
         </div>
-        <div className="mb-6">
+        <div className="mb-6 ">
           <label className="block text-gray-700 font-semibold mb-3" htmlFor="description">
-            Description <span className="text-red-500">*</span>
+           <span className="dark:text-white">Description</span>  <span className="text-red-500">*</span>
           </label>
           <textarea
             id="description"
@@ -105,13 +109,15 @@ const TicketGeneration = () => {
         <div className="flex justify-center">
           <button
             type="submit"
-            className="inline-block shrink-0 rounded-md border border-blue-600 bg-blue-600 px-6 py-3 text-lg font-medium text-white transition hover:bg-transparent hover:text-blue-600 focus:outline-none focus:ring active:text-blue-500"
+            className="inline-block shrink-0 rounded-md border border-blue-600 bg-blue-600 px-6 py-3 text-lg font-medium text-white transition hover:bg-transparent hover:text-blue-600 focus:outline-none focus:ring active:text-blue-500  dark:hover:bg-white"
           >
             Submit Ticket
           </button>
         </div>
       </form>
+      
     </div>
+    
   );
 };
 
