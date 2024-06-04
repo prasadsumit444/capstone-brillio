@@ -18,7 +18,15 @@ const Invoices = () => {
     try {
       const result = await axios.get(`http://localhost:8102/transaction/invoice/userid/${userId}`);
       // Sort invoices by startDate in descending order
-      const sortedInvoices = result.data.sort((a, b) => new Date(b.startDate) - new Date(a.startDate));
+      const sortedInvoices = result.data.sort((a, b) => {
+        const dateA = new Date(a.startDate);
+        const dateB = new Date(b.startDate);
+  
+        // Debugging: log the dates being compared
+        console.log("Comparing dates:", dateA, dateB);
+  
+        return dateB - dateA;
+      });
       setInvoices(sortedInvoices);
     } catch (error) {
       console.error(error);
