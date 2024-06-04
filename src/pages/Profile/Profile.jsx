@@ -79,6 +79,11 @@ export default function Profile() {
           address: "Address is required",
         }));
         return;
+      } else {
+        setErrors((prev) => ({
+          ...prev,
+          address: "",
+        }));
       }
 
       axios
