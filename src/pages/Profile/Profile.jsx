@@ -13,7 +13,6 @@ export default function Profile() {
     userStatus: "",
   });
   const { userId } = useAuth();
-
   const [errors, setErrors] = useState({});
 
   useEffect(() => {
@@ -86,10 +85,10 @@ export default function Profile() {
   };
 
   return (
-    <div className="flex min-h-screen bg-black">
-      <div className="hidden md:flex md:w-1/2 lg:w-2/5 bg-gray-800">
+    <div className="flex min-h-screen bg-gray-100 dark:bg-gray-900">
+      <div className="hidden md:flex md:w-1/2 lg:w-2/5 bg-gray-800 dark:bg-gray-700">
         <img
-          src={require("../../Media/profile.jpg")}
+          src={require("../../Media/pexels-greta-hoffman-7675861.jpg")}
           alt="Profile Background"
           className="object-cover h-full w-full"
         />
@@ -97,14 +96,14 @@ export default function Profile() {
           <h3 className="text-2xl font-bold mb-2">PROFILE</h3>
         </div>
       </div>
-      <div className="flex flex-col w-full md:w-1/2 lg:w-3/5 overflow-auto justify-center items-center">
-        <div className="w-full max-w-lg mx-6 p-5 bg-gray-200 shadow-lg rounded-2xl shadow-gray-100">
-          <div className="bg-gray-200 rounded-lg">
+      <div className="flex flex-col w-full md:w-1/2 lg:w-3/5 overflow-auto justify-center items-center ">
+        <div className="w-full max-w-lg mx-6 p-5 bg-white shadow-lg shadow-blue-300 dark:bg-gray-800 dark:shadow-lg rounded-2xl dark:shadow-gray-300">
+          <div className="bg-white dark:bg-gray-800 rounded-lg">
             <div className="px-4 sm:px-0">
-              <h3 className="text-2xl font-bold leading-7 text-blue-900">
+              <h3 className="text-2xl font-bold leading-7 text-blue-900 dark:text-blue-300">
                 My Profile
               </h3>
-              <p className="mt-1 text-sm text-gray-600">
+              <p className="mt-1 text-sm text-gray-600 dark:text-white">
                 Please review and update your personal details.
               </p>
             </div>
@@ -113,45 +112,47 @@ export default function Profile() {
                 <div className="flex flex-col">
                   <label
                     htmlFor="fullName"
-                    className="block text-sm font-medium text-blue-900"
+                    className="block text-sm font-medium text-blue-900 dark:text-blue-300"
                   >
                     Full Name
                   </label>
-                  <div className="mt-1 py-2 px-3 bg-gray-50 rounded-md shadow-sm">
+                  <div className="mt-1 py-2 px-3 bg-gray-50 dark:bg-gray-400 rounded-md shadow-sm">
                     {formData.fullName}
                   </div>
                 </div>
                 <div className="flex flex-col">
                   <label
                     htmlFor="email"
-                    className="block text-sm font-medium text-blue-900"
+                    className="block text-sm font-medium text-blue-900 dark:text-blue-300"
                   >
                     Email ID
                   </label>
-                  <div className="mt-1 py-2 px-3 bg-gray-50 rounded-md shadow-sm">
+                  <div className="mt-1 py-2 px-3 bg-gray-50 dark:bg-gray-400 rounded-md shadow-sm">
                     {formData.emailId}
                   </div>
                 </div>
                 <div className="flex flex-col">
                   <label
                     htmlFor="mobileNumber"
-                    className="block text-sm font-medium text-blue-900"
+                    className="block text-sm font-medium text-blue-900 dark:text-blue-300"
                   >
                     Mobile Number
                   </label>
-                  <div className="mt-1 py-2 px-3 bg-gray-50 rounded-md shadow-sm">
-                    <span className="text-blue-900 font-mono">+91</span>{" "}
+                  <div className="mt-1 py-2 px-3 bg-gray-50 dark:bg-gray-400 rounded-md shadow-sm">
+                    <span className="text-blue-900 dark:text-blue-900 font-mono">
+                      +91
+                    </span>{" "}
                     {formData.mobileNumber}
                   </div>
                 </div>
                 <div className="flex flex-col">
                   <label
                     htmlFor="userStatus"
-                    className="block text-sm font-medium text-blue-900"
+                    className="block text-sm font-medium text-blue-900 dark:text-blue-300"
                   >
                     User Status
                   </label>
-                  <div className="mt-1 py-2 px-3 bg-gray-50 rounded-md shadow-sm">
+                  <div className="mt-1 py-2 px-3 bg-gray-50 dark:bg-gray-400 rounded-md shadow-sm">
                     {formData.userStatus}
                   </div>
                 </div>
@@ -160,7 +161,7 @@ export default function Profile() {
                 <div className="flex flex-col">
                   <label
                     htmlFor="altMobileNumber"
-                    className="block text-sm font-medium text-blue-900"
+                    className="block text-sm font-medium text-blue-900 dark:text-blue-300"
                   >
                     Alternate Mobile Number
                   </label>
@@ -171,12 +172,14 @@ export default function Profile() {
                         name="altMobileNumber"
                         value={formData.altMobileNumber}
                         onChange={handleChange}
-                        className="border border-gray-300 px-3 py-2 w-full rounded-md shadow-sm"
+                        className="border border-gray-300 dark:border-gray-400 px-3 py-2 w-full rounded-md shadow-sm bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-white"
                         maxLength="10"
                       />
                     ) : (
-                      <div className="py-2 px-3 bg-gray-50 rounded-md shadow-sm">
-                        <span className="text-blue-900 font-mono">+91</span>{" "}
+                      <div className="py-2 px-3 bg-gray-50 dark:bg-gray-400 rounded-md shadow-sm">
+                        <span className="text-blue-900 dark:text-blue-900 font-mono">
+                          +91
+                        </span>{" "}
                         {formData.altMobileNumber}
                       </div>
                     )}
@@ -190,7 +193,7 @@ export default function Profile() {
                 <div className="flex flex-col mt-4">
                   <label
                     htmlFor="address"
-                    className="block text-sm font-medium text-blue-900"
+                    className="block text-sm font-medium text-blue-900 dark:text-blue-300"
                   >
                     Address
                   </label>
@@ -200,10 +203,10 @@ export default function Profile() {
                         name="address"
                         value={formData.address}
                         onChange={handleChange}
-                        className="border border-gray-300 px-3 py-2 w-full h-24 rounded-md resize-none shadow-sm"
+                        className="border border-gray-300 dark:border-gray-400 px-3 py-2 w-full h-24 rounded-md resize-none shadow-sm bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-white"
                       />
                     ) : (
-                      <div className="py-2 px-3 bg-gray-50 rounded-md shadow-sm">
+                      <div className="py-2 px-3 bg-gray-50 dark:bg-gray-400 rounded-md shadow-sm">
                         {formData.address}
                       </div>
                     )}
@@ -214,7 +217,7 @@ export default function Profile() {
             <div className="mt-6 flex justify-center">
               <button
                 onClick={toggleEditMode}
-                className="bg-blue-500 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded shadow-lg"
+                className="bg-blue-500 hover:bg-blue-700 dark:bg-blue-600 dark:hover:bg-blue-800 text-white font-semibold py-2 px-4 rounded shadow-lg"
               >
                 {editMode ? "Save" : "Edit"}
               </button>
