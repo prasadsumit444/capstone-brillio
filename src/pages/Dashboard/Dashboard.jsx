@@ -194,10 +194,10 @@ export default function Dashboard() {
             </h2>
             <div className="flex justify-around">
               <Link
-                to="/"
+                to="/transaction"
                 className="text-blue-600 hover:text-blue-800 transition-colors duration-200 dark:text-white dark:hover:text-blue-300"
               >
-                Home
+                Transactions
               </Link>
               <Link
                 to="/support"

@@ -56,11 +56,14 @@ export default function Profile() {
   };
 
   const toggleEditMode = () => {
+    const { altMobileNumber, address } = formData;
+
     if (editMode) {
       if (
-        formData.altMobileNumber.length !== 10 ||
-        !/^[6-9]/.test(formData.altMobileNumber) ||
-        formData.altMobileNumber === formData.mobileNumber
+        !altMobileNumber ||
+        altMobileNumber.length !== 10 ||
+        !/^[6-9]/.test(altMobileNumber) ||
+        altMobileNumber === formData.mobileNumber
       ) {
         setErrors((prev) => ({
           ...prev,
@@ -70,11 +73,19 @@ export default function Profile() {
         return;
       }
 
+      if (!address || !address.trim()) {
+        setErrors((prev) => ({
+          ...prev,
+          address: "Address is required",
+        }));
+        return;
+      }
+
       axios
         .patch(
           `http://localhost:8104/account/profile/${userId}/updateProfile?address=${encodeURIComponent(
-            formData.address
-          )}&altMobileNumber=${encodeURIComponent(formData.altMobileNumber)}`
+            address
+          )}&altMobileNumber=${encodeURIComponent(altMobileNumber)}`
         )
         .then((response) => {
           console.log("Profile updated successfully");
@@ -173,7 +184,7 @@ export default function Profile() {
                       <input
                         type="text"
                         name="altMobileNumber"
-                        value={formData.altMobileNumber}
+                        value={formData.altMobileNumber || ""}
                         onChange={handleChange}
                         className="border border-gray-300 dark:border-gray-400 px-3 py-2 w-full rounded-md shadow-sm bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-white"
                         maxLength="10"
@@ -204,7 +215,7 @@ export default function Profile() {
                     {editMode ? (
                       <textarea
                         name="address"
-                        value={formData.address}
+                        value={formData.address || ""}
                         onChange={handleChange}
                         className="border border-gray-300 dark:border-gray-400 px-3 py-2 w-full h-24 rounded-md resize-none shadow-sm bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-white"
                       />
@@ -214,6 +225,11 @@ export default function Profile() {
                       </div>
                     )}
                   </div>
+                  {errors.address && (
+                    <p className="text-red-500 text-sm mt-1">
+                      {errors.address}
+                    </p>
+                  )}
                 </div>
               </div>
             </div>

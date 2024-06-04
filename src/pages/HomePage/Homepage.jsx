@@ -4,7 +4,7 @@ import "react-responsive-carousel/lib/styles/carousel.min.css"; // Import the st
 
 const HomePage = () => {
   return (
-    <div className="min-h-screen bg-white dark:bg-gray-900 dark:text-blue-300">
+    <div className="min-h-screen bg-gray-200 dark:bg-gray-900 dark:text-blue-300">
       {/* Carousel */}
       <div className="w-full mb-12">
         <Carousel
@@ -17,9 +17,9 @@ const HomePage = () => {
         >
           <div className="relative">
             <img
-              src="https://via.placeholder.com/1200x400"
+              src={require("../../Media/pexels-spacex-60132.jpg")}
               alt="Slide 1"
-              className="w-full h-auto"
+              className="w-full h-[470px] object-cover dark:opacity-80"
             />
             <div className="absolute bottom-0 left-0 p-4 text-white w-full text-center">
               <h2 className="text-3xl font-bold mb-2">Welcome to ASAAP</h2>
@@ -30,9 +30,9 @@ const HomePage = () => {
           </div>
           <div className="relative">
             <img
-              src="https://via.placeholder.com/1200x400"
+              src={require("../../Media/pexels-fauxels-3183150.jpg")}
               alt="Slide 2"
-              className="w-full h-auto"
+              className="w-full h-[470px] object-cover dark:opacity-50"
             />
             <div className="absolute bottom-0 left-0 p-4 text-white w-full text-center">
               <h2 className="text-3xl font-bold mb-2">Join ASSAP Today</h2>
@@ -42,7 +42,7 @@ const HomePage = () => {
         </Carousel>
       </div>
 
-      <div className="p-6">
+      <div className="p-16">
         {/* Section 1 */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-12">
           <div className="flex flex-col justify-center">
@@ -56,7 +56,7 @@ const HomePage = () => {
           </div>
           <div>
             <img
-             src={require("../../Media/OTT.png")}
+              src={require("../../Media/Entertetment.png")}
               alt="Unlimited entertainment"
               className="w-full rounded-lg shadow-md"
             />
@@ -69,7 +69,7 @@ const HomePage = () => {
             <img
               src={require("../../Media/High-speed.png")}
               alt="Reliable connectivity"
-              className="w-full rounded-lg shadow-md"
+              className="w-full  rounded-2xl shadow-md"
             />
           </div>
           <div className="flex flex-col justify-center">
@@ -96,9 +96,9 @@ const HomePage = () => {
             <div className="lg:col-span-2">
               <div className="relative">
                 <img
-                  src="https://via.placeholder.com/600x300"
+                  src={require("../../Media/image.png")}
                   alt="MyJio"
-                  className="w-full rounded-lg shadow-md"
+                  className="w-full rounded-lg shadow-md dark:opacity-50"
                 />
                 <div className="absolute bottom-0 left-0 p-4 text-white w-full text-center  rounded-b-lg">
                   <h3 className="text-2xl font-bold mb-2">ASAAP</h3>
@@ -106,12 +106,12 @@ const HomePage = () => {
                 </div>
               </div>
             </div>
-            <div className="grid grid-cols-1 gap-6">
+            <div className="grid grid-cols-1 gap-2">
               <div className="relative">
                 <img
-                  src={require("../../Media/Music.png")}
-                  alt="JioSaavn"
-                  className="w-full rounded-lg shadow-md"
+                  src={require("../../Media/pexels-ellis-1389429.jpg")}
+                  alt="Asaap"
+                  className="w-full rounded-lg shadow-md dark:opacity-50"
                 />
                 <div className="absolute bottom-0 left-0 p-4 text-white w-full text-center  rounded-b-lg">
                   <h3 className="text-xl font-bold mb-2">Tune Into ASSAP</h3>
@@ -122,9 +122,9 @@ const HomePage = () => {
               </div>
               <div className="relative">
                 <img
-                  src={require("../../Media/Entertetment.png")}
+                  src={require("../../Media/ott1.jpg")}
                   alt="JioCinema"
-                  className="w-full rounded-lg shadow-md"
+                  className="w-full rounded-lg shadow-md dark:opacity-50"
                 />
                 <div className="absolute bottom-0 left-0 p-4 text-white w-full text-center  rounded-b-lg">
                   <h3 className="text-xl font-bold mb-2">
@@ -154,7 +154,7 @@ const HomePage = () => {
                   />
                 </svg>
               </div>
-              <h3 className="text-xl font-bold mb-2 dark:text-blue-900">
+              <h3 className="text-xl font-bold mb-2 dark:text-blue-900 text-center">
                 Launching International roaming packs
               </h3>
               <p className="text-gray-700 mb-4 text-center">
