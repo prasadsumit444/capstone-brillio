@@ -73,7 +73,7 @@ const TicketGeneration = () => {
   return (
     
     <div className="bg-white  shadow-lg rounded-lg max-w-4xl w-full mx-auto mt-12 p-8 hover:shadow-blue-200 dark:bg-gray-800">
-      <h2 className="text-3xl font-bold mb-8 dark:text-white">Generate a Support Ticket</h2>
+      <h2 className="text-3xl font-bold mb-8 dark:text-blue-400">Generate a Support Ticket</h2>
       <form onSubmit={handleSubmit}>
         <div className="mb-6 ">
           <label className="block text-gray-700 font-semibold mb-3 dark:text-black" htmlFor="issueType">

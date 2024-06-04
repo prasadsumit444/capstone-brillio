@@ -24,9 +24,9 @@ const TicketStatus = () => {
   const filteredTickets = ticketsData.filter((ticket) => ticket.ticketStatus === activeTab);
 
   return (
-    <div className="min-h-screen bg-gray-100 p-6 flex flex-col items-center dark:bg-gray-900">
+    <div className="min-h-screen bg-gray-100 p-6 flex flex-col items-center dark:bg-gray-800">
       <header className="flex justify-between items-center mb-6 w-full max-w-4xl">
-        <div className="text-2xl font-bold dark:text-white">Your Tickets</div>
+        <div className="text-2xl font-bold dark:text-blue-400">Your Tickets</div>
         <div className="flex space-x-4">
           <button
             className={`px-4 py-2 rounded-lg ${
