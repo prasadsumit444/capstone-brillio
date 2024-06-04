@@ -3,6 +3,7 @@ import axios from "axios";
 import { useParams } from "react-router-dom";
 import { PDFDownloadLink } from "@react-pdf/renderer";
 import InvoicePdf from "./InvoicePdf";
+import{ useNotification }from"./../NotificationContext";
 
 const InvoiceDetails = () => {
   const { invoiceId } = useParams();
@@ -36,6 +37,7 @@ const InvoiceDetails = () => {
   // Calculate tax and monthly rentals
   const tax = invoiceData.billAmount * 0.18;
   const monthlyRentals = invoiceData.billAmount - tax;
+  
 
   return (
     <div className="p-8 font-sans max-w-4xl mx-auto bg-white shadow-md">

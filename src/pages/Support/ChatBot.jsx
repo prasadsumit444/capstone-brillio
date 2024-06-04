@@ -9,12 +9,12 @@ import { TfiHeadphoneAlt } from "react-icons/tfi";
 const theme = {
   background: '#f5f8fb',
   fontFamily: 'Arial, Helvetica, sans-serif',
-  headerBgColor: '#240750',
+  headerBgColor: '#2962ff',
   headerFontColor: '#fff',
   headerFontSize: '15px',
-  botBubbleColor: '#003285',
+  botBubbleColor: '#2962ff',
   botFontColor: '#fff',
-  userBubbleColor: '#fff',
+  userBubbleColor: '',
   userFontColor: '#4a4a4a',
 };
 
@@ -82,8 +82,7 @@ const theme = {
           { value: 'Unable to Login to My Account', label: 'Unable to Login to My Account', trigger: 'unable-login' },
           { value: 'Forgot Password', label: 'Forgot Password', trigger: 'forgot-password' },
           { value: 'Update Contact Information', label: 'Update Contact Information', trigger: 'update-contact' },
-          { value: 'View Data Usage', label: 'View Data Usage', trigger: 'view-data' },
-          { value: 'Change Plan', label: 'Change Plan', trigger: 'change-plan' },
+          
           { value: 'Reset ASAAP Payments Bank PIN', label: 'Reset ASAAP Payments Bank PIN', trigger: 'reset-bank-pin' },
           { value: 'Balance Transfer', label: 'Balance Transfer', trigger: 'balance-transfer' },
 
@@ -110,11 +109,6 @@ const theme = {
         end: true,
       },
       {
-        id: 'view-data',
-        message: "To view your data usage, open the ASAAP app and navigate to the 'Usage' section. You will see detailed information about your data consumption. Hope your query is resolved. Thanks for contacting ASAAP support!",
-        end: true,
-      },
-      {
         id: 'reset-bank-pin',
         message: "If you forget your ASAAP Payments Bank PIN, you can reset it through the ASAAP Thanks app or website. Navigate to the 'Payments Bank' section, select the option to reset your PIN, and follow the instructions. You may need to provide additional verification details for security purposes.",
         end: true,
@@ -124,10 +118,7 @@ const theme = {
         options: [
           { value: 'Slow Internet Speed', label: 'Slow Internet Speed', trigger: 'slow-speed' },
           { value: 'No Internet Connection', label: 'No Internet Connection', trigger: 'no-connection' },
-          { value: 'How to Check Data Balance', label: 'How to Check Data Balance', trigger: 'check-balance' },
-          { value: 'How to Recharge Data', label: 'How to Recharge Data', trigger: 'recharge-data' },
           { value: 'Network Coverage Issues', label: 'Network Coverage Issues', trigger: 'coverage-issues' },
-          { value: 'Activate ASAAP Wi-Fi Calling', label: 'Activate ASAAP Wi-Fi Calling', trigger: 'activate-wifi-calling' },
           { value: 'Network Issues with ASAAP Connection', label: 'Network Issues with ASAAP Connection', trigger: 'network-issues' },
         ],
       },
@@ -142,23 +133,8 @@ const theme = {
         end: true,
       },
       {
-        id: 'check-balance',
-        message: "To check your ASAAP prepaid balance and validity, you can dial *121# from your ASAAP mobile number. You will receive an SMS containing details of your account balance, validity, data balance, and any active plans.",
-        end: true,
-      },
-      {
-        id: 'recharge-data',
-        message: 'To recharge your data, you can use the ASAAP app or visit the ASAAP website. Choose a data pack that suits your needs and follow the instructions to complete the recharge. Hope your query is resolved. Thanks for contacting ASAAP support!',
-        end: true,
-      },
-      {
         id: 'coverage-issues',
         message: "If you experience network coverage issues, try the following steps:\n1. Restart your device.\n2. Check if other ASAAP users in your area are facing the same issue.\n3. Ensure your device's software is up to date.\n4. If the issue persists, contact ASAAP customer care at 121. Hope your query is resolved. Thanks for contacting ASAAP support!",
-        end: true,
-      },
-      {
-        id: 'activate-wifi-calling',
-        message: "To activate ASAAP Wi-Fi Calling, ensure that your device supports the feature and is connected to a Wi-Fi network. Go to your device settings, enable Wi-Fi Calling, and select ASAAP as your preferred network provider. Once activated, you can make and receive calls over Wi-Fi using your ASAAP number.",
         end: true,
       },
       {
@@ -177,12 +153,12 @@ const theme = {
       },
       {
         id: 'view-bill',
-        message: 'To view your bill, log in to your ASAAP account and navigate to the "Billing" section. Here you can see your current and past bills. Hope your query is resolved. Thanks for contacting ASAAP support!',
+        message: 'To view your bill, log in to your ASAAP account and navigate to the "Invoice" section. Here you can see your current and past bills. Hope your query is resolved. Thanks for contacting ASAAP support!',
         end: true,
       },
       {
         id: 'pay-bill',
-        message: 'To pay your bill, you can use the ASAAP app or visit the ASAAP website. Go to the "Billing" section and follow the instructions to make a payment. Hope your query is resolved. Thanks for contacting ASAAP support!',
+        message: 'To pay your bill, you can use the ASAAP app or visit the ASAAP website. Go to the "Transactions" section and  make a payment. Hope your query is resolved. Thanks for contacting ASAAP support!',
         end: true,
       },
       {
@@ -192,7 +168,7 @@ const theme = {
       },
       {
         id: 'download-bill',
-        message: 'To download your bill, log in to your ASAAP account, go to the "Billing" section, and select the bill you want to download. There will be an option to download or print the bill. Hope your query is resolved. Thanks for contacting ASAAP support!',
+        message: 'To download your bill, log in to your ASAAP account, go to the "Invoice" section, and select the bill you want to download. There will be an option to download or print the bill. Hope your query is resolved. Thanks for contacting ASAAP support!',
         end: true,
       },
     ];

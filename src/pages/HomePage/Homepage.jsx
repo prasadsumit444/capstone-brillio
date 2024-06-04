@@ -4,7 +4,7 @@ import "react-responsive-carousel/lib/styles/carousel.min.css"; // Import the st
 
 const HomePage = () => {
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-white dark:bg-gray-900 dark:text-blue-300">
       {/* Carousel */}
       <div className="w-full mb-12">
         <Carousel
@@ -23,7 +23,7 @@ const HomePage = () => {
             />
             <div className="absolute bottom-0 left-0 p-4 text-white w-full text-center">
               <h2 className="text-3xl font-bold mb-2">Welcome to ASAAP</h2>
-              <p className="mb-4 dark:text-red-500">
+              <p className="mb-4 dark:text-white">
                 Experience the best connectivity and services.
               </p>
             </div>
@@ -46,10 +46,10 @@ const HomePage = () => {
         {/* Section 1 */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-12">
           <div className="flex flex-col justify-center">
-            <h2 className="text-3xl font-bold mb-4">
+            <h2 className="text-3xl font-bold mb-4 ">
               Go for unlimited entertainment
             </h2>
-            <p className="text-gray-700 mb-4">
+            <p className="text-gray-700 mb-4 dark:text-white">
               Watch 900+ TV channels, stream content in more than 18 languages,
               and much more on the Entertainment app.
             </p>
@@ -76,7 +76,7 @@ const HomePage = () => {
             <h2 className="text-3xl font-bold mb-4">
               High-speed, reliable connectivity
             </h2>
-            <p className="text-gray-700 mb-4">
+            <p className="text-gray-700 mb-4 dark:text-white">
               Besides mobile internet at 4G speed, enjoy unlimited data, FREE
               calls & SMS and more anywhere in India.
             </p>
@@ -88,7 +88,7 @@ const HomePage = () => {
           <h2 className="text-3xl font-bold mb-6 text-center">
             Explore the digital world with ASAAP
           </h2>
-          <p className="text-center text-gray-700 mb-8">
+          <p className="text-center text-gray-700 mb-8 dark:text-white">
             Exciting deals, a variety of entertainment and seamless digital
             experience.
           </p>
@@ -127,7 +127,9 @@ const HomePage = () => {
                   className="w-full rounded-lg shadow-md"
                 />
                 <div className="absolute bottom-0 left-0 p-4 text-white w-full text-center  rounded-b-lg">
-                  <h3 className="text-xl font-bold mb-2">ASSAP Entertainment</h3>
+                  <h3 className="text-xl font-bold mb-2">
+                    ASSAP Entertainment
+                  </h3>
                   <p className="mb-2">Brings world class OTT shows</p>
                 </div>
               </div>
@@ -152,7 +154,7 @@ const HomePage = () => {
                   />
                 </svg>
               </div>
-              <h3 className="text-xl font-bold mb-2">
+              <h3 className="text-xl font-bold mb-2 dark:text-blue-900">
                 Launching International roaming packs
               </h3>
               <p className="text-gray-700 mb-4 text-center">
@@ -176,7 +178,9 @@ const HomePage = () => {
                   />
                 </svg>
               </div>
-              <h3 className="text-xl font-bold mb-2">Exclusive plans </h3>
+              <h3 className="text-xl font-bold mb-2  dark:text-blue-900">
+                Exclusive plans{" "}
+              </h3>
               <p className="text-gray-700 mb-4 text-center">
                 All-in-one plans with high-speed internet, unlimited calls and
                 SMS, FREE OTT subscriptions and more.
@@ -198,7 +202,9 @@ const HomePage = () => {
                   />
                 </svg>
               </div>
-              <h3 className="text-xl font-bold mb-2">FREE calls and SMS</h3>
+              <h3 className="text-xl font-bold mb-2  dark:text-blue-900">
+                FREE calls and SMS
+              </h3>
               <p className="text-gray-700 mb-4 text-center">
                 Stay connected 24*7 with high-speed internet, FREE calls and
                 SMS, unlimited data, and superfast connectivity.
