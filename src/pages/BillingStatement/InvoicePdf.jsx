@@ -190,9 +190,9 @@ const InvoicePdf = ({ invoiceData }) => {
               <Text style={styles.tableCell}>video call</Text>
               <Text style={styles.tableCell}>0.05/sec</Text>
               <Text style={styles.tableCell}>0.05/sec</Text>
-              <Text style={styles.tableCell}>Data conversion</Text>
-              <Text style={styles.tableCell}>1MB = 1,024KB</Text>
-              <Text style={styles.tableCell}>1GB = 1,024MB/1,048,576KB</Text>
+              <Text style={styles.tableCell}></Text>
+              <Text style={styles.tableCell}></Text>
+              <Text style={styles.tableCell}></Text>
             </View>
           </View>
         </View>
