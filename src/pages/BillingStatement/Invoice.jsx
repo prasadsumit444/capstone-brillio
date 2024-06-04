@@ -142,7 +142,7 @@ const Invoices = () => {
                       <p>Amount: ₹{invoice.billAmount.toFixed(2)}</p>
                     </div>
                     <div>
-                    <button className="bg-blue-600 hover:bg-blue-500 text-white p-2 rounded-md">
+                    <button className="inline-block shrink-0 rounded-md border border-blue-600 bg-blue-600 px-5 py-3 text-sm font-medium text-white transition hover:bg-transparent hover:text-blue-600 focus:outline-none focus:ring active:text-blue-500 dark:hover:bg-white">
                         View Details
                       </button>
                     </div>
