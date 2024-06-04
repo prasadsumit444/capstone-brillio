@@ -124,16 +124,16 @@ const Invoices = () => {
   };
 
   return (
-    <div className="flex min-h-screen bg-white justify-center items-start">
+    <div className="flex min-h-screen bg-white dark:bg-gray-900 dark:text-white justify-center items-start">
       <div className="flex flex-col flex-grow p-4 max-w-4xl">
-        <main className="bg-white rounded-lg p-6 mt-1 w-full">
+      <main className="bg-white dark:bg-gray-800 dark:text-white rounded-lg p-6 w-full h-full">
           {invoices.length > 0 && <h1 className="text-2xl font-bold mb-4">Invoices</h1>}
           <div className="space-y-4">
             {invoices.length > 0 ? (
               currentInvoices.map((invoice) => (
                 <div
                   key={invoice.id}
-                  className="bg-gray-100 p-4 rounded-md cursor-pointer transform transition-transform hover:scale-105 hover:shadow-lg hover:shadow-blue-100"
+                  className="bg-gray-100 dark:bg-gray-700 p-4 rounded-md cursor-pointer transform transition-transform hover:scale-105 hover:shadow-lg hover:shadow-blue-100 dark:hover:shadow-blue-500"
                   onClick={() => navigate(`/invoice/${invoice.invoiceId}`)}
                 >
                   <div className="flex justify-between items-center">
@@ -142,7 +142,7 @@ const Invoices = () => {
                       <p>Amount: ₹{invoice.billAmount.toFixed(2)}</p>
                     </div>
                     <div>
-                      <button className="bg-blue-600 hover:bg-blue-500 text-white p-2 rounded-md">
+                    <button className="inline-block shrink-0 rounded-md border border-blue-600 bg-blue-600 px-5 py-3 text-sm font-medium text-white transition hover:bg-transparent hover:text-blue-600 focus:outline-none focus:ring active:text-blue-500 dark:hover:bg-white">
                         View Details
                       </button>
                     </div>
@@ -150,7 +150,7 @@ const Invoices = () => {
                 </div>
               ))
             ) : (
-              <div className="bg-blue-100 text-gray-800 p-4 rounded-md">
+              <div className="bg-blue-100 dark:bg-blue-700 text-gray-800 dark:text-gray-200 p-4 rounded-md">
                 <h2 className="font-bold">No Invoices created yet</h2>
               </div>
             )}

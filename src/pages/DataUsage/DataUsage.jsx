@@ -71,6 +71,13 @@ const DataUsage = () => {
     fetchData();
   }, [userId]);
 
+  const formatDataRemaining = () => {
+    if (remainingStats.dataRemaining > 1000) {
+      return `${(remainingStats.dataRemaining / 1000).toFixed(2)} GB`;
+    } else {
+      return `${remainingStats.dataRemaining} MB`;
+    }
+  };
   const barChartOptions = (yLabel) => ({
     scales: {
       x: {
@@ -160,7 +167,7 @@ const DataUsage = () => {
               <div className="md:w-1/3 bg-gray-50 p-4 rounded-lg shadow text-center">
                 <h3 className="text-xl font-semibold mb-2">Data Usage Stats</h3>
                 <p className="mb-2">
-                  <strong>Remaining Data:</strong> {remainingStats.dataRemaining} MB
+                  <strong>Remaining Data:</strong> {formatDataRemaining()}
                 </p>
               </div>
               <h2 className="py-4 text-2xl mb-4 text-center">Data Usage (Hourly)</h2>

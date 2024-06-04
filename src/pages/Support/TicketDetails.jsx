@@ -58,11 +58,11 @@ const TicketDetails = () => {
 
   return (
     <div className="min-h-screen bg-gray-100 p-6 flex flex-col items-center">
-      <div className="max-w-4xl w-full bg-white shadow-lg rounded-lg p-8 transition-transform hover:shadow-blue-200">
-        <h1 className="text-3xl font-bold mb-4 text-blue-500">Ticket Details</h1>
-        <h1 className="text-3xl font-bold mb-4 text-blue-500">{ticket.issueType}</h1>
+      <div className="max-w-4xl w-full bg-white shadow-lg rounded-lg p-8 transition-transform hover:shadow-blue-200 dark:bg-gray-800">
+        <h1 className="text-3xl font-bold mb-4 text-blue-500 dark:text-white">Ticket Details</h1>
+        <h1 className="text-3xl font-bold mb-4 text-blue-500 dark:text-white">{ticket.issueType}</h1>
         <div className="mb-4">
-          <label className="block text-gray-700 font-semibold mb-2">Ticket ID: {ticket.ticketId}</label>
+          <label className="block text-gray-700 font-semibold mb-2 dark:text-white">Ticket ID: {ticket.ticketId}</label>
           <textarea
             id="description"
             className="w-full p-3 border rounded-lg shadow-sm focus:outline-none focus:ring-2 border-gray-300"

@@ -92,9 +92,9 @@ const Faq = () => {
   };
  
   return (
-    <div className="flex flex-col min-h-screen bg-gray-100">
+    <div className="flex flex-col min-h-screen bg-gray-100 dark:bg-gray-800">
       <div className="flex-grow max-w-4xl w-full mx-auto mt-10 p-6">
-        <h2 className="text-2xl font-bold pb-4 mb-4">
+        <h2 className="text-2xl font-bold pb-4 mb-4 dark:text-white">
           Frequently Asked Questions
         </h2>
         {faqData.map((item, index) => (
@@ -108,7 +108,7 @@ const Faq = () => {
         ))}
       </div>
  
-      <footer className="max-w-4xl w-full mx-auto mt-4 p-6 text-center">
+      <footer className="max-w-4xl w-full mx-auto mt-4 p-6 text-center dark:text-white">
         <p className="text-lg">
           You can generate a{" "}
           <Link to="/new-ticket" className="text-blue-600 font-semibold">
@@ -120,12 +120,9 @@ const Faq = () => {
           </Link>{" "}
           here .
         </p>
-        <p className="text-lg text-gray-700">
+        <p className="text-lg  dark:text-white">
           If query not resolved,{" "}
-          <Link to="/new-ticket" className="text-blue-600 font-semibold">
-            Chat
-          </Link>{" "}
-          with us .
+          Chat with us .
         </p>
       </footer>
     </div>
