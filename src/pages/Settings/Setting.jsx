@@ -4,6 +4,7 @@ import axios from "axios";
 import { FaEdit, FaSave } from 'react-icons/fa';
 import { ConfirmationModal } from "../../Components/ConfirmationModal.jsx";
 import { ThemeContext } from "../../Components/ThemeContext.jsx";
+import { useNavigate } from "react-router-dom";
 
 const Setting = () => {
   const [promotionalEmailNotification, setPromotionalEmailNotification] = useState("ON");
@@ -19,6 +20,7 @@ const Setting = () => {
 
   const { userId, logout } = useAuth();
   const { theme, setTheme } = useContext(ThemeContext);
+  const navigate = useNavigate();
 
   const suspendServiceMessage = "Are you sure you want to suspend your service?";
   const resumeServiceMessage = "Do you  want to resume your service?";
@@ -92,7 +94,19 @@ const Setting = () => {
   };
 
   const handleDeleteAccount = () => {
-    alert("Your Jio account has been permanently deleted.");
+    axios.delete(`http://localhost:8101/user/${userId}/deleteUser`)
+      .then(response => {
+        console.log(response);
+      })
+      .catch(error => {
+        console.log("Error: ", error);
+      })
+      .finally(() => {
+        setShowDeleteAccountModal(false);
+        logout();
+        navigate("/");
+      })
+
   };
 
   const handlePasswordVerify = () => {
