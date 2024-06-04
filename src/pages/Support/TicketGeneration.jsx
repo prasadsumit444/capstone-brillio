@@ -1,11 +1,13 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { useNotification } from "./../NotificationContext"; // Ensure correct path
+import { useNavigate } from "react-router-dom";
 
 const TicketGeneration = () => {
   const [formData, setFormData] = useState({ description: "", issueType: "GENERAL_ENQUIRIES" });
   const [formErrors, setFormErrors] = useState({});
   const { showNotification } = useNotification();
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -42,6 +44,7 @@ const TicketGeneration = () => {
         showNotification("Ticket submitted successfully", "success");
         // Reset form after successful submission
         setFormData({ description: "", issueType: formData.issueType });
+        navigate("/tickets");
       } catch (error) {
         console.error("Error submitting the form:", error);
         if (error.response) {

@@ -1,3 +1,4 @@
+//naya
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
@@ -67,7 +68,10 @@ const TicketDetails = () => {
             className="w-full p-3 border rounded-lg shadow-sm focus:outline-none focus:ring-2 border-gray-300"
             style={{ height: "50vh" }}
             value={ticket.description}
-            onChange={handleDescriptionChange} // Handle description change
+            onChange={handleDescriptionChange}
+            readOnly={ticket.ticketStatus === "OPEN"}
+            
+             // Handle description change
           />
         </div>
         {ticket.ticketStatus === "CLOSED" && (

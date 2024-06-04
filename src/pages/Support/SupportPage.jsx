@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import { FaComments, FaStore, FaQuestionCircle, FaChalkboardTeacher } from "react-icons/fa";
+import { Link } from "react-router-dom"; // Import Link from React Router
 
-const SupportCard = ({ title, description, icon: Icon, onClick }) => {
+const SupportCard = ({ title, description, icon: Icon, to }) => { // Pass 'to' prop for Link
   const [isHovered, setIsHovered] = useState(false);
 
   return (
@@ -11,16 +12,16 @@ const SupportCard = ({ title, description, icon: Icon, onClick }) => {
       }`}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
-      onClick={onClick}
     >
       <div className="p-8 text-center">
         <h2 className="text-3xl font-semibold text-blue-600 mb-6">{title}</h2>
         <p className="text-lg text-gray-700 mb-8">{description}</p>
         <div className="flex justify-around">
-          <button className="flex items-center bg-blue-600 text-white px-6 py-3 rounded-full shadow hover:bg-blue-700">
+          {/* Wrap with Link and pass 'to' prop */}
+          <Link to={to} className="flex items-center bg-blue-600 text-white px-6 py-3 rounded-full shadow hover:bg-blue-700">
             <Icon className="mr-2" />
             {title}
-          </button>
+          </Link>
         </div>
       </div>
     </div>
@@ -41,28 +42,28 @@ export default function SupportPage() {
       {/* Support Options Section */}
       <div className="w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-12 mb-12 px-4">
         <SupportCard
-          title="How can we assist you today?"
+          title="Chat with FAQ bot"
           description="Get instant answers to your questions using our FAQ chat bot"
           icon={FaComments}
-          onClick={() => console.log("Chat with us clicked")}
+          to=""
         />
         <SupportCard
           title="Generate a Support Ticket"
           description="Facing an issue? Generate a ticket and we will get back to you as soon as possible."
           icon={FaStore}
-          onClick={() => console.log("Generate a Ticket clicked")}
+          to="/new-ticket"
         />
         <SupportCard
           title="Frequently Asked Questions"
           description="Browse our FAQs to find answers to common questions."
           icon={FaQuestionCircle}
-          onClick={() => console.log("View FAQs clicked")}
+          to="/faq"
         />
         <SupportCard
           title="View Your Tickets"
           description="Check Status of your Ticket"
           icon={FaChalkboardTeacher}
-          onClick={() => console.log("View Tickets clicked")}
+          to="/tickets"
         />
       </div>
     </div>

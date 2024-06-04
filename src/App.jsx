@@ -16,6 +16,7 @@ import { AuthGuard } from "./pages/Auth/AuthGuard";
 import ThemeProvider from "./Components/ThemeContext";
 
 function App() {
+  
   return (
     <div>
       <AuthGuard>
@@ -31,8 +32,10 @@ function App() {
                 <Route path="/postpaid" element={<Postpaid />} />
                 <Route path="/faq" element={<Faq />} />
                 <Route path="/support" element={<SupportPage />} />
+                
                 <Route path="/*" element={<AuthenticatedRoutes />} />
               </Routes>
+              
               <ChatBot />
             </NotificationProvider>
           </ThemeProvider>

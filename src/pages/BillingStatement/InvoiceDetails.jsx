@@ -39,10 +39,10 @@ const InvoiceDetails = () => {
 
   return (
     <div className="p-8 font-sans max-w-4xl mx-auto bg-white shadow-md">
-      <div className="border-b-2 pb-6 mb-6">
+      <div className="border-b-2 pb-6 mb-6 ">
         <div className="flex justify-between items-center mb-6">
           <div>
-            <h1 className="text-2xl font-bold text-blue-600">MOBILE SERVICES</h1>
+            <h1 className="text-2xl font-bold text-blue-600">ASAAP MOBILE SERVICES</h1>
             <p className="text-gray-600">Original Copy for Recipient - Tax Invoice</p>
           </div>
           <div className="text-right">
