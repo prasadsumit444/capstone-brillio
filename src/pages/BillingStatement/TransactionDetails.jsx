@@ -83,7 +83,7 @@ const TransactionDetails = () => {
       pageNumbers.push(
         <button
           key="prev"
-          className="mx-1 px-3 py-1 rounded-md border"
+          className="mx-1 px-3 py-1 rounded-md border dark:bg-gray-700 dark:text-white"
           onClick={prevPage}
         >
           Previous
@@ -95,7 +95,9 @@ const TransactionDetails = () => {
       pageNumbers.push(
         <button
           key={i}
-          className={`mx-1 px-3 py-1 rounded-md border ${currentPage === i ? 'bg-blue-600 text-white' : ''}`}
+          className={`mx-1 px-3 py-1 rounded-md border ${
+            currentPage === i ? 'bg-blue-600 text-white dark:bg-blue-600' : 'dark:bg-gray-700 dark:text-white'
+          }`}
           onClick={() => paginate(i)}
         >
           {i}
@@ -107,7 +109,7 @@ const TransactionDetails = () => {
       pageNumbers.push(
         <button
           key="next"
-          className="mx-1 px-3 py-1 rounded-md border"
+          className="mx-1 px-3 py-1 rounded-md border dark:bg-gray-700 dark:text-white"
           onClick={nextPage}
         >
           Next
@@ -119,17 +121,17 @@ const TransactionDetails = () => {
   };
 
   if (loading) {
-    return <div>Loading...</div>;
+    return <div className="dark:bg-gray-900 dark:text-white">Loading...</div>;
   }
 
   if (error) {
-    return <div>Error: {error}</div>;
+    return <div className="dark:bg-gray-900 dark:text-white">Error: {error}</div>;
   }
 
   return (
-    <div className="flex min-h-screen bg-white justify-center items-start"> {/* Align items to start */}
+    <div className="flex min-h-screen bg-white dark:bg-gray-900 dark:text-white justify-center items-start">
       <div className="flex flex-col flex-grow p-4 max-w-4xl w-full">
-        <main className="bg-white rounded-lg p-6 w-full h-full"> {/* Removed top margin */}
+        <main className="bg-white dark:bg-gray-800 dark:text-white rounded-lg p-6 w-full h-full">
           {transactions.length > 0 ? (
             <>
               <h1 className="text-2xl font-bold mb-4">Transaction Details</h1>
@@ -140,7 +142,7 @@ const TransactionDetails = () => {
                   return (
                     <div
                       key={tx.transactionId}
-                      className="bg-gray-100 p-4 rounded-md cursor-pointer transform transition-transform hover:scale-105 hover:shadow-lg hover:shadow-blue-100"
+                      className="bg-gray-100 dark:bg-gray-700 p-4 rounded-md cursor-pointer transform transition-transform hover:scale-105 hover:shadow-lg hover:shadow-blue-100 dark:hover:shadow-blue-500"
                       onClick={() => setSelectedTransaction(tx)}
                     >
                       <div className="flex justify-between items-center">
@@ -150,7 +152,7 @@ const TransactionDetails = () => {
                             <p>Paid Rs.{tx.planPrice}</p>
                           </div>
                         </span>
-                        <button className="bg-blue-600 hover:bg-blue-500 text-white p-2 rounded-md">
+                        <button className="inline-block shrink-0 rounded-md border border-blue-600 bg-blue-600 px-5 py-3 text-sm font-medium text-white transition hover:bg-transparent hover:text-blue-600 focus:outline-none focus:ring active:text-blue-500 dark:hover:bg-white">
                           View Details
                         </button>
                       </div>
@@ -168,13 +170,13 @@ const TransactionDetails = () => {
               </div>
             </>
           ) : (
-            <div className="bg-blue-100 text-gray-800 p-4 rounded-md">
+            <div className="bg-blue-100 dark:bg-blue-700 text-gray-800 dark:text-gray-200 p-4 rounded-md">
               <h2 className="font-bold">No Transaction done yet</h2>
             </div>
           )}
           {selectedTransaction && (
             <div className="fixed inset-0 flex items-center justify-center z-10">
-              <div className="bg-white text-black p-6 rounded-lg shadow-lg max-w-md transform transition-transform hover:scale-105 hover:shadow-lg hover:shadow-blue-500">
+              <div className="bg-white dark:bg-gray-700 text-black dark:text-white p-6 rounded-lg shadow-lg max-w-md transform transition-transform hover:scale-105 hover:shadow-lg hover:shadow-blue-500 dark:hover:shadow-blue-500">
                 <h2 className="text-xl font-semibold mb-4">Transaction Details</h2>
                 <p>Details for Rs.{selectedTransaction.planPrice}</p>
                 <ul>

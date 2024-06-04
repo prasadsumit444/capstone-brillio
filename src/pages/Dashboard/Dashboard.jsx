@@ -124,9 +124,20 @@ export default function Dashboard() {
 
   const renderCenterText = (chartData, label) => {
     const remaining = chartData.datasets[0].data[1];
+
+    // Check if we are rendering data usage
+    const isDataUsage = label.toLowerCase().includes("mb");
+    const remainingText = isDataUsage
+      ? remaining > 1024
+        ? `${(remaining / 1024).toFixed(2)} GB`
+        : `${remaining.toFixed(2)} MB`
+      : remaining;
+
     return (
       <div className="text-center">
-        <span className="text-2xl font-bold text-gray-700">{remaining}</span>
+        <span className="text-2xl font-bold text-gray-700">
+          {remainingText}
+        </span>
         <br />
         <span className="text-sm text-gray-500">{label}</span>
       </div>
@@ -134,36 +145,36 @@ export default function Dashboard() {
   };
 
   return (
-    <div className="flex flex-col md:flex-row min-h-screen bg-gray-100 p-12">
+    <div className="flex flex-col md:flex-row min-h-screen bg-gray-100 p-12 dark:bg-gray-900">
       <div className="flex flex-col md:flex-row flex-grow m-4 space-x-0 md:space-x-4 space-y-4 md:space-y-0">
         {/* Center Column: Plan Details and Data Usage */}
         <div className="flex-1 flex flex-col space-y-4">
           <Link to="/profile" className="flex-grow h-1/4">
-            <div className="bg-white rounded-lg shadow-lg p-5 transform transition-transform duration-300 hover:scale-105 hover:shadow-m hover:shadow-blue-200">
-              <h1 className="text-3xl font-semibold text-gray-900 mb-6">
+            <div className="bg-white rounded-lg shadow-lg p-5 transform transition-transform duration-300 hover:scale-105 hover:shadow-m hover:shadow-blue-200 dark:hover:shadow-white dark:bg-gray-800">
+              <h1 className="text-3xl font-semibold text-gray-900 mb-6 dark:text-blue-300">
                 Hi {usageData.fullName},
               </h1>
-              <div className="text-2xl text-gray-700 flex justify-between">
+              <div className="text-2xl flex justify-between dark:text-white">
                 <p>{usageData.mobileNumber}</p>
                 <p>{usageData.userStatus}</p>
               </div>
             </div>
           </Link>
-          <div className="bg-white rounded-lg shadow-md p-5 h-2/4">
-            <h2 className="text-3xl font-semibold text-gray-900 mb-6">
+          <div className="bg-white rounded-lg shadow-md p-5 h-2/4 dark:bg-gray-800">
+            <h2 className="text-gray-900 text-3xl font-semibold mb-6 dark:text-blue-300">
               {usageData.planType == null
                 ? "Kindly Recharge"
                 : usageData.planType}
             </h2>
-            <div className="text-2xl flex justify-between mb-4 text-gray-700">
+            <div className="text-2xl flex justify-between mb-4 text-gray-700 dark:text-white">
               ₹ {usageData.planPrice}
             </div>
-            <div className="text-xl flex justify-between mb-4 text-gray-700">
+            <div className="text-xl flex justify-between mb-4 text-gray-700 dark:text-white">
               {usageData.planDescription == null
                 ? "Hi there, We're thrilled to have you on board. It looks like you haven't chosen a plan yet. To start enjoying all the benefits and features we offer, explore our various plans and pick the one that suits you best."
                 : usageData.planDescription}
             </div>
-            <div className="text-xl flex justify-between mb-3 text-gray-500">
+            <div className="text-xl flex justify-between mb-3 text-gray-500 dark:text-white">
               Plan expires on:{" "}
               {usageData.expiryDate == null
                 ? "Loading..."
@@ -171,26 +182,26 @@ export default function Dashboard() {
             </div>
           </div>
 
-          <div className="bg-white rounded-lg shadow-md h-1/4 p-5 flex-grow transform transition-transform duration-300 hover:scale-105 hover:shadow-m hover:shadow-blue-200">
-            <h2 className="text-lg font-semibold text-gray-900 mb-6">
+          <div className="bg-white rounded-lg shadow-md h-1/4 p-5 flex-grow transform transition-transform duration-300 hover:scale-105 hover:shadow-m hover:shadow-blue-200 dark:bg-gray-800 dark:hover:shadow-white">
+            <h2 className="text-lg font-semibold text-gray-900 mb-6 dark:text-blue-300">
               Quick Access
             </h2>
             <div className="flex justify-around">
               <Link
-                to="/recharge"
-                className="text-blue-600 hover:text-blue-800 transition-colors duration-200"
+                to="/"
+                className="text-blue-600 hover:text-blue-800 transition-colors duration-200 dark:text-white dark:hover:text-blue-300"
               >
-                Recharge
+                Home
               </Link>
               <Link
                 to="/support"
-                className="text-blue-600 hover:text-blue-800 transition-colors duration-200"
+                className="text-blue-600 hover:text-blue-800 transition-colors duration-200 dark:text-white dark:hover:text-blue-300"
               >
                 Support
               </Link>
               <Link
                 to="/settings"
-                className="text-blue-600 hover:text-blue-800 transition-colors duration-200"
+                className="text-blue-600 hover:text-blue-800 transition-colors duration-200 dark:text-white dark:hover:text-blue-300"
               >
                 Settings
               </Link>
@@ -201,8 +212,10 @@ export default function Dashboard() {
         {/* Right Column: Data, SMS, and Voice */}
         <div className="w-full md:w-1/4 flex flex-col space-y-4">
           <Link to="/datausage?tab=data" className="flex-grow">
-            <div className="bg-white rounded-lg shadow-md p-5 flex-grow transform transition-transform duration-300 hover:scale-105 relative hover:shadow-m hover:shadow-blue-200">
-              <h2 className="text-lg font-semibold text-gray-900 pb-4">Data</h2>
+            <div className="bg-white rounded-lg shadow-md p-5 flex-grow transform transition-transform duration-300 hover:scale-105 relative hover:shadow-m hover:shadow-blue-200 dark:hover:shadow-white dark:text-white dark:hover:text-blue-300 dark:bg-gray-100">
+              <h2 className="text-lg font-semibold text-gray-900 pb-4 dark:text-blue-900">
+                Data
+              </h2>
               <div className="relative h-24">
                 <Doughnut data={dataUsage} options={options} />
                 <div className="absolute inset-0 flex items-center justify-center pl-24 pb-6">
@@ -212,7 +225,7 @@ export default function Dashboard() {
             </div>
           </Link>
           <Link to="/datausage?tab=sms" className="flex-grow">
-            <div className="bg-white rounded-lg shadow-md p-5 flex-grow transform transition-transform duration-300 hover:scale-105 relative hover:shadow-m hover:shadow-blue-200">
+            <div className="bg-white rounded-lg shadow-md p-5 flex-grow transform transition-transform duration-300 hover:scale-105 relative hover:shadow-m hover:shadow-blue-200 dark:hover:shadow-white dark:text-white dark:hover:text-blue-300 dark:bg-gray-100">
               <h2 className="text-lg font-semibold text-gray-900 pb-4">SMS</h2>
               <div className="relative h-24">
                 <Doughnut data={smsUsage} options={options} />
@@ -223,7 +236,7 @@ export default function Dashboard() {
             </div>
           </Link>
           <Link to="/datausage?tab=voice" className="flex-grow">
-            <div className="bg-white rounded-lg shadow-md p-5 flex-grow transform transition-transform duration-300 hover:scale-105 relative hover:shadow-m hover:shadow-blue-200">
+            <div className="bg-white rounded-lg shadow-md p-5 flex-grow transform transition-transform duration-300 hover:scale-105 relative hover:shadow-m hover:shadow-blue-200 dark:hover:shadow-white dark:text-white dark:hover:text-blue-300 dark:bg-gray-100">
               <h2 className="text-lg font-semibold text-gray-900 pb-4">
                 Voice
               </h2>
