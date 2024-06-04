@@ -16,8 +16,8 @@ import { useAuth } from "./pages/Auth/AuthGuard.jsx";
 
 export default function AuthenticatedRoutes() {
   const location = useLocation();
-  const auth = useAuth();
-  if (!auth.userId) {
+  const { userId } = useAuth();
+  if (!userId) {
     return (
       <Navigate to="/login" state={{ path: location.pathname }}></Navigate>
     );

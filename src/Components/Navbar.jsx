@@ -115,13 +115,14 @@ export default function Navbar() {
           {accountDropdownOpen && (
             <div
               ref={dropdownRef}
-              className="absolute z-10 top-12 right-28 mt-2 w-48 list-none bg-white dark:bg-gray-700 shadow divide-y divide-gray-200 dark:divide-gray-600 rounded-lg"
+                className="absolute z-10 top-12 right-40 mt-2 w-48 list-none bg-white dark:bg-gray-700 shadow divide-y divide-gray-200 dark:divide-gray-600 rounded-lg"
             >
               <ul aria-labelledby="user-menu-button">
                 <li>
                   <Link
                     to="/profile"
-                    className="block pl-4 pr-16 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-600"
+                      onClick={() => setAccountDropdownOpen(false)}
+                      className="block pl-4 pr-10 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-600"
                   >
                     Profile
                   </Link>
@@ -129,6 +130,7 @@ export default function Navbar() {
                 <li>
                   <Link
                     to="/dashboard"
+                      onClick={() => setAccountDropdownOpen(false)}
                     className="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-600"
                   >
                     Dashboard
@@ -137,6 +139,7 @@ export default function Navbar() {
                 <li>
                   <Link
                     to="/transaction"
+                      onClick={() => setAccountDropdownOpen(false)}
                     className="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-600"
                   >
                     Transactions
@@ -146,6 +149,7 @@ export default function Navbar() {
                 <li>
                   <Link
                     to="/invoice"
+                      onClick={() => setAccountDropdownOpen(false)}
                     className="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-600"
                   >
                     Invoice
@@ -155,6 +159,7 @@ export default function Navbar() {
                 <li>
                   <Link
                     to="/settings"
+                      onClick={() => setAccountDropdownOpen(false)}
                     className="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-600"
                   >
                     Settings
