@@ -33,6 +33,7 @@ export default function Profile() {
 
     if (name === "altMobileNumber") {
       if (value.length > 10 || !/^\d*$/.test(value)) {
+        //length and only digits validation
         return;
       }
 
@@ -60,10 +61,8 @@ export default function Profile() {
 
     if (editMode) {
       if (
-        !altMobileNumber ||
-        altMobileNumber.length !== 10 ||
-        !/^[6-9]/.test(altMobileNumber) ||
-        altMobileNumber === formData.mobileNumber
+        altMobileNumber &&
+        (errors.altMobileNumber || altMobileNumber.length !== 10)
       ) {
         setErrors((prev) => ({
           ...prev,
@@ -90,7 +89,7 @@ export default function Profile() {
         .patch(
           `http://localhost:8104/account/profile/${userId}/updateProfile?address=${encodeURIComponent(
             address
-          )}&altMobileNumber=${encodeURIComponent(altMobileNumber)}`
+          )}&altMobileNumber=${encodeURIComponent(altMobileNumber || "")}`
         )
         .then((response) => {
           console.log("Profile updated successfully");
