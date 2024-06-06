@@ -33,6 +33,7 @@ export default function Profile() {
 
     if (name === "altMobileNumber") {
       if (value.length > 10 || !/^\d*$/.test(value)) {
+        //length and only digits validation
         return;
       }
 
@@ -41,8 +42,7 @@ export default function Profile() {
       if (value && (!/^[6-9]/.test(value) || value === formData.mobileNumber)) {
         setErrors((prev) => ({
           ...prev,
-          altMobileNumber:
-            "Alternate number must be 10 digits, start with 6, 7, 8, or 9, and cannot be the same as the primary mobile number",
+          altMobileNumber: "Number must start with 6, 7, 8, or 9",
         }));
       } else {
         setErrors((prev) => {
@@ -60,15 +60,12 @@ export default function Profile() {
 
     if (editMode) {
       if (
-        !altMobileNumber ||
-        altMobileNumber.length !== 10 ||
-        !/^[6-9]/.test(altMobileNumber) ||
-        altMobileNumber === formData.mobileNumber
+        altMobileNumber &&
+        (errors.altMobileNumber || altMobileNumber.length !== 10)
       ) {
         setErrors((prev) => ({
           ...prev,
-          altMobileNumber:
-            "Alternate number must be 10 digits, start with 6, 7, 8, or 9, and cannot be the same as the primary mobile number",
+          altMobileNumber: "Alternate number must be 10 digits",
         }));
         return;
       }
@@ -90,7 +87,7 @@ export default function Profile() {
         .patch(
           `http://localhost:8104/account/profile/${userId}/updateProfile?address=${encodeURIComponent(
             address
-          )}&altMobileNumber=${encodeURIComponent(altMobileNumber)}`
+          )}&altMobileNumber=${encodeURIComponent(altMobileNumber || "")}`
         )
         .then((response) => {
           console.log("Profile updated successfully");
@@ -105,13 +102,13 @@ export default function Profile() {
 
   return (
     <div className="flex min-h-screen bg-gray-100 dark:bg-gray-900">
-      <div className="hidden md:flex md:w-1/2 lg:w-2/5 bg-gray-800 dark:bg-gray-700">
+      <div className="hidden md:flex md:w-1/3 lg:w-2/5 bg-gray-800 dark:bg-gray-700">
         <img
           src={require("../../Media/pexels-greta-hoffman-7675861.jpg")}
           alt="Profile Background"
-          className="object-cover h-full w-full"
+          className="object-cover h-[650px] w-full"
         />
-        <div className="absolute left-0 p-4 text-white w-full text-left rounded-b-lg">
+        <div className="absolute left-0 p-2 text-white w-full text-left rounded-b-lg">
           <h3 className="text-2xl font-bold mb-2">PROFILE</h3>
         </div>
       </div>

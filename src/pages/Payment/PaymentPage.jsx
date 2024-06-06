@@ -9,6 +9,8 @@ import { AiOutlineCheckCircle, AiOutlineLoading } from "react-icons/ai";
 import axios from "axios"; // Import Axios
 import { useAuth } from "../Auth/AuthGuard";
 
+
+// Format of card white space after 4 digits
 const formatCardNumber = (value) => {
   return value
     .replace(/\D/g, "")

@@ -61,7 +61,7 @@ export default function Dashboard() {
       });
   }, [userId]);
 
-  // Calculate used data
+  // Calculating used data
   const usedData =
     usageData.planData == null
       ? 100
