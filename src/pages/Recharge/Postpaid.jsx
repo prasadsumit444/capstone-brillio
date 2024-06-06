@@ -10,6 +10,7 @@ const PostpaidPlans = () => {
   const [currentPlan, setCurrentPlan] = useState(null);
   const [clickedPlanId, setClickedPlanId] = useState(null);
   const [searchQuery, setSearchQuery] = useState("");
+  const [showPopup, setShowPopup] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -52,11 +53,35 @@ const PostpaidPlans = () => {
   };
 
   const handleBuyPlan = (plan) => {
-    navigate('/payment-page', { state: { plan } });
+    if (currentPlan) {
+      setShowPopup(true);
+    } else {
+      navigate('/payment-page', { state: { plan } });
+    }
+  };
+
+  const closePopup = () => {
+    setShowPopup(false);
   };
 
   return (
     <div className="flex min-h-screen bg-gray-100 dark:bg-gray-900 text-gray-900 dark:text-gray-100">
+      {showPopup && (
+        <div className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50 z-50">
+          <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg">
+            <h2 className="text-xl font-bold mb-4 text-gray-900 dark:text-gray-100">Sorry, Can't recharge now</h2>
+            <p className="mb-4 text-gray-700 dark:text-gray-300">
+              Your current plan is active. You can change your current plan next month.
+            </p>
+            <button
+              className="bg-blue-600 hover:bg-blue-700 dark:bg-blue-700 dark:hover:bg-blue-800 text-white py-2 px-4 rounded-md"
+              onClick={closePopup}
+            >
+              Close
+            </button>
+          </div>
+        </div>
+      )}
       <div className="flex flex-col flex-grow p-4">
         <main className="bg-white dark:bg-gray-800 rounded-lg p-6 mt-5 shadow-lg w-full">
           <h1 className="text-3xl font-bold text-center mb-8 text-blue-600 dark:text-blue-400">Postpaid Plans</h1>
@@ -70,36 +95,30 @@ const PostpaidPlans = () => {
             />
           </div>
           <div className="mb-6">
-            {
-              userId && currentPlan && currentPlan.planType === 'POSTPAID' ? (
-                <div
-                  className="flex justify-between items-center bg-blue-100 dark:bg-blue-900 p-4 rounded-md cursor-pointer"
-                  onClick={() => handlePlanClick('current')}
-                >
-                  <div className="text-gray-800 dark:text-gray-200">
-                    <h2 className="font-bold">
-                      Current Plan: ₹ {currentPlan.planPrice}, Validity: {currentPlan.planValidity === 0 ? "Unlimited" : currentPlan.planValidity === 1 ? "1 Day" : `${currentPlan.planValidity} Days`}
-                    </h2>
-                    <p>{clickedPlanId === 'current' ? currentPlan.planBenefits : `${currentPlan.planBenefits.substring(0, 30)}...`}</p>
-                  </div>
-                  <button
-                    className="bg-blue-600 dark:bg-blue-700 text-white px-4 py-2 rounded-md shadow hover:bg-blue-700 dark:hover:bg-blue-800"
-                    onClick={(e) => {
-                      e.stopPropagation(); // Prevents triggering the parent onClick
-                      handleBuyPlan(currentPlan);
-                    }}
-                  >
-                    Pay Bill
-                  </button>
+            {userId && currentPlan && currentPlan.planType === 'POSTPAID' ? (
+              <div
+                className="flex justify-between items-center bg-blue-100 dark:bg-blue-900 p-4 rounded-md cursor-pointer"
+                onClick={() => handlePlanClick('current')}
+              >
+                <div className="text-gray-800 dark:text-gray-200">
+                  <h2 className="font-bold">
+                    Current Plan: ₹ {currentPlan.planPrice}, Validity: {currentPlan.planValidity === 0 ? "Unlimited" : currentPlan.planValidity === 1 ? "1 Day" : `${currentPlan.planValidity} Days`}
+                  </h2>
+                  <p>{clickedPlanId === 'current' ? currentPlan.planBenefits : `${currentPlan.planBenefits.substring(0, 30)}...`}</p>
                 </div>
-              ) : (
-                userId ? (
-                  <span className="text-gray-800 dark:text-gray-200"></span>
-                ) : (
-                  <span className="text-gray-800 dark:text-gray-200"></span>
-                )
-              )
-            }
+                <button
+                  className="bg-blue-600 dark:bg-blue-700 text-white px-4 py-2 rounded-md shadow hover:bg-blue-700 dark:hover:bg-blue-800"
+                  onClick={(e) => {
+                    e.stopPropagation(); // Prevents triggering the parent onClick
+                    handleBuyPlan(currentPlan);
+                  }}
+                >
+                  Pay Bill
+                </button>
+              </div>
+            ) : (
+              <span className="text-gray-800 dark:text-gray-200"></span>
+            )}
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
@@ -122,7 +141,7 @@ const PostpaidPlans = () => {
                 <button
                   className="bg-blue-600 hover:bg-blue-700 dark:bg-blue-700 dark:hover:bg-blue-800 text-white py-2 px-4 rounded-md mt-auto"
                   onClick={(e) => {
-                    e.stopPropagation(); // Prevents triggering the parent onClick
+                    e.stopPropagation(); 
                     handleBuyPlan(plan);
                   }}
                 >
