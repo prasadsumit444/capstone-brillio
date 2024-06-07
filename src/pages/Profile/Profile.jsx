@@ -112,11 +112,11 @@ export default function Profile() {
           <h3 className="text-2xl font-bold mb-2">PROFILE</h3>
         </div>
       </div>
-      <div className="flex flex-col w-full md:w-1/2 lg:w-3/5 overflow-auto justify-center items-center ">
+      <div className="flex flex-col w-full md:w-1/2 lg:w-3/5 overflow-auto mt-10 items-center ">
         <div className="w-full max-w-lg mx-6 p-5 bg-white shadow-lg shadow-blue-300 dark:bg-gray-800 dark:shadow-lg rounded-2xl dark:shadow-gray-300">
           <div className="bg-white dark:bg-gray-800 rounded-lg">
             <div className="px-4 sm:px-0">
-              <h3 className="text-2xl font-bold leading-7 text-blue-900 dark:text-blue-300">
+              <h3 className="text-2xl font-bold leading-7 text-primary_light dark:text-blue-300">
                 My Profile
               </h3>
               <p className="mt-1 text-sm text-gray-600 dark:text-white">
@@ -128,7 +128,7 @@ export default function Profile() {
                 <div className="flex flex-col">
                   <label
                     htmlFor="fullName"
-                    className="block text-sm font-medium text-blue-900 dark:text-blue-300"
+                    className="block text-sm font-medium text-primary_light dark:text-blue-300"
                   >
                     Full Name
                   </label>
@@ -139,7 +139,7 @@ export default function Profile() {
                 <div className="flex flex-col">
                   <label
                     htmlFor="email"
-                    className="block text-sm font-medium text-blue-900 dark:text-blue-300"
+                    className="block text-sm font-medium text-primary_light dark:text-blue-300"
                   >
                     Email ID
                   </label>
@@ -150,12 +150,12 @@ export default function Profile() {
                 <div className="flex flex-col">
                   <label
                     htmlFor="mobileNumber"
-                    className="block text-sm font-medium text-blue-900 dark:text-blue-300"
+                    className="block text-sm font-medium text-primary_light dark:text-blue-300"
                   >
                     Mobile Number
                   </label>
                   <div className="mt-1 py-2 px-3 bg-gray-50 dark:bg-gray-400 rounded-md shadow-sm">
-                    <span className="text-blue-900 dark:text-blue-900 font-mono">
+                    <span className="text-primary_light dark:text-primary_light font-mono">
                       +91
                     </span>{" "}
                     {formData.mobileNumber}
@@ -164,7 +164,7 @@ export default function Profile() {
                 <div className="flex flex-col">
                   <label
                     htmlFor="userStatus"
-                    className="block text-sm font-medium text-blue-900 dark:text-blue-300"
+                    className="block text-sm font-medium text-primary_light dark:text-blue-300"
                   >
                     User Status
                   </label>
@@ -177,7 +177,7 @@ export default function Profile() {
                 <div className="flex flex-col">
                   <label
                     htmlFor="altMobileNumber"
-                    className="block text-sm font-medium text-blue-900 dark:text-blue-300"
+                    className="block text-sm font-medium text-primary_light dark:text-blue-300"
                   >
                     Alternate Mobile Number
                   </label>
@@ -193,7 +193,7 @@ export default function Profile() {
                       />
                     ) : (
                       <div className="py-2 px-3 bg-gray-50 dark:bg-gray-400 rounded-md shadow-sm">
-                        <span className="text-blue-900 dark:text-blue-900 font-mono">
+                        <span className="text-primary_light dark:text-primary_light font-mono">
                           +91
                         </span>{" "}
                         {formData.altMobileNumber}
@@ -209,7 +209,7 @@ export default function Profile() {
                 <div className="flex flex-col mt-4">
                   <label
                     htmlFor="address"
-                    className="block text-sm font-medium text-blue-900 dark:text-blue-300"
+                    className="block text-sm font-medium text-primary_light dark:text-blue-300"
                   >
                     Address
                   </label>

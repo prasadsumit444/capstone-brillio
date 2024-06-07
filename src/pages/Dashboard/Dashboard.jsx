@@ -157,7 +157,7 @@ export default function Dashboard() {
         <div className="flex-1 flex flex-col space-y-4">
           <Link to="/profile" className="flex-grow h-1/4">
             <div className="bg-white rounded-lg shadow-lg p-5 transform transition-transform duration-300 hover:scale-105 hover:shadow-m hover:shadow-blue-200 dark:hover:shadow-white dark:bg-gray-800">
-              <h1 className="text-3xl font-semibold text-gray-900 mb-6 dark:text-blue-300">
+              <h1 className="text-3xl font-semibold text-primary_light mb-6 dark:text-blue-300">
                 Hi {usageData.fullName},
               </h1>
               <div className="text-2xl flex justify-between dark:text-white">
@@ -167,7 +167,7 @@ export default function Dashboard() {
             </div>
           </Link>
           <div className="bg-white rounded-lg shadow-md p-5 h-2/4 dark:bg-gray-800">
-            <h2 className="text-gray-900 text-3xl font-semibold mb-6 dark:text-blue-300">
+            <h2 className="text-primary_light text-3xl font-semibold mb-6 dark:text-blue-300">
               {usageData.planType == null
                 ? "Kindly Recharge"
                 : usageData.planType}
@@ -189,7 +189,7 @@ export default function Dashboard() {
           </div>
 
           <div className="bg-white rounded-lg shadow-md h-1/4 p-5 flex-grow transform transition-transform duration-300 hover:scale-105 hover:shadow-m hover:shadow-blue-200 dark:bg-gray-800 dark:hover:shadow-white">
-            <h2 className="text-lg font-semibold text-gray-900 mb-6 dark:text-blue-300">
+            <h2 className="text-lg font-semibold text-primary_light mb-6 dark:text-blue-300">
               Quick Access
             </h2>
             <div className="flex justify-around">
@@ -219,7 +219,7 @@ export default function Dashboard() {
         <div className="w-full md:w-1/4 flex flex-col space-y-4">
           <Link to="/datausage?tab=data" className="flex-grow">
             <div className="bg-white rounded-lg shadow-md p-5 flex-grow transform transition-transform duration-300 hover:scale-105 relative hover:shadow-m hover:shadow-blue-200 dark:hover:shadow-white dark:text-white dark:hover:text-blue-300 dark:bg-gray-100">
-              <h2 className="text-lg font-semibold text-gray-900 pb-4 dark:text-blue-900">
+              <h2 className="text-lg font-semibold text-gray-900 pb-4 dark:text-gray-900">
                 Data
               </h2>
               <div className="relative h-24">
