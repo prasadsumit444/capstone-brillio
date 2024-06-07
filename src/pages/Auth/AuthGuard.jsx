@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useEffect } from "react";
+import React, { createContext, useContext, useEffect, useMemo } from "react";
 import { useState } from "react";
 
 const AuthContext = createContext(null);
@@ -29,9 +29,17 @@ export const AuthGuard = ({ children }) => {
     setUser(null);
   };
 
+  const contextValue = useMemo(() => ({
+    userId,
+    login,
+    logout,
+    signup
+  }), [userId]);
+
+
   return (
     <div>
-      <AuthContext.Provider value={{ userId, login, logout, signup }}>
+      <AuthContext.Provider value={contextValue}>
         {children}
       </AuthContext.Provider>
     </div>

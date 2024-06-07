@@ -1,5 +1,5 @@
 import axios from 'axios';
-import React, { createContext, useState, useEffect } from 'react';
+import React, { createContext, useState, useEffect, useMemo } from 'react';
 import { useAuth } from "../pages/Auth/AuthGuard";
 
 export const ThemeContext = createContext();
@@ -31,8 +31,13 @@ const ThemeProvider = ({ children }) => {
         console.log("Theme updated")
     }, [theme]);
 
+    const contextValue = useMemo(() => ({
+        theme,
+        setTheme
+    }), [theme]);
+
     return (
-        <ThemeContext.Provider value={{ theme, setTheme }}>
+        <ThemeContext.Provider value={contextValue}>
             {children}
         </ThemeContext.Provider>
     );
