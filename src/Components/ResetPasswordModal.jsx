@@ -14,6 +14,7 @@ export function ResetPasswordModal({ onClose }) {
     const [verifiedUserId, setVerifiedUserId] = useState(null);
 
     const [mobileNumberError, setMobileNumberError] = useState("");
+    const [passwordError, setPasswordError] = useState("");
     const { showNotification } = useNotification();
 
     const SecurityQuestions = {
@@ -69,8 +70,33 @@ export function ResetPasswordModal({ onClose }) {
         }
     };
 
+    const handlePasswordChange = (e) => {
+        const password = e.target.value;
+
+        const minLength = 8; // Minimum length of the password
+        const containsUpperCase = /[A-Z]/.test(password); // At least one uppercase letter
+        const containsLowerCase = /[a-z]/.test(password); // At least one lowercase letter
+        const containsNumber = /\d/.test(password); // At least one digit
+        const containsSpecial = /[@#$%]/.test(password); // Only @, #, $, and % as special characters
+
+        setNewPassword(password);
+
+
+        if (password.length >= minLength &&
+            containsUpperCase &&
+            containsLowerCase &&
+            containsNumber &&
+            containsSpecial) {
+            setPasswordError("");
+        } else {
+            setPasswordError("Weak password")
+        }
+    }
+
     const handleResetPassword = () => {
-        if (confirmPassword !== newPassword) {
+        if (passwordError !== "") {
+            showNotification("Please resolve errors", "error");
+        } else if (confirmPassword !== newPassword) {
             showNotification("Passwords do not match", "error");
         } else {
             axios.patch(`http://localhost:8101/user/${verifiedUserId}/changePassword`, null, {
@@ -86,6 +112,8 @@ export function ResetPasswordModal({ onClose }) {
                     showNotification("Error changing password", "error");
                 });
         }
+
+
     }
 
     const handleSubmit = (e) => {
@@ -166,13 +194,15 @@ export function ResetPasswordModal({ onClose }) {
                                     New Password
                                 </label>
                                 <input
-                                    type="password"
-                                    id="newPassword"
                                     required
+                                    type="password"
+                                    id="password"
+                                    name="password"
                                     value={newPassword}
-                                    onChange={(e) => setNewPassword(e.target.value)}
-                                    className="mt-1 w-full rounded-md border-gray-200 bg-white text-sm text-gray-700 shadow-sm"
+                                    className="mt-1 w-full rounded-md border-gray-200 bg-white text-sm text-gray-700 shadow-sm font-normal"
+                                    onChange={handlePasswordChange}
                                 />
+                                {passwordError && <p className="mt-1 text-xs text-yellow-600">{passwordError}</p>}
                             </div>
                             <div className="mb-4">
                                 <label htmlFor="confirmPassword" className="block text-xs font-medium text-gray-700">

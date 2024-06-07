@@ -121,7 +121,7 @@ export default function Signup() {
   const handleSignup = async (e) => {
     e.preventDefault();
 
-    if (mobileNumberError === "" && emailIdError === "") {
+    if (mobileNumberError === "" && emailIdError === "" && passwordError === "") {
       axios.post("http://localhost:8101/user/signup", JSON.stringify(formData), {
         headers: {
           'Content-Type': 'application/json'
@@ -257,6 +257,7 @@ export default function Signup() {
                 />
                 {passwordError && <p className="mt-1 text-xs text-yellow-600">{passwordError}</p>}
               </div>
+
               <div className="col-span-6 ">
                 <label htmlFor="password" className="block text-xs font-medium text-gray-700 textarea-restricted"> Address </label>
 
