@@ -290,3 +290,152 @@ PATCH /account/profile/123/updateProfile?address=456 Elm St&altMobileNumber=1122
     "altMobileNumber": "1122334455"
 }
 ```
+
+
+# Recharge Service API Documentation
+
+## Overview
+The `PlanManagementController` provides a RESTful API for managing and retrieving information about mobile plans and data usage for users. This controller includes endpoints for retrieving prepaid and postpaid plans, fetching plan details by plan ID, obtaining data usage by user ID, and getting the current plan for a user by the user ID.
+
+## Base URL
+
+```
+http://localhost:8100
+```
+
+## Endpoints
+
+### 1. Get All Prepaid Plans
+**URL:** `/plans/prepaid`  
+**Method:** `GET`  
+**Description:** Retrieves a list of all prepaid plans.  
+**Response:**  
+- `200 OK`: Returns a list of prepaid plans.
+```json
+ {
+        "planId": 1,
+        "planType": "PREPAID",
+        "planBenefits": "Data - 2.5 GB/Day, Free Disney + Hotstar Premium OTT Subscription for 1 Year, Unlimited 5G Data & Unlimited Local STD & Roaming Calls, Free Premium subscription for Music app. | 
+                         Post daily 100 SMS limit charging will be Re.1 for local/STD",
+        "planCategory": "Unlimited",
+        "planPrice": 3399,
+        "planData": 2.5,
+        "planSms": 100,
+        "planValidity": 365
+ }
+```
+
+### 2. Get All Postpaid Plans
+**URL:** `/plans/postpaid`  
+**Method:** `GET`  
+**Description:** Retrieves a list of all postpaid plans.  
+**Response:**  
+- `200 OK`: Returns a list of postpaid plans.
+```json
+{
+        "planId": 17,
+        "planType": "POSTPAID",
+        "planBenefits": "Data with Rollover 40 GB, SMS Per Day - 100, Unlimited Local/STD & Roaming Calls.",
+        "planCategory": "Postpaid Plans",
+        "planPrice": 349,
+        "planData": 40.0,
+        "planSms": 100,
+        "planValidity": 30
+}
+```
+
+### 3. Get Plan by ID
+**URL:** `/plans/planId/{planId}`  
+**Method:** `GET`  
+**Description:** Retrieves the details of a plan by its ID.  
+**Path Variables:**  
+- `planId` (int): The ID of the plan to be retrieved.  
+**Response:**  
+- `200 OK`: Returns the details of the specified plan by plan ID.
+```json
+{
+    "planId": 2,
+    "planType": "PREPAID",
+    "planBenefits": "Data - 2 GB/Day, Unlimited 5G Data & Unlimited Local STD & Roaming Calls, Free Amazon Prime 3 Months OTT Subscription, Free Premium subscription for Music app. | Post daily 100 SMS 
+                     limit charging will be Re.1 for local/STD",
+    "planCategory": "Unlimited",
+    "planPrice": 2999,
+    "planData": 2.0,
+    "planSms": 100,
+    "planValidity": 365
+}
+```
+
+### 4. Get Data Usage by User ID
+**URL:** `/datausage/userId/{userId}`  
+**Method:** `GET`  
+**Description:** Retrieves the list of data usage details for a user in 24 hrs by their user ID.  
+**Path Variables:**  
+- `userId` (int): The ID of the user whose data usage details are to be retrieved.  
+**Response:**  
+- `200 OK`: Returns the list of data usage details of the specified user.
+```json
+{
+    "dataRemaining": 1840.0,
+    "smsRemaining": 87,
+    "dataUsageList": [
+        {
+            "dataUsageId": 25,
+            "usageDate": "2024-05-28",
+            "usageHour": 0,
+            "dataUsageMb": 50,
+            "voiceMinutes": 5,
+            "smsCount": 1,
+            "user": {
+                "userId": 1,
+                "expiryDate": "2025-06-10",
+                "plan": {
+                    "planId": 1,
+                    "planType": "PREPAID",
+                    "planBenefits": "Data - 2.5 GB/Day, Free Disney + Hotstar Premium OTT Subscription for 1 Year, Unlimited 5G Data & Unlimited Local STD & Roaming Calls, Free Premium subscription for 
+                                     Music app. | Post daily 100 SMS limit charging will be Re.1 for local/STD",
+                    "planCategory": "Unlimited",
+                    "planPrice": 3399,
+                    "planData": 2.5,
+                    "planSms": 100,
+                    "planValidity": 365
+                }
+            }
+        }
+    ]
+}
+```
+
+### 5. Get Current Plan for User
+**URL:** `/user/{userId}/currentPlan`  
+**Method:** `GET`  
+**Description:** Retrieves the current plan for a user by their user ID.  
+**Path Variables:**  
+- `userId` (int): The ID of the user whose current plan details are to be retrieved.  
+**Response:**  
+- `200 OK`: Returns the details of the current plan for the specified user.
+```json
+{
+    "planId": 1,
+    "planType": "PREPAID",
+    "planBenefits": "Data - 2.5 GB/Day, Free Disney + Hotstar Premium OTT Subscription for 1 Year, Unlimited 5G Data & Unlimited Local STD & Roaming Calls, Free Premium subscription for Music app. | Post 
+                     daily 100 SMS limit charging will be Re.1 for local/STD",
+    "planCategory": "Unlimited",
+    "planPrice": 3399,
+    "planData": 2.5,
+    "planSms": 100,
+    "planValidity": 365
+}
+```
+
+## Error Handling
+All endpoints return appropriate HTTP status codes in case of errors:
+- `404 Not Found`: When the specified resource is not found (e.g., plan or user does not exist).
+- `500 Internal Server Error`: For any server-side errors.
+
+## CORS Configuration
+This controller is configured to allow cross-origin requests using `@CrossOrigin`.
+
+## Dependencies
+- `PlanService`: Service layer for handling plan-related operations.
+- `DataUsageService`: Service layer for handling data usage-related operations.
