@@ -439,3 +439,187 @@ This controller is configured to allow cross-origin requests using `@CrossOrigin
 ## Dependencies
 - `PlanService`: Service layer for handling plan-related operations.
 - `DataUsageService`: Service layer for handling data usage-related operations.
+
+Certainly! Below is a sample API documentation for your `SupportTicketController` in the Spring Boot application.
+
+# Support Ticket API Documentation
+
+## Overview
+The Support Ticket API allows users to create, retrieve, and update support tickets. This API is part of the Support Service and provides endpoints for managing support tickets associated with users.
+
+## Base URL
+```
+http://localhost:8103/supportticket
+```
+
+## Endpoints
+
+### Create a Support Ticket
+#### `POST /generateticket/{userId}`
+Creates a new support ticket for the specified user.
+
+- **Path Parameters:**
+  - `userId` (Integer): ID of the user for whom the ticket is being created.
+
+- **Request Body:**
+  - `SupportTicket` (JSON): The details of the support ticket to be created.
+
+- **Response:**
+  - `201 Created`: If the ticket is successfully created. Returns the created `SupportTicket`.
+  - `404 Not Found`: If the user with the specified ID is not found.
+
+- **Example Request:**
+  ```json
+  POST /generateticket/123
+  {
+      "title": "Issue with login",
+      "description": "Unable to log in with correct credentials",
+      "status": "OPEN"
+  }
+  ```
+
+- **Example Response:**
+  ```json
+  {
+      "id": 1,
+      "title": "Issue with login",
+      "description": "Unable to log in with correct credentials",
+      "status": "OPEN",
+      "userId": 123,
+      "createdDate": "2024-06-10T12:34:56.789Z"
+  }
+  ```
+
+### Get Support Tickets by User ID
+#### `GET /ticketstatus/{userId}`
+Retrieves all support tickets associated with the specified user.
+
+- **Path Parameters:**
+  - `userId` (Integer): ID of the user whose tickets are to be retrieved.
+
+- **Response:**
+  - `200 OK`: If tickets are found. Returns a list of `SupportTicket`.
+  - `404 Not Found`: If no tickets are found for the specified user.
+
+- **Example Request:**
+  ```json
+  GET /ticketstatus/123
+  ```
+
+- **Example Response:**
+  ```json
+  [
+      {
+          "id": 1,
+          "title": "Issue with login",
+          "description": "Unable to log in with correct credentials",
+          "status": "OPEN",
+          "userId": 123,
+          "createdDate": "2024-06-10T12:34:56.789Z"
+      },
+      {
+          "id": 2,
+          "title": "Error 404 on homepage",
+          "description": "Homepage returns a 404 error intermittently",
+          "status": "OPEN",
+          "userId": 123,
+          "createdDate": "2024-06-11T09:15:32.456Z"
+      }
+  ]
+  ```
+
+### Get Support Ticket by ID
+#### `GET /ticket/{id}`
+Retrieves a support ticket by its ID.
+
+- **Path Parameters:**
+  - `id` (Integer): ID of the ticket to be retrieved.
+
+- **Response:**
+  - `200 OK`: If the ticket is found. Returns the `SupportTicket`.
+  - `404 Not Found`: If the ticket with the specified ID is not found.
+
+- **Example Request:**
+  ```json
+  GET /ticket/1
+  ```
+
+- **Example Response:**
+  ```json
+  {
+      "id": 1,
+      "title": "Issue with login",
+      "description": "Unable to log in with correct credentials",
+      "status": "OPEN",
+      "userId": 123,
+      "createdDate": "2024-06-10T12:34:56.789Z"
+  }
+  ```
+
+### Update a Support Ticket
+#### `PATCH /ticket/{id}`
+Updates an existing support ticket by its ID.
+
+- **Path Parameters:**
+  - `id` (Integer): ID of the ticket to be updated.
+
+- **Request Body:**
+  - `SupportTicket` (JSON): The updated details of the support ticket.
+
+- **Response:**
+  - `200 OK`: If the ticket is successfully updated. Returns the updated `SupportTicket`.
+  - `404 Not Found`: If the ticket with the specified ID is not found.
+
+- **Example Request:**
+  ```json
+  PATCH /ticket/1
+  {
+      "status": "CLOSED"
+  }
+  ```
+
+- **Example Response:**
+  ```json
+  {
+      "id": 1,
+      "title": "Issue with login",
+      "description": "Unable to log in with correct credentials",
+      "status": "CLOSED",
+      "userId": 123,
+      "createdDate": "2024-06-10T12:34:56.789Z"
+  }
+  ```
+
+## Models
+
+### SupportTicket
+Represents a support ticket.
+
+- **Fields:**
+  - `id` (Integer): The unique identifier of the support ticket.
+  - `title` (String): The title of the support ticket.
+  - `description` (String): The detailed description of the support ticket.
+  - `status` (String): The current status of the support ticket (e.g., OPEN, CLOSED).
+  - `userId` (Integer): The ID of the user associated with the support ticket.
+  - `createdDate` (Date): The date and time when the support ticket was created.
+
+### UserInformation
+Represents user information.
+
+- **Fields:**
+  - `userId` (Integer): The unique identifier of the user.
+  - `username` (String): The username of the user.
+  - `email` (String): The email address of the user.
+
+## Notes
+- Ensure that the user ID exists before creating or retrieving tickets.
+- Handle HTTP status codes appropriately to provide meaningful responses to the client.
+
+- ## Error Handling
+All endpoints return appropriate HTTP status codes in case of errors:
+- `404 Not Found`: When the specified resource is not found (e.g., plan or user does not exist).
+- `500 Internal Server Error`: For any server-side errors.
+
+## CORS Configuration
+This controller is configured to allow cross-origin requests using `@CrossOrigin`.
+
