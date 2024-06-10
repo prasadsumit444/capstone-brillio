@@ -4,7 +4,7 @@ import "react-responsive-carousel/lib/styles/carousel.min.css"; // Import the st
 
 const HomePage = () => {
   return (
-    <div className="min-h-screen bg-gray-200 dark:bg-gray-900 dark:text-text_secondary">
+    <div className="min-h-screen bg-gray-200 text-primary_light dark:bg-gray-900 dark:text-primary_dark">
       {/* Carousel */}
       <div className="w-full mb-12">
         <Carousel
@@ -35,7 +35,7 @@ const HomePage = () => {
               className="w-full h-[470px] object-cover dark:opacity-50"
             />
             <div className="absolute bottom-0 left-0 p-4 text-white w-full text-center">
-              <h2 className="text-3xl font-bold mb-2">Join ASSAP Today</h2>
+              <h2 className="text-3xl font-bold mb-2">Join ASAAP Today</h2>
               <p className="mb-4">Unlimited plans and offers await you.</p>
             </div>
           </div>
