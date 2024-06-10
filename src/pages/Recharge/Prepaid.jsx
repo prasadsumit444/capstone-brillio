@@ -17,12 +17,12 @@ const PrepaidPlans = () => {
   useEffect(() => {
     const fetchPlans = async () => {
       try {
-        const response = await axios.get('http://localhost:8100/plans/prepaid');
-        const prepaidPlans = response.data.filter(plan => plan.planType === 'PREPAID');
+        const response = await axios.get("http://localhost:8100/plans/prepaid");
+        const prepaidPlans = response.data.filter(plan => plan.planType === "PREPAID");
         setPlans(prepaidPlans);
         setFilteredPlans(prepaidPlans);
       } catch (error) {
-        console.error('Error fetching plans:', error);
+        console.error("Error fetching plans:", error);
       }
     };
 
@@ -31,7 +31,7 @@ const PrepaidPlans = () => {
         const planResponse = await axios.get(`http://localhost:8100/user/${userId}/currentPlan`);
         setCurrentPlan(planResponse.data);
       } catch (error) {
-        console.error('Error fetching current plan:', error);
+        console.error("Error fetching current plan:", error);
       }
     };
 
@@ -50,10 +50,6 @@ const PrepaidPlans = () => {
     }
   };
 
-  const handlePlanClick = (planId) => {
-    setClickedPlanId(clickedPlanId === planId ? null : planId);
-  };
-
   const handleSearch = (e) => {
     const query = e.target.value.toLowerCase();
     setSearchQuery(query);
@@ -66,11 +62,9 @@ const PrepaidPlans = () => {
   };
 
   const handleBuyPlan = (plan) => {
-    if (currentPlan) {
-      setShowPopup(true);
-    } else {
-      navigate('/payment-page', { state: { plan } });
-    }
+   
+      navigate("/payment-page", { state: { plan } });
+    
   };
 
   const closePopup = () => {
@@ -82,7 +76,7 @@ const PrepaidPlans = () => {
       {showPopup && (
         <div className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50 z-50">
           <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg">
-            <h2 className="text-xl font-bold mb-4 text-gray-900 dark:text-gray-100">Sorry, Can't recharge now</h2>
+            <h2 className="text-xl font-bold mb-4 text-gray-900 dark:text-gray-100">Sorry, Can&apos;t recharge now</h2>
             <p className="mb-4 text-gray-700 dark:text-gray-300">
               Your current plan is active. Please recharge after your current plan expires.
             </p>
@@ -97,7 +91,7 @@ const PrepaidPlans = () => {
       )}
       <div className="flex flex-col flex-grow p-4">
         <main className="bg-white dark:bg-gray-800 rounded-lg p-6 mt-5 shadow-lg w-full">
-          <h1 className="text-3xl font-bold text-center mb-8 text-blue-600 dark:text-blue-400">Prepaid Plans</h1>
+          <h1 className="text-3xl font-bold text-center mb-8 text-primary_light dark:text-blue-400">Prepaid Plans</h1>
           <div className="mb-6 text-center">
             <input
               type="text"
@@ -105,47 +99,41 @@ const PrepaidPlans = () => {
               placeholder="Search plans (e.g., OTT, Unlimited or Data)"
               value={searchQuery}
               onChange={handleSearch}
+              aria-label="Search plans"
             />
           </div>
           <div className="mb-6">
-            {userId ? (
-              currentPlan && currentPlan.planType === 'PREPAID' ? (
-                <div
-                  className="flex justify-between items-center bg-blue-100 dark:bg-blue-900 p-4 rounded-md mb-6 cursor-pointer"
-                  onClick={() => handlePlanClick('current')}
-                >
-                  <div className="text-gray-800 dark:text-gray-200">
-                    <h2 className="font-bold">
-                      Current Plan: ₹ {currentPlan.planPrice}, Validity: {currentPlan.planValidity === 0 ? "Unlimited" : currentPlan.planValidity === 1 ? "1 Day" : `${currentPlan.planValidity} Days`}
-                    </h2>
-                    <p>{clickedPlanId === 'current' ? currentPlan.planBenefits : `${currentPlan.planBenefits.substring(0, 30)}...`}</p>
-                  </div>
-                  <button
-                    className="bg-blue-600 dark:bg-blue-700 text-white px-4 py-2 rounded-md shadow hover:bg-blue-700 dark:hover:bg-blue-800"
-                    onClick={(e) => {
-                      e.stopPropagation(); // Prevents triggering the parent onClick
-                      handleBuyPlan(currentPlan);
-                    }}
-                  >
-                    Repeat Recharge
-                  </button>
+            {userId && currentPlan && currentPlan.planType === "PREPAID" && (
+              <div
+                className="flex justify-between items-center bg-blue-100 dark:bg-blue-900 p-4 rounded-md mb-6"
+                aria-expanded={clickedPlanId === "current"}
+              >
+                <div className="text-gray-800 dark:text-gray-200">
+                  <h2 className="font-bold">
+                    Current Plan: &#8377; {currentPlan.planPrice}, Validity: {currentPlan.planValidity === 0 ? "Unlimited" : currentPlan.planValidity === 1 ? "1 Day" : `${currentPlan.planValidity} Days`}
+                  </h2>
+                  <p>{clickedPlanId === "current" ? currentPlan.planBenefits : `${currentPlan.planBenefits.substring(0, 30)}...`}</p>
                 </div>
-              ) : (
-                <span className="text-gray-800 dark:text-gray-200"></span>
-              )
-            ) : (
-              <span className="text-gray-800 dark:text-gray-200"></span>
+                <button
+                  className="bg-blue-600 dark:bg-blue-700 text-white px-4 py-2 rounded-md shadow hover:bg-blue-700 dark:hover:bg-blue-800"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handleBuyPlan(currentPlan);
+                  }}
+                >
+                  Repeat Recharge
+                </button>
+              </div>
             )}
           </div>
-
           <div className="mb-6 flex justify-center space-x-4">
-            {['All', 'Data', 'Unlimited', 'TalkTime'].map(category => (
+            {["All", "Data", "Unlimited", "TalkTime"].map(category => (
               <button
                 key={category}
-                className={`border-2 px-6 py-2 rounded-full ${activeFilter === category ? 'bg-blue-600 dark:bg-blue-700 border-blue-600 dark:border-blue-700 text-white' : 'bg-white dark:bg-gray-700 border-gray-400 dark:border-gray-500 text-gray-800 dark:text-gray-200'}`}
+                className={`border-2 px-6 py-2 rounded-full ${activeFilter === category ? "bg-blue-600 dark:bg-blue-700 border-blue-600 dark:border-blue-700 text-white" : "bg-white dark:bg-gray-700 border-gray-400 dark:border-gray-500 text-gray-800 dark:text-gray-200"}`}
                 onClick={() => filterPlans(category)}
               >
-                {category === 'All' ? 'All Plans' : `${category} Packs`}
+                {category === "All" ? "All Plans" : `${category} Packs`}
               </button>
             ))}
           </div>
@@ -153,12 +141,12 @@ const PrepaidPlans = () => {
             {filteredPlans.map((plan, index) => (
               <div
                 key={index}
-                className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg transition-transform transform hover:scale-105 flex flex-col justify-between relative border border-gray-200 dark:border-gray-700 hover:border-blue-600 dark:hover:border-blue-500"
-                onClick={() => handlePlanClick(plan.planId)}
+                className={`bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg transition-transform transform flex flex-col justify-between relative border border-gray-200 dark:border-gray-700 ${clickedPlanId === plan.planId ? "scale-105" : ""}`}
+                aria-expanded={clickedPlanId === plan.planId}
               >
                 <div>
                   <div className="flex justify-between items-center">
-                    <h3 className="text-2xl font-bold text-blue-600 dark:text-blue-400 mb-2">₹ {plan.planPrice}</h3>
+                    <h3 className="text-2xl font-bold text-primary_light dark:text-blue-400 mb-2">&#8377; {plan.planPrice}</h3>
                     <h3 className="text-md font-medium text-gray-500 dark:text-gray-300 mb-2">
                       {plan.planValidity === 0 ? "Unlimited" : plan.planValidity === 1 ? "1 Day" : `${plan.planValidity} Days`}
                     </h3>
@@ -169,9 +157,9 @@ const PrepaidPlans = () => {
                   </p>
                 </div>
                 <button
-                  className="bg-blue-600 hover:bg-blue-700 dark:bg-blue-700 dark:hover:bg-blue-800 text-white py-2 px-4 rounded-md"
+                  className="bg-blue-600 hover:bg-blue-700 dark:bg-blue-700 dark:hover:bg-blue-800 text-white py-2 px-4 rounded-md mt-auto"
                   onClick={(e) => {
-                    e.stopPropagation(); // Prevents triggering the parent onClick
+                    e.stopPropagation();
                     handleBuyPlan(plan);
                   }}
                 >
