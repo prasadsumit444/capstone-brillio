@@ -42,7 +42,7 @@ export default function Profile() {
       if (value && (!/^[6-9]/.test(value) || value === formData.mobileNumber)) {
         setErrors((prev) => ({
           ...prev,
-          altMobileNumber: "Number must start with 6, 7, 8, or 9",
+          altMobileNumber: "Number not valid",
         }));
       } else {
         setErrors((prev) => {
@@ -65,7 +65,7 @@ export default function Profile() {
       ) {
         setErrors((prev) => ({
           ...prev,
-          altMobileNumber: "Alternate number must be 10 digits",
+          altMobileNumber: "Number not valid",
         }));
         return;
       }
