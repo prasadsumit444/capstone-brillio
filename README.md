@@ -188,3 +188,105 @@ Suspends or reactivates a user account.
 
 ---
 
+# Account Information Service API Documentation
+
+## Overview
+The Account Information Service API provides endpoints to manage and retrieve user account information. This includes retrieving dashboard and personal information, as well as updating user profile details. The API is designed to be accessed by a frontend application hosted at `http://localhost:3000/`.
+
+## Base URL
+```
+http://localhost:8104/account
+```
+
+## Endpoints
+
+### 1. Get Dashboard Information
+**Endpoint:** `GET /dashboard/{userId}/dashboardInfo`
+
+**Description:** Retrieves the dashboard information for a given user.
+
+**Path Parameters:**
+- `userId` (Integer): The ID of the user whose dashboard information is being retrieved.
+
+**Response:**
+- `200 OK`: Returns the dashboard information of the user.
+- `Body`: A `DashboardInformation` object containing the user's dashboard data.
+
+**Example Request:**
+```
+GET /account/dashboard/123/dashboardInfo
+```
+
+**Example Response:**
+```json
+{
+    "userId": 123,
+    "totalSpent": 5000,
+    "totalEarned": 7000,
+    "transactions": [
+        // list of transactions
+    ]
+}
+```
+
+### 2. Get User Profile
+**Endpoint:** `GET /profile/{userId}/userProfile`
+
+**Description:** Retrieves the personal information for a given user.
+
+**Path Parameters:**
+- `userId` (Integer): The ID of the user whose personal information is being retrieved.
+
+**Response:**
+- `200 OK`: Returns the personal information of the user.
+- `Body`: A `PersonalInformation` object containing the user's profile data.
+
+**Example Request:**
+```
+GET /account/profile/123/userProfile
+```
+
+**Example Response:**
+```json
+{
+    "userId": 123,
+    "name": "John Doe",
+    "email": "johndoe@example.com",
+    "address": "123 Main St",
+    "mobileNumber": "1234567890",
+    "altMobileNumber": "0987654321"
+}
+```
+
+### 3. Update User Profile
+**Endpoint:** `PATCH /profile/{userId}/updateProfile`
+
+**Description:** Updates the personal information for a given user.
+
+**Path Parameters:**
+- `userId` (Integer): The ID of the user whose personal information is being updated.
+
+**Request Parameters:**
+- `address` (String): The new address of the user.
+- `altMobileNumber` (String): The new alternate mobile number of the user.
+
+**Response:**
+- `200 OK`: Returns the updated personal information of the user.
+- `Body`: A `UserInformation` object containing the updated profile data.
+
+**Example Request:**
+```
+PATCH /account/profile/123/updateProfile?address=456 Elm St&altMobileNumber=1122334455
+```
+
+**Example Response:**
+```json
+{
+    "userId": 123,
+    "name": "John Doe",
+    "email": "johndoe@example.com",
+    "address": "456 Elm St",
+    "mobileNumber": "1234567890",
+    "altMobileNumber": "1122334455"
+}
+```
