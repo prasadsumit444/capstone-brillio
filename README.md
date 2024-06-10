@@ -1,6 +1,4 @@
-# Getting Started with Create React App
-
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# Getting Started 
 
 ## Available Scripts
 
@@ -14,57 +12,179 @@ Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
 The page will reload when you make changes.\
 You may also see any lint errors in the console.
 
-### `npm test`
+# User Service API Documentation
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## Overview
 
-### `npm run build`
+The User Service API provides endpoints to manage user information, including signup, login, password management, settings, and user status. The API supports various CRUD operations on user data and ensures secure access through password and security question verification.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## Base URL
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+```
+http://localhost:8101/user
+```
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## Endpoints
 
-### `npm run eject`
+### Signup
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+#### `POST /signup`
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+Creates a new user account.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+**Request Body:**
+```json
+{
+  "mobileNumber": "string",
+  "email": "string",
+  "password": "string",
+  "securityQuestion": "string",
+  "securityAnswer": "string",
+  "promotionalEmailNotification": "string",
+  "theme": "string",
+  "userStatus": "string"
+}
+```
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+**Response:**
+- `200 OK`: User ID
+- `404 NOT FOUND`: User creation failed
 
-## Learn More
+---
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+### Login
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+#### `GET /login`
 
-### Code Splitting
+Authenticates a user based on mobile number and password.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+**Query Parameters:**
+- `mobileNumber` (String): The user's mobile number.
+- `password` (String): The user's password.
 
-### Analyzing the Bundle Size
+**Response:**
+- `200 OK`: User ID
+- `404 NOT FOUND`: Invalid credentials
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+---
 
-### Making a Progressive Web App
+### Change Password
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+#### `PATCH /{userId}/changePassword`
 
-### Advanced Configuration
+Changes the user's password.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+**Path Parameters:**
+- `userId` (Integer): The ID of the user.
 
-### Deployment
+**Query Parameters:**
+- `newPassword` (String): The new password.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+**Response:**
+- `200 OK`: Password change confirmation
+- `404 NOT FOUND`: Password change failed
 
-### `npm run build` fails to minify
+---
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+### Check Password
+
+#### `GET /{userId}/checkPassword`
+
+Checks if the provided password matches the user's current password.
+
+**Path Parameters:**
+- `userId` (Integer): The ID of the user.
+
+**Query Parameters:**
+- `password` (String): The password to check.
+
+**Response:**
+- `200 OK`: Password check confirmation
+- `404 NOT FOUND`: Password check failed
+
+---
+
+### Verify User
+
+#### `GET /verifyUser`
+
+Verifies a user based on mobile number, security question, and security answer.
+
+**Query Parameters:**
+- `mobileNumber` (String): The user's mobile number.
+- `securityQuestion` (Enum): The security question.
+- `securityAnswer` (String): The security answer.
+
+**Response:**
+- `200 OK`: Verified user ID
+- `404 NOT FOUND`: Verification failed
+
+---
+
+### Save Setting
+
+#### `PATCH /{userId}/saveSetting`
+
+Saves user settings such as notification status and theme.
+
+**Path Parameters:**
+- `userId` (Integer): The ID of the user.
+
+**Query Parameters:**
+- `status` (Enum): Notification status.
+- `theme` (Enum): Theme preference.
+
+**Response:**
+- `200 OK`: Settings saved confirmation
+- `404 NOT FOUND`: Settings save failed
+
+---
+
+### Delete User
+
+#### `DELETE /{userId}/deleteUser`
+
+Deletes a user account.
+
+**Path Parameters:**
+- `userId` (Integer): The ID of the user.
+
+**Response:**
+- `200 OK`: User deletion confirmation
+- `404 NOT FOUND`: User deletion failed
+
+---
+
+### Get User
+
+#### `GET /{userId}/getUser`
+
+Fetches user information based on user ID.
+
+**Path Parameters:**
+- `userId` (Integer): The ID of the user.
+
+**Response:**
+- `200 OK`: User information
+- `404 NOT FOUND`: User not found
+
+---
+
+### Suspend Service
+
+#### `PATCH /{userId}/suspendService`
+
+Suspends or reactivates a user account.
+
+**Path Parameters:**
+- `userId` (Integer): The ID of the user.
+
+**Query Parameters:**
+- `userStatus` (Enum): The new user status.
+
+**Response:**
+- `200 OK`: Service suspension confirmation
+- `404 NOT FOUND`: Service suspension failed
+
+---
+
