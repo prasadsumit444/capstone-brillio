@@ -1,6 +1,4 @@
-# Getting Started with Create React App
-
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# Getting Started 
 
 ## Available Scripts
 
@@ -14,57 +12,614 @@ Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
 The page will reload when you make changes.\
 You may also see any lint errors in the console.
 
-### `npm test`
+# User Service API Documentation
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## Overview
 
-### `npm run build`
+The User Service API provides endpoints to manage user information, including signup, login, password management, settings, and user status. The API supports various CRUD operations on user data and ensures secure access through password and security question verification.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## Base URL
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+```
+http://localhost:8101/user
+```
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## Endpoints
 
-### `npm run eject`
+### Signup
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+#### `POST /signup`
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+Creates a new user account.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+**Request Body:**
+```json
+{
+  "mobileNumber": "string",
+  "email": "string",
+  "password": "string",
+  "securityQuestion": "string",
+  "securityAnswer": "string",
+  "promotionalEmailNotification": "string",
+  "theme": "string",
+  "userStatus": "string"
+}
+```
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+**Response:**
+- `200 OK`: User ID
+- `404 NOT FOUND`: User creation failed
 
-## Learn More
+---
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+### Login
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+#### `GET /login`
 
-### Code Splitting
+Authenticates a user based on mobile number and password.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+**Query Parameters:**
+- `mobileNumber` (String): The user's mobile number.
+- `password` (String): The user's password.
 
-### Analyzing the Bundle Size
+**Response:**
+- `200 OK`: User ID
+- `404 NOT FOUND`: Invalid credentials
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+---
 
-### Making a Progressive Web App
+### Change Password
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+#### `PATCH /{userId}/changePassword`
 
-### Advanced Configuration
+Changes the user's password.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+**Path Parameters:**
+- `userId` (Integer): The ID of the user.
 
-### Deployment
+**Query Parameters:**
+- `newPassword` (String): The new password.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+**Response:**
+- `200 OK`: Password change confirmation
+- `404 NOT FOUND`: Password change failed
 
-### `npm run build` fails to minify
+---
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+### Check Password
+
+#### `GET /{userId}/checkPassword`
+
+Checks if the provided password matches the user's current password.
+
+**Path Parameters:**
+- `userId` (Integer): The ID of the user.
+
+**Query Parameters:**
+- `password` (String): The password to check.
+
+**Response:**
+- `200 OK`: Password check confirmation
+- `404 NOT FOUND`: Password check failed
+
+---
+
+### Verify User
+
+#### `GET /verifyUser`
+
+Verifies a user based on mobile number, security question, and security answer.
+
+**Query Parameters:**
+- `mobileNumber` (String): The user's mobile number.
+- `securityQuestion` (Enum): The security question.
+- `securityAnswer` (String): The security answer.
+
+**Response:**
+- `200 OK`: Verified user ID
+- `404 NOT FOUND`: Verification failed
+
+---
+
+### Save Setting
+
+#### `PATCH /{userId}/saveSetting`
+
+Saves user settings such as notification status and theme.
+
+**Path Parameters:**
+- `userId` (Integer): The ID of the user.
+
+**Query Parameters:**
+- `status` (Enum): Notification status.
+- `theme` (Enum): Theme preference.
+
+**Response:**
+- `200 OK`: Settings saved confirmation
+- `404 NOT FOUND`: Settings save failed
+
+---
+
+### Delete User
+
+#### `DELETE /{userId}/deleteUser`
+
+Deletes a user account.
+
+**Path Parameters:**
+- `userId` (Integer): The ID of the user.
+
+**Response:**
+- `200 OK`: User deletion confirmation
+- `404 NOT FOUND`: User deletion failed
+
+---
+
+### Get User
+
+#### `GET /{userId}/getUser`
+
+Fetches user information based on user ID.
+
+**Path Parameters:**
+- `userId` (Integer): The ID of the user.
+
+**Response:**
+- `200 OK`: User information
+- `404 NOT FOUND`: User not found
+
+---
+
+### Suspend Service
+
+#### `PATCH /{userId}/suspendService`
+
+Suspends or reactivates a user account.
+
+**Path Parameters:**
+- `userId` (Integer): The ID of the user.
+
+**Query Parameters:**
+- `userStatus` (Enum): The new user status.
+
+**Response:**
+- `200 OK`: Service suspension confirmation
+- `404 NOT FOUND`: Service suspension failed
+
+---
+
+# Account Information Service API Documentation
+
+## Overview
+The Account Information Service API provides endpoints to manage and retrieve user account information. This includes retrieving dashboard and personal information, as well as updating user profile details. The API is designed to be accessed by a frontend application hosted at `http://localhost:3000/`.
+
+## Base URL
+```
+http://localhost:8104/account
+```
+
+## Endpoints
+
+### 1. Get Dashboard Information
+**Endpoint:** `GET /dashboard/{userId}/dashboardInfo`
+
+**Description:** Retrieves the dashboard information for a given user.
+
+**Path Parameters:**
+- `userId` (Integer): The ID of the user whose dashboard information is being retrieved.
+
+**Response:**
+- `200 OK`: Returns the dashboard information of the user.
+- `Body`: A `DashboardInformation` object containing the user's dashboard data.
+
+**Example Request:**
+```
+GET /account/dashboard/123/dashboardInfo
+```
+
+**Example Response:**
+```json
+{
+    "userId": 123,
+    "totalSpent": 5000,
+    "totalEarned": 7000,
+    "transactions": [
+        // list of transactions
+    ]
+}
+```
+
+### 2. Get User Profile
+**Endpoint:** `GET /profile/{userId}/userProfile`
+
+**Description:** Retrieves the personal information for a given user.
+
+**Path Parameters:**
+- `userId` (Integer): The ID of the user whose personal information is being retrieved.
+
+**Response:**
+- `200 OK`: Returns the personal information of the user.
+- `Body`: A `PersonalInformation` object containing the user's profile data.
+
+**Example Request:**
+```
+GET /account/profile/123/userProfile
+```
+
+**Example Response:**
+```json
+{
+    "userId": 123,
+    "name": "John Doe",
+    "email": "johndoe@example.com",
+    "address": "123 Main St",
+    "mobileNumber": "1234567890",
+    "altMobileNumber": "0987654321"
+}
+```
+
+### 3. Update User Profile
+**Endpoint:** `PATCH /profile/{userId}/updateProfile`
+
+**Description:** Updates the personal information for a given user.
+
+**Path Parameters:**
+- `userId` (Integer): The ID of the user whose personal information is being updated.
+
+**Request Parameters:**
+- `address` (String): The new address of the user.
+- `altMobileNumber` (String): The new alternate mobile number of the user.
+
+**Response:**
+- `200 OK`: Returns the updated personal information of the user.
+- `Body`: A `UserInformation` object containing the updated profile data.
+
+**Example Request:**
+```
+PATCH /account/profile/123/updateProfile?address=456 Elm St&altMobileNumber=1122334455
+```
+
+**Example Response:**
+```json
+{
+    "userId": 123,
+    "name": "John Doe",
+    "email": "johndoe@example.com",
+    "address": "456 Elm St",
+    "mobileNumber": "1234567890",
+    "altMobileNumber": "1122334455"
+}
+```
+
+
+# Recharge Service API Documentation
+
+## Overview
+The `PlanManagementController` provides a RESTful API for managing and retrieving information about mobile plans and data usage for users. This controller includes endpoints for retrieving prepaid and postpaid plans, fetching plan details by plan ID, obtaining data usage by user ID, and getting the current plan for a user by the user ID.
+
+## Base URL
+
+```
+http://localhost:8100
+```
+
+## Endpoints
+
+### 1. Get All Prepaid Plans
+**URL:** `/plans/prepaid`  
+**Method:** `GET`  
+**Description:** Retrieves a list of all prepaid plans.  
+**Response:**  
+- `200 OK`: Returns a list of prepaid plans.
+```json
+ {
+        "planId": 1,
+        "planType": "PREPAID",
+        "planBenefits": "Data - 2.5 GB/Day, Free Disney + Hotstar Premium OTT Subscription for 1 Year, Unlimited 5G Data & Unlimited Local STD & Roaming Calls, Free Premium subscription for Music app. | 
+                         Post daily 100 SMS limit charging will be Re.1 for local/STD",
+        "planCategory": "Unlimited",
+        "planPrice": 3399,
+        "planData": 2.5,
+        "planSms": 100,
+        "planValidity": 365
+ }
+```
+
+### 2. Get All Postpaid Plans
+**URL:** `/plans/postpaid`  
+**Method:** `GET`  
+**Description:** Retrieves a list of all postpaid plans.  
+**Response:**  
+- `200 OK`: Returns a list of postpaid plans.
+```json
+{
+        "planId": 17,
+        "planType": "POSTPAID",
+        "planBenefits": "Data with Rollover 40 GB, SMS Per Day - 100, Unlimited Local/STD & Roaming Calls.",
+        "planCategory": "Postpaid Plans",
+        "planPrice": 349,
+        "planData": 40.0,
+        "planSms": 100,
+        "planValidity": 30
+}
+```
+
+### 3. Get Plan by ID
+**URL:** `/plans/planId/{planId}`  
+**Method:** `GET`  
+**Description:** Retrieves the details of a plan by its ID.  
+**Path Variables:**  
+- `planId` (int): The ID of the plan to be retrieved.  
+**Response:**  
+- `200 OK`: Returns the details of the specified plan by plan ID.
+```json
+{
+    "planId": 2,
+    "planType": "PREPAID",
+    "planBenefits": "Data - 2 GB/Day, Unlimited 5G Data & Unlimited Local STD & Roaming Calls, Free Amazon Prime 3 Months OTT Subscription, Free Premium subscription for Music app. | Post daily 100 SMS 
+                     limit charging will be Re.1 for local/STD",
+    "planCategory": "Unlimited",
+    "planPrice": 2999,
+    "planData": 2.0,
+    "planSms": 100,
+    "planValidity": 365
+}
+```
+
+### 4. Get Data Usage by User ID
+**URL:** `/datausage/userId/{userId}`  
+**Method:** `GET`  
+**Description:** Retrieves the list of data usage details for a user in 24 hrs by their user ID.  
+**Path Variables:**  
+- `userId` (int): The ID of the user whose data usage details are to be retrieved.  
+**Response:**  
+- `200 OK`: Returns the list of data usage details of the specified user.
+```json
+{
+    "dataRemaining": 1840.0,
+    "smsRemaining": 87,
+    "dataUsageList": [
+        {
+            "dataUsageId": 25,
+            "usageDate": "2024-05-28",
+            "usageHour": 0,
+            "dataUsageMb": 50,
+            "voiceMinutes": 5,
+            "smsCount": 1,
+            "user": {
+                "userId": 1,
+                "expiryDate": "2025-06-10",
+                "plan": {
+                    "planId": 1,
+                    "planType": "PREPAID",
+                    "planBenefits": "Data - 2.5 GB/Day, Free Disney + Hotstar Premium OTT Subscription for 1 Year, Unlimited 5G Data & Unlimited Local STD & Roaming Calls, Free Premium subscription for 
+                                     Music app. | Post daily 100 SMS limit charging will be Re.1 for local/STD",
+                    "planCategory": "Unlimited",
+                    "planPrice": 3399,
+                    "planData": 2.5,
+                    "planSms": 100,
+                    "planValidity": 365
+                }
+            }
+        }
+    ]
+}
+```
+
+### 5. Get Current Plan for User
+**URL:** `/user/{userId}/currentPlan`  
+**Method:** `GET`  
+**Description:** Retrieves the current plan for a user by their user ID.  
+**Path Variables:**  
+- `userId` (int): The ID of the user whose current plan details are to be retrieved.  
+**Response:**  
+- `200 OK`: Returns the details of the current plan for the specified user.
+```json
+{
+    "planId": 1,
+    "planType": "PREPAID",
+    "planBenefits": "Data - 2.5 GB/Day, Free Disney + Hotstar Premium OTT Subscription for 1 Year, Unlimited 5G Data & Unlimited Local STD & Roaming Calls, Free Premium subscription for Music app. | Post 
+                     daily 100 SMS limit charging will be Re.1 for local/STD",
+    "planCategory": "Unlimited",
+    "planPrice": 3399,
+    "planData": 2.5,
+    "planSms": 100,
+    "planValidity": 365
+}
+```
+
+## Error Handling
+All endpoints return appropriate HTTP status codes in case of errors:
+- `404 Not Found`: When the specified resource is not found (e.g., plan or user does not exist).
+- `500 Internal Server Error`: For any server-side errors.
+
+## CORS Configuration
+This controller is configured to allow cross-origin requests using `@CrossOrigin`.
+
+## Dependencies
+- `PlanService`: Service layer for handling plan-related operations.
+- `DataUsageService`: Service layer for handling data usage-related operations.
+
+Certainly! Below is a sample API documentation for your `SupportTicketController` in the Spring Boot application.
+
+# Support Ticket API Documentation
+
+## Overview
+The Support Ticket API allows users to create, retrieve, and update support tickets. This API is part of the Support Service and provides endpoints for managing support tickets associated with users.
+
+## Base URL
+```
+http://localhost:8103/supportticket
+```
+
+## Endpoints
+
+### Create a Support Ticket
+#### `POST /generateticket/{userId}`
+Creates a new support ticket for the specified user.
+
+- **Path Parameters:**
+  - `userId` (Integer): ID of the user for whom the ticket is being created.
+
+- **Request Body:**
+  - `SupportTicket` (JSON): The details of the support ticket to be created.
+
+- **Response:**
+  - `201 Created`: If the ticket is successfully created. Returns the created `SupportTicket`.
+  - `404 Not Found`: If the user with the specified ID is not found.
+
+- **Example Request:**
+  ```json
+  POST /generateticket/123
+  {
+      "title": "Issue with login",
+      "description": "Unable to log in with correct credentials",
+      "status": "OPEN"
+  }
+  ```
+
+- **Example Response:**
+  ```json
+  {
+      "id": 1,
+      "title": "Issue with login",
+      "description": "Unable to log in with correct credentials",
+      "status": "OPEN",
+      "userId": 123,
+      "createdDate": "2024-06-10T12:34:56.789Z"
+  }
+  ```
+
+### Get Support Tickets by User ID
+#### `GET /ticketstatus/{userId}`
+Retrieves all support tickets associated with the specified user.
+
+- **Path Parameters:**
+  - `userId` (Integer): ID of the user whose tickets are to be retrieved.
+
+- **Response:**
+  - `200 OK`: If tickets are found. Returns a list of `SupportTicket`.
+  - `404 Not Found`: If no tickets are found for the specified user.
+
+- **Example Request:**
+  ```json
+  GET /ticketstatus/123
+  ```
+
+- **Example Response:**
+  ```json
+  [
+      {
+          "id": 1,
+          "title": "Issue with login",
+          "description": "Unable to log in with correct credentials",
+          "status": "OPEN",
+          "userId": 123,
+          "createdDate": "2024-06-10T12:34:56.789Z"
+      },
+      {
+          "id": 2,
+          "title": "Error 404 on homepage",
+          "description": "Homepage returns a 404 error intermittently",
+          "status": "OPEN",
+          "userId": 123,
+          "createdDate": "2024-06-11T09:15:32.456Z"
+      }
+  ]
+  ```
+
+### Get Support Ticket by ID
+#### `GET /ticket/{id}`
+Retrieves a support ticket by its ID.
+
+- **Path Parameters:**
+  - `id` (Integer): ID of the ticket to be retrieved.
+
+- **Response:**
+  - `200 OK`: If the ticket is found. Returns the `SupportTicket`.
+  - `404 Not Found`: If the ticket with the specified ID is not found.
+
+- **Example Request:**
+  ```json
+  GET /ticket/1
+  ```
+
+- **Example Response:**
+  ```json
+  {
+      "id": 1,
+      "title": "Issue with login",
+      "description": "Unable to log in with correct credentials",
+      "status": "OPEN",
+      "userId": 123,
+      "createdDate": "2024-06-10T12:34:56.789Z"
+  }
+  ```
+
+### Update a Support Ticket
+#### `PATCH /ticket/{id}`
+Updates an existing support ticket by its ID.
+
+- **Path Parameters:**
+  - `id` (Integer): ID of the ticket to be updated.
+
+- **Request Body:**
+  - `SupportTicket` (JSON): The updated details of the support ticket.
+
+- **Response:**
+  - `200 OK`: If the ticket is successfully updated. Returns the updated `SupportTicket`.
+  - `404 Not Found`: If the ticket with the specified ID is not found.
+
+- **Example Request:**
+  ```json
+  PATCH /ticket/1
+  {
+      "status": "CLOSED"
+  }
+  ```
+
+- **Example Response:**
+  ```json
+  {
+      "id": 1,
+      "title": "Issue with login",
+      "description": "Unable to log in with correct credentials",
+      "status": "CLOSED",
+      "userId": 123,
+      "createdDate": "2024-06-10T12:34:56.789Z"
+  }
+  ```
+
+## Models
+
+### SupportTicket
+Represents a support ticket.
+
+- **Fields:**
+  - `id` (Integer): The unique identifier of the support ticket.
+  - `title` (String): The title of the support ticket.
+  - `description` (String): The detailed description of the support ticket.
+  - `status` (String): The current status of the support ticket (e.g., OPEN, CLOSED).
+  - `userId` (Integer): The ID of the user associated with the support ticket.
+  - `createdDate` (Date): The date and time when the support ticket was created.
+
+### UserInformation
+Represents user information.
+
+- **Fields:**
+  - `userId` (Integer): The unique identifier of the user.
+  - `username` (String): The username of the user.
+  - `email` (String): The email address of the user.
+
+## Notes
+- Ensure that the user ID exists before creating or retrieving tickets.
+- Handle HTTP status codes appropriately to provide meaningful responses to the client.
+
+- ## Error Handling
+All endpoints return appropriate HTTP status codes in case of errors:
+- `404 Not Found`: When the specified resource is not found (e.g., plan or user does not exist).
+- `500 Internal Server Error`: For any server-side errors.
+
+## CORS Configuration
+This controller is configured to allow cross-origin requests using `@CrossOrigin`.
+

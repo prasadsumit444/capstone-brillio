@@ -8,6 +8,9 @@ module.exports = {
       colors:{
        primary_light:"#1E3A8A", //blue-900
         primary_dark:"#2563EB",//blue-600
+        button_primary:"#2563EB",//blue-600
+        button_hover:"#1E40AF",
+
 
       }
     },
