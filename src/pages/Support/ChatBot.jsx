@@ -262,10 +262,10 @@ const steps = [
 ];
 
 const App = () => {
-  const [showChat, setShowChat] = useState(false);
+  const [showChat, setShowChat] = useState(false);//A boolean state to toggle the visibility of the chatbot.
   // const [isDarkTheme, setIsDarkTheme] = useState(false);
 
-  const toggleChat = () => {
+  const toggleChat = () => {//toggles the showChat state to show or hide the chatbot.
     setShowChat(!showChat);
   };
 

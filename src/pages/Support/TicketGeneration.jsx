@@ -12,7 +12,7 @@ const TicketGeneration = () => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
+    setFormData({ ...formData, [name]: value });;
 
     // Clear errors as user types
     if (name === "description" && value) {
@@ -34,6 +34,7 @@ const TicketGeneration = () => {
     e.preventDefault();
     const errors = validateForm();
     if (Object.keys(errors).length === 0) {
+      //preparing data for submisson
       try {
         const timestamp = new Date().toISOString();
         const dataToSend = {
@@ -41,6 +42,7 @@ const TicketGeneration = () => {
           ticketStatus: "OPEN",
           timeStamp: timestamp
         };
+        //submit data to the server
         const response = await axios.post(`http://localhost:8103/supportticket/generateticket/${userId}`, dataToSend);
         console.log("Form Data Submitted:", response.data);
         showNotification("Ticket submitted successfully", "success");
@@ -50,7 +52,7 @@ const TicketGeneration = () => {
       } catch (error) {
         console.error("Error submitting the form:", error);
         if (error.response) {
-          // Server responded with a status other than 2xx
+          
           console.error("Response data:", error.response.data);
           console.error("Response status:", error.response.status);
           console.error("Response headers:", error.response.headers);
