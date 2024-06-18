@@ -42,7 +42,7 @@ export default function Profile() {
       if (value && (!/^[6-9]/.test(value) || value === formData.mobileNumber)) {
         setErrors((prev) => ({
           ...prev,
-          altMobileNumber: "Number must start with 6, 7, 8, or 9",
+          altMobileNumber: "Number not valid",
         }));
       } else {
         setErrors((prev) => {
@@ -65,7 +65,7 @@ export default function Profile() {
       ) {
         setErrors((prev) => ({
           ...prev,
-          altMobileNumber: "Alternate number must be 10 digits",
+          altMobileNumber: "Number not valid",
         }));
         return;
       }
@@ -238,7 +238,7 @@ export default function Profile() {
             <div className="mt-6 flex justify-center">
               <button
                 onClick={toggleEditMode}
-                className="bg-blue-500 hover:bg-blue-700 dark:bg-blue-600 dark:hover:bg-blue-800 text-white font-semibold py-2 px-4 rounded shadow-lg"
+                className="bg-button_primary hover:bg-button_hover dark:bg-button_primary dark:hover:bg-button_hover text-white font-semibold py-2 px-4 rounded shadow-lg"
               >
                 {editMode ? "Save" : "Edit"}
               </button>
